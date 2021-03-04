@@ -1,0 +1,5 @@
+= steg
+
+Generate this with
+    steg _doc
+After you have described your command line interface

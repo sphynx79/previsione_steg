@@ -1,0 +1,6 @@
+= steg
+
+Describe your project here
+
+:include:steg.rdoc
+
