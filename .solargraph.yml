@@ -1,0 +1,24 @@
+---
+plugins:
+- runtime
+include:
+- "**/*.rb"
+exclude:
+- Prove/**/*
+- Ruby/**/*
+- spec/**/*
+- TEST/**/*
+- test/**/*
+- vendor/**/*
+- ".git/**/*"
+- ".logs/**/*"
+- ".rblcl/**/*"
+- doc/**/*
+- Reportistica/**/*
+- /**/*
+- ".yardoc/**/*"
+require: []
+domains: []
+reporters:
+- rubocop
+max_files: 5000

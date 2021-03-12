@@ -1,0 +1,18 @@
+--title 'Previsione Steg'
+--charset utf-8
+--protected
+--exclude /Prove/
+--exclude /App/
+--exclude /Ruby/
+--exclude .rblcl
+--exclude .yardoc
+--exclude /doc/
+--type-name-tag promises:"Valore di ritorno della mia action"
+--type-name-tag expects:"Valori di input della mia action"
+'steg.rb'
+'app/**/*.rb'
+'lib/**/*.rb'
+-
+CHANGELOG.md
+README 
+

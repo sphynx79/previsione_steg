@@ -1,0 +1,42 @@
+defaults: &defaults
+  url:
+    site: '' 
+
+  mail:
+    from: 'michele.boscolo@eni.com'
+    to: 'michele.boscolo@eni.com'
+    server: 'relay.eni.pri'
+    port: 25
+
+development:
+  <<: *defaults
+  database:
+    name: 'Muletto'
+    path: "./DB/muletto_dev"
+
+  path:
+    file: './file_dev'
+    archivio: './file_dev/Archivio'
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  database:
+    name: 'Muletto'
+    path: '//kbsv1005.scogat.intranet/mico/B) Misure/O) Prelevement STEG/DB/muletto_prod'
+  path:
+    file: '//kbsv1005.scogat.intranet/mico/B) Misure/O) Prelevement STEG/File'
+    archivio: '//kbsv1005.scogat.intranet/mico/B) Misure/O) Prelevement STEG//File/Archivio'
+
+production_local:
+  <<: *defaults
+  database:
+    name: 'Muletto'
+    path: "./DB/muletto_prod"
+  path:
+    file: './file'
+    archivio: './file/Archivio'
+
+
