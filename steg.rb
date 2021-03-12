@@ -4,15 +4,10 @@
 
 $LOAD_PATH.unshift "."
 
-require "gli"
-require "pry"
-require "gli"
-require "steg"
-
 # faccio il parse del paramentro enviroment per vedere quale gemme da caricare
-# parsed_env = ARGV.join(' ')[/(-e\s|--enviroment=)(production|development)/]
+parsed_env = ARGV.join(' ')[/(-e\s|--enviroment=)(production|development)/]
 env = if parsed_env.nil?
-        :production
+        :development
       else
         parsed_env.split(/(\s|=)/).last == 'production' ? :production : :development
       end
@@ -20,17 +15,14 @@ env = if parsed_env.nil?
 # SOLUZIONE 1 REQUIRE
 require 'bundler/setup'
 Bundler.require(:default, env.to_sym)
+require 'lib/ikigai'
 
-require 'lib/muletto'
 APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
 APP_NAME = APP_ROOT.parent.basename.to_s
 APP_VERSION = File.read("./VERSION").strip
 
-CONFIG = File.join(__dir__, 'config.yml')
-
 module PrevisioneSteg
-  class App
-    extend GLI::App
+    include GLI::App
     extend self
 
     program_desc "Programma per fare la previsione del consumo gas di Steg"
@@ -97,10 +89,10 @@ module PrevisioneSteg
     def self.set_env(command, global, options)
       if global[:enviroment] == 'development'
         Hirb.enable
-        FunctionalLightService::Configuration.logger =
-          global[:log] == 'debug' ? Logger.new(STDOUT) : nil
+        # FunctionalLightService::Configuration.logger =
+        #   global[:log] == 'debug' ? Logger.new(STDOUT) : nil
       else
-        FunctionalLightService::Configuration.logger = nil
+        # FunctionalLightService::Configuration.logger = nil
       end
       ENV['APP_ENV'] = global[:enviroment]
       action = 'call'
@@ -114,40 +106,34 @@ module PrevisioneSteg
     end
 
     def self.init_log(level)
-      # Log.logger = Logger.new( 'logfile.log')
-      Log.level = level.upcase
-      pastel = Pastel.new
-      Log.formatter = proc do |severity, datetime, _progname, msg|
-        string = if severity != 'FATAL'
-                   "#{datetime.strftime('%d-%m-%Y %X')} --[#{severity}]-- : #{msg}\n"
-                 else
-                   "#{msg}\n"
-                 end
-
-        case severity
-        when 'DEBUG'
-          pastel.cyan.bold(string)
-        when 'WARN'
-          pastel.magenta.bold(string)
-        when 'INFO'
-          pastel.green.bold(string)
-        when 'ERROR'
-          pastel.red.bold(string)
-        when 'FATAL'
-          pastel.yellow.bold(string)
-        else
-          pastel.blue(string)
-        end
+      # Yell.new(name: Object, format: false) do |l|
+      #   l.adapter STDOUT, colors: true, level: "gte.#{level} lt.warn"
+      #   l.adapter STDERR, colors: true, level: 'error', format: false
+      # end
+      # Yell.new(name: 'scheduler', format: Yell.format('%d: %m', '%d-%m-%Y %H:%M')) do |l|
+      #   l.adapter STDOUT, colors: false, level: 'at.warn'
+      #   l.adapter STDERR, colors: false, level: 'at.error'
+      #   l.adapter :file, 'log/application.log', level: 'at.fatal', format: false
+      # end
+      # Yell.new(name: 'verbose', format: false) do |l|
+      #   l.adapter STDOUT, colors: false, level: 'at.info'
+      # end
+      Yell.new(name: 'cli', format: false) do |l|
+        l.adapter STDOUT, colors: true, level: "gte.#{level} lte.error"
+        l.adapter STDERR, colors: true, level: 'gte.fatal'
       end
-      Object.send :include, Log
+      # rubocop:disable Lint/SendWithMixinArgument
+      Object.send :include, Yell::Loggable
+      # rubocop:enable Lint/SendWithMixinArgument
     end
-
-  end
+    # Controllo se lo sto lanciandi come programma
+    # oppure il file e' stato usato come require
+    exit run(ARGV) if $PROGRAM_NAME == __FILE__
 end
-
-# oppure il file e' stato usato come require
-exit PrevisioneSteg::App.run(ARGV) if $PROGRAM_NAME == __FILE__
 
 # @todo:  1) Vedere quale logger utilizzare il mio oppure yell oppure lit
 #         2) Vedere se usare pretty_backtrace, prendere esempio da Remit_linee_new
 #         3) Vedere se usare bundle oppure il require semplice
+#         4) Abilitare FunctionalLightService nel set_env
+#         5) mettere env di default production riga 14
+#
