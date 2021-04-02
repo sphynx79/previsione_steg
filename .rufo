@@ -1,4 +1,4 @@
 parens_in_def :dynamic
-quote_style :single
+quote_style :double
 align_chained_calls true
 align_case_when true

@@ -11,7 +11,7 @@ require:
   - rubocop-performance
   # Standard's config uses this custom cop,
   # so it must be loaded
-  - standard/cop/block_delimiters
+  - standard/cop/block_single_line_braces
 
 inherit_gem:
   standard: config/base.yml

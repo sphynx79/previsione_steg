@@ -4,7 +4,7 @@
 
 # Per questo modulo ho preso spunto da questa gemma
 # https://github.com/thisismydesign/easy_logging
-module Log
+module Log 
   module Initializer
     # Initialize instance level logger at the time of instance creation
     def initialize(*params)
