@@ -3,7 +3,6 @@
 # frozen_string_literal: true
 
 PS = %w[feriana kasserine zriba nabeul korba].freeze
-HOUR_STEP = (1.to_f / 24)
 
 class ForecastController < Ikigai::BaseController
   extend FunctionalLightService::Organizer
@@ -16,7 +15,7 @@ class ForecastController < Ikigai::BaseController
 
     result = with(env).reduce(steps)
     # exit
-    # check_result(result)
+    check_result(result)
   # rescue => e
   #   msg = e.message + "\n"
   #   e.backtrace.each { |x| msg += x + "\n" if x.include? APP_NAME } # msg += x + "\n"
@@ -35,17 +34,16 @@ class ForecastController < Ikigai::BaseController
     ]
   end
 
-  # def self.check_result(result)
-  #   binding.pry
-  #   !result.warning.empty? && result.warning.each { |w| @log.warn w }
-  #   if result.failure?
-  #     @log.error result.message
-  #     # RemitLinee::Mail.call("Errore imprevisto nella lettura XML", msg) if env[:global_options][:mail]
-  #   elsif !result.message.empty?
-  #     @log.info result.message
-  #   else
-  #     print "\n"
-  #     @log.info "File letti corretamente"
-  #   end
-  # end
+  def self.check_result(result)
+    # !result.warning.empty? && result.warning.each { |w| @log.warn w }
+    if result.failure?
+      @log.error result.message
+      # RemitLinee::Mail.call("Errore imprevisto nella lettura XML", msg) if env[:global_options][:mail]
+    elsif !result.message.empty?
+      @log.info result.message
+    else
+      print "\n"
+      @log.info "Forecast eseguito corretamente"
+    end
+  end
 end

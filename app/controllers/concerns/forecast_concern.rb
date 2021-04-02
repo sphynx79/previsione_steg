@@ -3,11 +3,10 @@
 # frozen_string_literal: true
 
 module ForecastConcern
-  
   module Excel
     @@excel = nil
-    @@params = {}
     @@workbook = nil
+    @@params = {}
 
     def params
       @@params
@@ -86,11 +85,11 @@ module ForecastConcern
     end
 
     def nomina_steg
-      @@params[:nomina_steg] ||= get_param("nomina_steg", "Forecast V1").sub(",", ".").to_f
+      @@params[:nomina_steg] ||= get_param("nomina_steg", "Forecast V1").nil? ? nil : get_param("nomina_steg", "Forecast V1").sub(",", ".").to_f
     end
 
     def soglia_sensibilita
-      @@params[:soglia_sensibilita] ||= get_param("sensibilita", "Forecast_V2").sub(",", ".").to_f
+      @@params[:soglia_sensibilita] ||= get_param("sensibilita", "Forecast_V2").nil? ? nil : get_param("sensibilita", "Forecast_V2").sub(",", ".").to_f
     end
   end
 
