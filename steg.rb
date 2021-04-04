@@ -60,8 +60,10 @@ module PrevisioneSteg
   end
 
   desc "Save PDF"
-  long_desc "Salva la previsione su file PDF"
+  long_desc "Salva la previsione o il consuntivo su file PDF"
   command :pdf do |c|
+    c.desc "Setto se fare export pdf del consuntivo o del forecast [consuntivo forecast]"
+    c.flag %i[t type], required: false, default_value: "forecast", must_match: %w[consuntivo forecast]
     c.action do
       # prima = Time.now
       Ikigai::Application.call(@env)
@@ -137,10 +139,6 @@ module PrevisioneSteg
     # rubocop:disable Lint/SendWithMixinArgument
     Object.send :include, Yell::Loggable
     # rubocop:enable Lint/SendWithMixinArgument
-  end
-
-  def ciao
-    a = 100
   end
 
   # Controllo se lo sto lanciandi come programma

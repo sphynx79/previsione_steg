@@ -9,6 +9,8 @@ defaults: &defaults
   path:
     root: '../'
     db: '../DB/'
+    consuntivi_pdf: '../report/consuntivi/'
+    forecast_pdf: '../report/forecast/'
   
   file:
     excel_forecast: 'Forecast.xlsm'

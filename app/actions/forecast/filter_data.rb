@@ -11,7 +11,6 @@ module ForecastActions
 
     # @promises excel [WIN32OLE]
     # @promises workbook [WIN32OLE]
-    # promises :excel
     expects :hour, :consuntivi, :params
     promises :forecast, :forecast2
 
