@@ -53,9 +53,9 @@ module PrevisioneSteg
   long_desc "Legge dal file Excel Forecast.xlsm i parametri di input e avvia il forecast"
   command :forecast do |c|
     c.action do
-      # prima = Time.now
+      prima = Time.now
       Ikigai::Application.call(@env)
-      # p Time.now - prima
+      p Time.now - prima
     end
   end
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # warn_indent: true
-# frozen_string_literal: tru
+# frozen_string_literal: true
 
 module ForecastActions
   # Prendo da excel tutti i dati di input
@@ -17,13 +17,13 @@ module ForecastActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      ctx.params = {day_hours: get_day_hours,
-                    giorno_settimana: get_giorno_settimana,
-                    festivo: get_festivo,
-                    festivita: get_festivita,
-                    applica_somiglianza: get_applica_somiglianza,
-                    nomina_steg: get_nomina_steg,
-                    soglia_sensibilita: get_soglia_sensibilita}.freeze
+      ctx.params = Hamster::Hash[day_hours: get_day_hours,
+                                 giorno_settimana: get_giorno_settimana,
+                                 festivo: get_festivo,
+                                 festivita: get_festivita,
+                                 applica_somiglianza: get_applica_somiglianza,
+                                 nomina_steg: get_nomina_steg,
+                                 soglia_sensibilita: get_soglia_sensibilita]
     end
 
     def self.get_day_hours

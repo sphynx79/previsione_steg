@@ -16,7 +16,10 @@ class PdfController < Ikigai::BaseController
 
   def self.steps
     [
-      GetPath
+      ConnectExcel, #=> [excel, workbook]
+      GetExcelData, #=> [data]
+      GetPath, #=> [path]
+      SetPdfPath
     ]
   end
 

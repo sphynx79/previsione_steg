@@ -10,10 +10,12 @@ source "http://rubygems.org"
 gem "dry-inflector", "~>0.2.0", require: "dry/inflector"
 gem "functional-light-service", "~>0.3.2"
 gem "gli", "~>2.20.0"
+gem "hamster", "~>3.0.0"
+gem "ice_nine", "~>0.11.2"
 gem "lit-cli"
 gem "rcsv", "~>0.3.1"
 # gem "pastel", "~>0.8.0"
-gem "settingslogic", "~>2.0.9"
+gem "better_settings", "~>1.0.1"
 gem "yell", "~>2.2.2"
 
 group :development, :test do

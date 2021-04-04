@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # warn_indent: true
-# frozen_string_literal: tru
+# frozen_string_literal: true
 
 module PdfActions
-  # Prendo dal file csv tutti i dati consintivi
+  # Setto il path dove andare a salvare i PDF
   class GetPath
     # @!parse
     #   extend FunctionalLightService::Action
@@ -19,15 +19,15 @@ module PdfActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      ctx.path = case ctx.env.dig(:command_options, :type)
+      path = case ctx.env.dig(:command_options, :type)
                  when "consuntivo"
                    Ikigai::Config.path.consuntivi_pdf
                  when "forecast"
                    Ikigai::Config.path.forecast_pdf
 
       end
-      ctx.fail_and_return!("Constrollare che la directory \"#{File.expand_path(ctx.path)}\" esiste") if ctx.path.nil? || !File.directory?(ctx.path)
-      ctx.path.freeze 
+      ctx.fail_and_return!("Constrollare che la directory \"#{File.expand_path(path)}\" esiste") if path.nil? || !File.directory?(path)
+      ctx.path = File.expand_path(path).freeze
     end
   end
 end
