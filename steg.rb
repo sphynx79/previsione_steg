@@ -33,6 +33,10 @@ module PrevisioneSteg
   default_value "info"
   flag %i[l log], required: false
 
+  desc "Interfaccia da usare [cli, scheduler]"
+  default_value "cli"
+  flag %i[i interface], required: false
+
   desc "Enviroment da usare [production, development production_local]"
   default_value "production"
   flag %i[e enviroment], required: false, must_match: %w[production development production_local]
@@ -48,6 +52,16 @@ module PrevisioneSteg
   desc "Avvio forecast STEG"
   long_desc "Legge dal file Excel Forecast.xlsm i parametri di input e avvia il forecast"
   command :forecast do |c|
+    c.action do
+      # prima = Time.now
+      Ikigai::Application.call(@env)
+      # p Time.now - prima
+    end
+  end
+
+  desc "Save PDF"
+  long_desc "Salva la previsione su file PDF"
+  command :pdf do |c|
     c.action do
       # prima = Time.now
       Ikigai::Application.call(@env)
@@ -124,6 +138,11 @@ module PrevisioneSteg
     Object.send :include, Yell::Loggable
     # rubocop:enable Lint/SendWithMixinArgument
   end
+
+  def ciao
+    a = 100
+  end
+
   # Controllo se lo sto lanciandi come programma
   # oppure il file e" stato usato come require
   exit run(ARGV) if $PROGRAM_NAME == __FILE__

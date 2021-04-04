@@ -17,7 +17,11 @@ module ForecastActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      ctx.consuntivi = (parse_csv.reject { |row| row["Exclude"] == "Y" }).freeze
+      try! do
+        ctx.consuntivi = (parse_csv.reject { |row| row["Exclude"] == "Y" }).freeze
+        # @todo: inserire nel config il path del file csv e qui nel messaggio di errore
+      end.map_err { ctx.fail_and_return!("Non riesco a leggere il file DB2.csv controllare di avere fatto l'esportazione del database") }
+      ctx.fail_and_return!("Controllare che nel file DB2.csv siano presenti i dati esportortati dal DB") if ctx.consuntivi.nil?
     end
   end
 end

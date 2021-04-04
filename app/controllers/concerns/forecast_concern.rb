@@ -21,8 +21,8 @@ module ForecastConcern
     end
 
     def conneti_workbook
-      @@excel.Workbooks("Forecast.xlsm").activate
-      @@workbook = @@excel.Workbooks("Forecast.xlsm")
+      @@excel.Workbooks(Ikigai::Config.file.excel_forecast).activate
+      @@workbook = @@excel.Workbooks(Ikigai::Config.file.excel_forecast)
     end
 
     def get_param(variabile, sheet)
@@ -96,7 +96,7 @@ module ForecastConcern
   module Csv
     def parse_csv
       # @todo: Sistemare dove va a prendere il file del database
-      csv_data = File.read("C:/Users/en27553/Desktop/Forecast_STEG/DB2.csv")
+      csv_data = File.read(Ikigai::Config.path.db + Ikigai::Config.file.db_csv)
 
       column = {"Date" => {type: :date},
                 "Giorno" => {type: :int},
