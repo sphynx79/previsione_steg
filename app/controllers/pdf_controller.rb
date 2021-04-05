@@ -19,7 +19,8 @@ class PdfController < Ikigai::BaseController
       ConnectExcel, #=> [excel, workbook]
       GetExcelData, #=> [data]
       GetPath, #=> [path]
-      SetPdfPath
+      SetPdfPath, #=> [path_pdf_report]
+      SavePdf
     ]
   end
 

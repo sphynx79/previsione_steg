@@ -20,7 +20,7 @@ module PdfActions
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
       file_name = "/STEG_#{type}_#{ctx.data}_rev#{version}.pdf"
-      full_path = ctx.path + file_name
+      full_path = (ctx.path + file_name).gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR)
       ctx.path_pdf_report = full_path.freeze
     end
 
@@ -33,7 +33,7 @@ module PdfActions
     end
 
     def self.type
-      ctx.env.dig(:command_options, :type) == "forecast" ? "FCS" : "CONS"
+      ctx.env.dig(:command_options, :type) == "forecast" ? "FCT" : "CONS"
     end
 
     private_class_method :version, :type

@@ -91,6 +91,10 @@ module ForecastConcern
     def soglia_sensibilita
       @@params[:soglia_sensibilita] ||= get_param("sensibilita", "Forecast_V2").nil? ? nil : get_param("sensibilita", "Forecast_V2").sub(",", ".").to_f
     end
+
+    def save_pdf(path)
+      @@excel.Run("Save_PDF", path)
+    end
   end
 
   module Csv
