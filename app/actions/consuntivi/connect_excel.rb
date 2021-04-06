@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module PdfActions
+module ConsuntiviActions
   # Mi connetto al file Excel del forecast
   class ConnectExcel
     # @!parse
@@ -20,8 +20,8 @@ module PdfActions
     executed do |ctx|
       try! do
         ctx.excel = conneti_excel.freeze
-        ctx.workbook = conneti_workbook(Ikigai::Config.file.excel_forecast).freeze
-      end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file #{Ikigai::Config.file.excel_forecast}, controllare che sia aperto") }
+        ctx.workbook = conneti_workbook(Ikigai::Config.file.db_xls).freeze
+      end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file #{Ikigai::Config.file.db_xls}, controllare che sia aperto") }
     end
   end
 end

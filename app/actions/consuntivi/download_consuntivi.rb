@@ -2,26 +2,25 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module PdfActions
+module ConsuntiviActions
   # Mi connetto al file Excel del forecast
-  class ConnectExcel
+  class DownloadConsuntivi
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
     # @promises excel [WIN32OLE]
     # @promises workbook [WIN32OLE]
-    promises :excel, :workbook
+    # promises :excel, :workbook
 
     # @!method ConnectExcel
     #   @yield Gestisce l'interfaccia per prendere i parametri da excel
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      try! do
-        ctx.excel = conneti_excel.freeze
-        ctx.workbook = conneti_workbook(Ikigai::Config.file.excel_forecast).freeze
-      end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file #{Ikigai::Config.file.excel_forecast}, controllare che sia aperto") }
+      cmd = File.expand_path(Ikigai::Config.path.scada + Ikigai::Config.file.bat_dowload_scada)
+      _stdout, stderr, wait_thr = Open3.capture3(cmd)
+      ctx.fail_and_return!("Errore nello scaricare dall'FTP i consuntivi:\n#{stderr.chomp}") if wait_thr.exitstatus != 0
     end
   end
 end

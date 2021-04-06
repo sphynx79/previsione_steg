@@ -17,12 +17,12 @@ module ForecastConcern
     end
 
     def conneti_excel
-      @@excel = WIN32OLE.connect("Excel.Application")
+      @@excel ||= WIN32OLE.connect("Excel.Application")
     end
 
-    def conneti_workbook
-      @@excel.Workbooks(Ikigai::Config.file.excel_forecast).activate
-      @@workbook = @@excel.Workbooks(Ikigai::Config.file.excel_forecast)
+    def conneti_workbook(workbook_name)
+      @@excel.Workbooks(workbook_name).activate
+      @@workbook = @@excel.Workbooks(workbook_name)
     end
 
     def get_param(variabile, sheet)
@@ -94,6 +94,10 @@ module ForecastConcern
 
     def save_pdf(path)
       @@excel.Run("Save_PDF", path)
+    end
+
+    def leggi_consuntivi
+      @@excel.Run("LeggiConsuntivi")
     end
   end
 

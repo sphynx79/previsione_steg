@@ -12,6 +12,7 @@ env = parsed_env.nil? || parsed_env.split(/(\s|=)/).last != "production" ? :deve
 require "bundler/setup"
 Bundler.require(:default, env.to_sym)
 require "win32ole"
+require "open3"
 require "lib/ikigai"
 
 APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
@@ -70,6 +71,20 @@ module PrevisioneSteg
       # p Time.now - prima
     end
   end
+
+  desc "Leggi Consuntivo"
+  long_desc "Avvio lo scaricamento e lettura dal FTP di Scada dei consuntivi"
+  command :consuntivi do |c|
+    c.action do
+      # prima = Time.now
+      Ikigai::Application.call(@env)
+      # p Time.now - prima
+    end
+  end
+
+
+
+
 
   pre do |global, command, options, args|
     ENV["GLI_DEBUG"] = global[:enviroment] == "development" ? "true" : "false"

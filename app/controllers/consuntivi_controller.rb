@@ -2,9 +2,10 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-class PdfController < Ikigai::BaseController
+class ConsuntiviController < Ikigai::BaseController
   extend FunctionalLightService::Organizer
-  include PdfActions
+  extend FunctionalLightService::Prelude::Result
+  include ConsuntiviActions
   # include ShareActions # include Log
   # attr_accessor :log
 
@@ -16,12 +17,9 @@ class PdfController < Ikigai::BaseController
 
   def self.steps
     [
+      DownloadConsuntivi,
       ConnectExcel, #=> [excel, workbook]
-      GetExcelData, #=> [data]
-      GetPath, #=> [path]
-      SetPdfPath, #=> [path_pdf_report]
-      SavePdf,
-      SendEmail
+      LeggiConsuntivi
     ]
   end
 
@@ -29,12 +27,9 @@ class PdfController < Ikigai::BaseController
     # !result.warning.empty? && result.warning.each { |w| @log.warn w }
     if result.failure?
       @log.error result.message
-      # RemitLinee::Mail.call("Errore imprevisto nella lettura XML", msg) if env[:global_options][:mail]
-    elsif !result.message.empty?
-      @log.info result.message
     else
       print "\n"
-      @log.info { "Creazione PDF eseguita correttamente" }
+      @log.info { "Download consuntivi avvenuto con successo!\n" }
     end
   end
 end

@@ -43,7 +43,7 @@ class ForecastController < Ikigai::BaseController
       @log.info result.message
     else
       print "\n"
-      @log.info "Forecast eseguito corretamente"
+      @log.info { "Forecast eseguito corretamente" }
     end
   end
 end

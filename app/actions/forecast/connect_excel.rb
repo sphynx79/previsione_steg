@@ -20,8 +20,8 @@ module ForecastActions
     executed do |ctx|
       try! do
         ctx.excel = conneti_excel.freeze
-        ctx.workbook = conneti_workbook.freeze
-      end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file Forecast.xlsm, controllare che sia aperto") }
+        ctx.workbook = conneti_workbook(Ikigai::Config.file.excel_forecast).freeze
+      end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file #{Ikigai::Config.file.excel_forecast}, controllare che sia aperto") }
     end
   end
 end
