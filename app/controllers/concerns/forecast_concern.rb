@@ -96,6 +96,10 @@ module ForecastConcern
       @@excel.Run("Save_PDF", path)
     end
 
+    def set_day(data)
+      @@workbook.Worksheets("Forecast V1").Range("M3").value = data + " 08:00:00"
+    end
+
     def leggi_consuntivi
       @@excel.Run("LeggiConsuntivi")
     end

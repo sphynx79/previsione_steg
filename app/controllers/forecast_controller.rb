@@ -6,6 +6,7 @@ PS = %w[feriana kasserine zriba nabeul korba].freeze
 
 class ForecastController < Ikigai::BaseController
   extend FunctionalLightService::Organizer
+  include ShareActions
   include ForecastActions
   # include ShareActions # include Log
   # attr_accessor :log
@@ -13,7 +14,7 @@ class ForecastController < Ikigai::BaseController
   def self.call(env:)
     @log = Yell["cli"]
 
-    result = with(env).reduce(steps)
+    result = with(:env).reduce(steps)
     # exit
     check_result(result)
   # rescue => e
@@ -27,6 +28,7 @@ class ForecastController < Ikigai::BaseController
   def self.steps
     [
       ConnectExcel,
+      SetExcelDay,
       GetExcelParams,
       ParseCsv,
       with_callback(IterateHours, [FilterData, MediaPonderata]),

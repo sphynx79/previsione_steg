@@ -27,9 +27,9 @@ class ConsuntiviController < Ikigai::BaseController
     # !result.warning.empty? && result.warning.each { |w| @log.warn w }
     if result.failure?
       @log.error result.message
+      exit! 1
     else
-      print "\n"
-      @log.info { "Download consuntivi avvenuto con successo!\n" }
+      @log.info { "\nDownload consuntivi avvenuto con successo!\n" }
     end
   end
 end

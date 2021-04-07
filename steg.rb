@@ -53,6 +53,9 @@ module PrevisioneSteg
   desc "Avvio forecast STEG"
   long_desc "Legge dal file Excel Forecast.xlsm i parametri di input e avvia il forecast"
   command :forecast do |c|
+    c.desc "day report [dd/mm/aaaa]"
+    c.flag %i[dt day], required: false, type: String
+
     c.action do
       prima = Time.now
       Ikigai::Application.call(@env)
@@ -60,11 +63,15 @@ module PrevisioneSteg
     end
   end
 
-  desc "Save PDF"
-  long_desc "Salva la previsione o il consuntivo su file PDF"
-  command :pdf do |c|
-    c.desc "Setto se fare export pdf del consuntivo o del forecast [consuntivo forecast]"
+  desc "Send Report"
+  long_desc "Salva la previsione o il consuntivo su file PDF e invia via email il report"
+  command :report do |c|
+    c.desc "Setto la tipologia di report [consuntivo forecast]"
     c.flag %i[t type], required: false, default_value: "forecast", must_match: %w[consuntivo forecast]
+
+    c.desc "day report [dd/mm/aaaa]"
+    c.flag %i[dt day], required: false, type: String
+
     c.action do
       # prima = Time.now
       Ikigai::Application.call(@env)
@@ -82,13 +89,10 @@ module PrevisioneSteg
     end
   end
 
-
-
-
-
   pre do |global, command, options, args|
     ENV["GLI_DEBUG"] = global[:enviroment] == "development" ? "true" : "false"
     set_env(command, global, options)
+    check_date(options[:day]) if [:report, :forecast].include? command.name
     init_log(global[:log])
     Ikigai::Initialization.call
     true
@@ -156,6 +160,14 @@ module PrevisioneSteg
     # rubocop:enable Lint/SendWithMixinArgument
   end
 
+  def check_date(date)
+    if date.nil? || !date.match(%r{^\d{2}/\d{2}/\d{4}$})
+      print "\nDevi inserire una data nella forma --day=dd/mm/yyyy\n"
+      print "Es: ruby steg.rb report --type=consuntivo --day=20/08/2020\n"
+      print "\n"
+      exit!
+    end
+  end
   # Controllo se lo sto lanciandi come programma
   # oppure il file e" stato usato come require
   exit run(ARGV) if $PROGRAM_NAME == __FILE__

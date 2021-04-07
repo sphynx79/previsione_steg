@@ -17,6 +17,7 @@ gem "rcsv", "~>0.3.1"
 # gem "pastel", "~>0.8.0"
 gem "better_settings", "~>1.0.1"
 gem "yell", "~>2.2.2"
+gem "rufus-scheduler", "~>3.7.0", require: false
 
 group :development, :test do
   gem "amazing_print", "~>1.3.0", require: "ap"

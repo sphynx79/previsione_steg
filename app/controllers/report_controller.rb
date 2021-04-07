@@ -2,10 +2,10 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-class PdfController < Ikigai::BaseController
+class ReportController < Ikigai::BaseController
   extend FunctionalLightService::Organizer
+  include ShareActions # include Log
   include PdfActions
-  # include ShareActions # include Log
   # attr_accessor :log
 
   def self.call(env:)
@@ -17,7 +17,7 @@ class PdfController < Ikigai::BaseController
   def self.steps
     [
       ConnectExcel, #=> [excel, workbook]
-      GetExcelData, #=> [data]
+      SetExcelDay, #=> [data]
       GetPath, #=> [path]
       SetPdfPath, #=> [path_pdf_report]
       SavePdf,
@@ -33,8 +33,8 @@ class PdfController < Ikigai::BaseController
     elsif !result.message.empty?
       @log.info result.message
     else
-      print "\n"
-      @log.info { "Creazione PDF eseguita correttamente" }
+      type = result.dig(:env, :command_options, :type)
+      @log.info { "\nReport #{type} inviato corretamente!\n" }
     end
   end
 end

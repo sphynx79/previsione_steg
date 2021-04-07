@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module Ikigai 
+module Ikigai
   class Application
     class << self
       attr_accessor :env
@@ -18,7 +18,7 @@ module Ikigai
       end
 
       def controller
-        controller_name = env[:controller].capitalize + 'Controller'
+        controller_name = env[:controller].capitalize + "Controller"
         Object.const_get(controller_name)
       end
     end
