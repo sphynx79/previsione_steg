@@ -16,7 +16,7 @@ gem "lit-cli"
 gem "rcsv", "~>0.3.1"
 # gem "pastel", "~>0.8.0"
 gem "better_settings", "~>1.0.1"
-gem "yell", "~>2.2.2"
+# gem "yell", "~>2.2.2"
 gem "rufus-scheduler", "~>3.7.0", require: false
 
 group :development, :test do
@@ -30,9 +30,9 @@ group :development, :test do
   # gem "pry-doc", "~>1.1.0"
   # gem "pry-clipboard", "~>0.1.1"
   # gem "pry-state", "~>0.1.10"
-  gem "rubocop", "~>1.11.0", require: false
+  gem "rubocop", "~>1.12.1", require: false
   gem "rubocop-config-prettier", "~>0.1.12"
-  gem "rubocop-performance", "~>1.10.1", require: false
+  gem "rubocop-performance", "~>1.10.2", require: false
   gem "rufo", "~>0.12.0", require: false
   gem "solargraph", "~>0.40.4", require: false
   gem "standard", "~>1.0.4", require: false

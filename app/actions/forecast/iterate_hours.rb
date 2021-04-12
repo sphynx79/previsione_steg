@@ -3,18 +3,21 @@
 # frozen_string_literal: true
 
 module ForecastActions
-  # Prendo da excel tutti i dati di input
+  # Itero sulle ore del giorno del Forecast che devo fare
+  # ed eseguo [FilterData, MediaPonderata]
   class IterateHours
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises excel [WIN32OLE]
-    promises :hour
+    # @expects params [Hamster::Hash] parametri letti da excel
+    # @expects callback [Proc] le azioni da eseguire per ogni ora
     expects :params, :callback
+    # @promises hour [Hash]
+    promises :hour
 
-    # @!method ConnecWIN32OLEtExcel
-    #   @yield Gestisce l'interfaccia per prendere i parametri da excel
+    # @!method IterateHours
+    #   @yield Itero sulle ore del giorno ed eseguo [FilterData, MediaPonderata]
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|

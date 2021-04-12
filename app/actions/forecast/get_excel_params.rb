@@ -3,7 +3,7 @@
 # frozen_string_literal: true
 
 module ForecastActions
-  # Prendo da excel tutti i dati di input
+  # Prendo da excel tutti i dati di input per eseguire il Forecast
   class GetExcelParams
     # @!parse
     #   extend FunctionalLightService::Action

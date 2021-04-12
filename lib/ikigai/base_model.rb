@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module Ikigai 
+module Ikigai
   class BaseModel
     attr_reader :client
     attr_reader :type

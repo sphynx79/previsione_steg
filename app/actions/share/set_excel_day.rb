@@ -3,13 +3,13 @@
 # frozen_string_literal: true
 
 module ShareActions
-  # Prende dal file excel la data del report PDF
+  # Setta nel file excel del Forecast la data
   class SetExcelDay
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises data [DataTime]
+    # @promises data [String] Contiene la data es. "09042021"
     promises :data
 
     # @!method GetExcelData

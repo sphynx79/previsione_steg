@@ -9,7 +9,7 @@ module Kernel
 end
 
 module Ikigai
-  # autoload :Log,            "ikigai/log"
+  autoload :Log, "ikigai/log"
   autoload :Config, "ikigai/config"
   autoload :Mail, "ikigai/mail"
   autoload :Initialization, "ikigai/initialization"

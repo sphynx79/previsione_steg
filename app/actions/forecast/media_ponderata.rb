@@ -3,14 +3,23 @@
 # frozen_string_literal: true
 
 module ForecastActions
-  # Prendo dal file csv tutti i dati consintivi
+  # Esegue la media ponderata dei dati filtrati nelo step precedente e li aggiundo alla mia previsione
   class MediaPonderata
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises csv [Array<Hash>] Consuntivi di Steg
+    # @expects forecast [FunctionalLightService::Result] Consuntivi filtrati nello Step precedente per il forecast
+    # @expects forecast2 [FunctionalLightService::Result] Consuntivi filtrati nello Step precedente per il forecast2
     expects :forecast, :forecast2
+    # @promises previsione [Hash] In questa variabile inserisco il risultato del forecast per ogni stazione e per ogni ora
+    # @promises previsione2 [Hash] In questa variabile inserisco il risultato del forecast per ogni stazione e per ogni ora
+    #
+    # previsone = {"feriana"=>[28513.707674943573, 30426.730663741077],
+    #              "kasserine"=>[5293.154627539503, 5158.996160175534],
+    #              "zriba"=>[236252.539503386, 251786.7526055952],
+    #              "nabeul"=>[79220.02257336344, 87046.02303894682],
+    #              "korba"=>[5760.112866817157, 6106.385079539223]}
     promises :previsione, :previsione2
 
     # @!method ParseCsv
@@ -38,6 +47,5 @@ module ForecastActions
 
     private_class_method :media_ponderata
 
-    
   end
 end

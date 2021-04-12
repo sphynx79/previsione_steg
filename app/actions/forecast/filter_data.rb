@@ -3,19 +3,22 @@
 # frozen_string_literal: tru
 
 module ForecastActions
-  # Prendo da excel tutti i dati di input
+  # Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
   class FilterData
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises excel [WIN32OLE]
-    # @promises workbook [WIN32OLE]
+    # @expects hour [Hash] Ora di cui fare il forecast
+    # @expects csv [Array<Hash>] Consuntivi di Steg letti dal DB
+    # @expects params [Hamster::Hash] parametri letti da excel
     expects :hour, :consuntivi, :params
+    # @promises forecast [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
+    # @promises forecast2 [FunctionalLightService::Result] Se finisce con successo forecast2 [Array<Hash>]
     promises :forecast, :forecast2
 
-    # @!method ConnecWIN32OLEtExcel
-    #   @yield Gestisce l'interfaccia per prendere i parametri da excel
+    # @!method ForecastActions
+    #   @yield Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|

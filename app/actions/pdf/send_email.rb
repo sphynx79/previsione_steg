@@ -24,7 +24,8 @@ module PdfActions
       message = outlook.CreateItem(0)
       message.Subject = subject
       message.Body = ""
-      message.To = "michele.boscolo@ttpc.eni.com"
+      message.To = "Roberto.Pozzer@ttpc.eni.com"
+      message.CC = "michele.boscolo@gmail.com; MohamedAli.Gattoufi@ttpc.eni.com; wassim.ouelhazi@ttpc.eni.com"
       message.Attachments.Add(ctx.path_pdf_report, 1)
       message.Send
 

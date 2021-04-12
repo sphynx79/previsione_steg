@@ -2,8 +2,9 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module Ikigai 
+module Ikigai
   class BaseController
+    include Ikigai::Log
     class << self
       attr_accessor :env
 
@@ -37,7 +38,7 @@ module Ikigai
       end
 
       def file(path)
-        Dir[File.join('app', 'views', "#{path}.rb")].first
+        Dir[File.join("app", "views", "#{path}.rb")].first
       end
 
       def controller_action
@@ -45,7 +46,7 @@ module Ikigai
       end
 
       def layout
-        File.join('layout', 'application')
+        File.join("layout", "application")
       end
 
       def action_view

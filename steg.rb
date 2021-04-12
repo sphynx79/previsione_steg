@@ -14,6 +14,7 @@ Bundler.require(:default, env.to_sym)
 require "win32ole"
 require "open3"
 require "lib/ikigai"
+require "pastel"
 
 APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
 APP_NAME = APP_ROOT.parent.basename.to_s
@@ -57,9 +58,7 @@ module PrevisioneSteg
     c.flag %i[dt day], required: false, type: String
 
     c.action do
-      prima = Time.now
       Ikigai::Application.call(@env)
-      p Time.now - prima
     end
   end
 
@@ -93,7 +92,7 @@ module PrevisioneSteg
     ENV["GLI_DEBUG"] = global[:enviroment] == "development" ? "true" : "false"
     set_env(command, global, options)
     check_date(options[:day]) if [:report, :forecast].include? command.name
-    init_log(global[:log])
+    init_log(global[:log], global[:interface])
     Ikigai::Initialization.call
     true
   end
@@ -119,7 +118,7 @@ module PrevisioneSteg
     end
   end
 
-  def self.set_env(command, global, options)
+  def set_env(command, global, options)
     if global[:enviroment] == "development"
       Hirb.enable
       FunctionalLightService::Configuration.logger =
@@ -138,26 +137,33 @@ module PrevisioneSteg
     }
   end
 
-  def self.init_log(level)
-    # Yell.new(name: Object, format: false) do |l|
-    #   l.adapter STDOUT, colors: true, level: "gte.#{level} lt.warn"
-    #   l.adapter STDERR, colors: true, level: "error", format: false
-    # end
-    # Yell.new(name: "scheduler", format: Yell.format("%d: %m", "%d-%m-%Y %H:%M")) do |l|
-    #   l.adapter STDOUT, colors: false, level: "at.warn"
-    #   l.adapter STDERR, colors: false, level: "at.error"
-    #   l.adapter :file, "log/application.log", level: "at.fatal", format: false
-    # end
-    # Yell.new(name: "verbose", format: false) do |l|
-    #   l.adapter STDOUT, colors: false, level: "at.info"
-    # end
-    Yell.new(name: "cli", format: false) do |l|
-      l.adapter $stdout, colors: true, level: "gte.#{level} lte.error"
-      l.adapter $stderr, colors: true, level: "gte.fatal"
+  def init_log(level, interface)
+    Ikigai::Log.level = level.upcase
+    pastel = Pastel.new
+    Ikigai::Log.formatter = proc do |severity, datetime, _progname, msg|
+      string = if severity != "FATAL"
+        "#{datetime.strftime("%d-%m-%Y %X")} --[#{severity}]-- : #{msg}\n"
+      else
+        "#{msg}\n"
+      end
+
+      case severity
+      when "DEBUG"
+        pastel.cyan.bold(string)
+      when "WARN"
+        pastel.magenta.bold(string)
+      when "INFO"
+        pastel.green.bold(string)
+      when "ERROR"
+        pastel.red.bold(string)
+      when "FATAL"
+        pastel.yellow.bold(string)
+      else
+        pastel.blue(string)
+      end
     end
-    # rubocop:disable Lint/SendWithMixinArgument
-    Object.send :include, Yell::Loggable
-    # rubocop:enable Lint/SendWithMixinArgument
+    # binding.pry
+    # Object.send :include, Log
   end
 
   def check_date(date)
@@ -178,3 +184,14 @@ end
 #         3) Vedere se usare bundle oppure il require semplice
 #         4) Abilitare FunctionalLightService nel set_env
 #         5) mettere env di default production riga 14
+
+
+
+def some_method_call
+  a = "ciao"
+  return a
+end
+
+# @type [Integer]
+my_variable = some_method_call
+

@@ -9,7 +9,7 @@ class ReportController < Ikigai::BaseController
   # attr_accessor :log
 
   def self.call(env:)
-    @log = Yell["cli"]
+    # @log = Yell["cli"]
     result = with(env: env).reduce(steps)
     check_result(result)
   end
@@ -28,13 +28,13 @@ class ReportController < Ikigai::BaseController
   def self.check_result(result)
     # !result.warning.empty? && result.warning.each { |w| @log.warn w }
     if result.failure?
-      @log.error result.message
+      log.error result.message
       # RemitLinee::Mail.call("Errore imprevisto nella lettura XML", msg) if env[:global_options][:mail]
     elsif !result.message.empty?
-      @log.info result.message
+      log.info result.message
     else
       type = result.dig(:env, :command_options, :type)
-      @log.info { "\nReport #{type} inviato corretamente!\n" }
+      log.info { "Report #{type} inviato corretamente!" }
     end
   end
 end

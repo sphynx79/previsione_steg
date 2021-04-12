@@ -5,6 +5,8 @@
 require "rufus-scheduler"
 require "logger"
 require "open3"
+require "pastel"
+require "pry"
 
 # @todo: eliminare questa parte di codice
 # $logger = Logger.new(STDOUT)
@@ -30,8 +32,23 @@ class Handler
   def init_logger
     @logger = Logger.new($stdout)
     @logger.level = Logger::DEBUG
+    pastel = Pastel.new
     @logger.formatter = proc do |severity, datetime, _progname, msg|
-      "[#{datetime.strftime("%Y-%m-%d %H:%M:%S")}] #{severity}: #{msg}\n"
+      string = "#{datetime.strftime("%d-%m-%Y %X")} --[#{severity}]-- : #{msg}\n"
+      case severity
+      when "DEBUG"
+        pastel.cyan.bold(string)
+      when "WARN"
+        pastel.magenta.bold(string)
+      when "INFO"
+        pastel.green.bold(string)
+      when "ERROR"
+        pastel.red.bold(string)
+      when "FATAL"
+        pastel.yellow.bold(string)
+      else
+        pastel.blue(string)
+      end
     end
   end
 
@@ -44,9 +61,9 @@ class Handler
 
   def start_task
     @actions.each do |action|
-      @logger.debug " - Start task #{action}:"
+      @logger.debug "Task #{action} start:"
       break unless process_is_ok(action)
-      @logger.debug " - finito corretamente"
+      @logger.debug "Task #{action} end"
     end
   end
 
@@ -54,12 +71,12 @@ class Handler
     exit_status, err, out = start_process(action)
 
     if !out.nil? && out != ""
-      @logger.info "  - #{out.strip}"
+      print out.strip
     end
+    return false if exit_status == 2
 
     if exit_status != 0
-      @logger.warn err.chomp
-      p "Invio email"
+      # p "Invio email"
       # Email.send(err, action, controparte)
       # else
       #   # $logger.info " nessun file da archiviare"
@@ -72,13 +89,13 @@ class Handler
   def start_process(action)
     cmd = case action
           when "consuntivi"
-            "#{RbConfig.ruby} steg.rb --interface=scheduler --enviroment=production consuntivi"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production consuntivi"
           when "report_consuntivo"
-            "#{RbConfig.ruby} steg.rb --interface=scheduler --enviroment=production report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")}"
           when "report_forecast"
-            "#{RbConfig.ruby} steg.rb --interface=scheduler --enviroment=production report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
           when "forecast"
-            "#{RbConfig.ruby} steg.rb --interface=scheduler --enviroment=production forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
           end
 
     stdout, stderr, wait_thr = Open3.capture3(cmd)
@@ -96,10 +113,10 @@ rescue
 end
 
 consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
-scheduler.every("30s", consuntivo, timeout: "1m", tag: "consuntivo")
+scheduler.cron("50 10 * * *", consuntivo, first_in: "5s", timeout: "1m", tag: "consuntivo")
 
-# forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-# scheduler.every("30s", forecast, timeout: "1m", tag: "forecast")
+forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
+scheduler.cron("0 11,13,14,15,16,17,18,19 * * *", forecast, first_in: "1m", timeout: "1m", tag: "forecast")
 
 puts "Start Scheduler"
 

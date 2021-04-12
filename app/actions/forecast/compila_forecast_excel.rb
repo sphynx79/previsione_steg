@@ -3,17 +3,19 @@
 # frozen_string_literal: tru
 
 module ForecastActions
-  # Prendo dal file csv tutti i dati consintivi
+  # Inserisce in Excel nel foglio Previsione e Previsione_2 il risultato dei forecast
   class CompilaForecastExcel
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises csv [Array<Hash>] Consuntivi di Steg
+    # @expects previsone [Hash] Risultato del forecast per ogni stazione e per ogni ora
+    # @expects previsone2 [Hash] Risultato del forecast2 per ogni stazione e per ogni ora
+    # @expects workbook [WIN32OLE] File Excel del mio forecast
     expects :previsione, :previsione2, :workbook
 
-    # @!method ParseCsv
-    #   @yield Faccio il parser del Csv per leggere i consuntivi
+    # @!method CompilaForecastExcel
+    #   @yield Inserisce in Excel nel foglio Previsione e Previsione_2 il risultato dei forecast
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
@@ -21,7 +23,6 @@ module ForecastActions
       compila(ctx.previsione, "Previsione")
       compila(ctx.previsione2, "Previsione_2")
     end
-
 
     def self.compila(previsione, sheet)
       previsione.each do |k, v|

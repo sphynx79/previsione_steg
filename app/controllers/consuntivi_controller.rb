@@ -10,7 +10,7 @@ class ConsuntiviController < Ikigai::BaseController
   # attr_accessor :log
 
   def self.call(env:)
-    @log = Yell["cli"]
+    # @log = Yell["cli"]
     result = with(env: env).reduce(steps)
     check_result(result)
   end
@@ -26,10 +26,11 @@ class ConsuntiviController < Ikigai::BaseController
   def self.check_result(result)
     # !result.warning.empty? && result.warning.each { |w| @log.warn w }
     if result.failure?
-      @log.error result.message
-      exit! 1
+      # $stderr.puts("ABORTED! You forgot to BAR the BAZ")
+      log.error { result.message }
+      exit 1
     else
-      @log.info { "\nDownload consuntivi avvenuto con successo!\n" }
+      log.info { "Download consuntivi avvenuto con successo!" }
     end
   end
 end

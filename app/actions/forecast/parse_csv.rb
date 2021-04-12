@@ -3,7 +3,7 @@
 # frozen_string_literal: tru
 
 module ForecastActions
-  # Prendo dal file csv tutti i dati consintivi
+  # Prendo dal file csv tutti i dati consuntivi
   class ParseCsv
     # @!parse
     #   extend FunctionalLightService::Action
