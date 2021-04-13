@@ -8,13 +8,11 @@ $LOAD_PATH.unshift "."
 parsed_env = ARGV.join(" ")[/(-e\s|--enviroment=)(production|development)/]
 env = parsed_env.nil? || parsed_env.split(/(\s|=)/).last != "production" ? :development : :production
 
-# SOLUZIONE 1 REQUIRE
 require "bundler/setup"
 Bundler.require(:default, env.to_sym)
 require "win32ole"
 require "open3"
 require "lib/ikigai"
-require "pastel"
 
 APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
 APP_NAME = APP_ROOT.parent.basename.to_s
@@ -56,6 +54,7 @@ module PrevisioneSteg
   command :forecast do |c|
     c.desc "day report [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production forecast --dt 10/04/2021", desc: "Avvio del forecast"
 
     c.action do
       Ikigai::Application.call(@env)
@@ -71,6 +70,9 @@ module PrevisioneSteg
     c.desc "day report [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
 
+    c.example "ruby steg.rb --log=info --interface=cli ----enviroment=production report --type=forecast --dt 10/04/202", desc: "Creo il Report PDF per il forecast"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/202", desc: "Creo il Report PDF per il consuntivo"
+
     c.action do
       # prima = Time.now
       Ikigai::Application.call(@env)
@@ -81,6 +83,8 @@ module PrevisioneSteg
   desc "Leggi Consuntivo"
   long_desc "Avvio lo scaricamento e lettura dal FTP di Scada dei consuntivi"
   command :consuntivi do |c|
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production consuntivi", desc: "Avvio lo scaricamento FTP dei consuntivi e inserimento a DB"
+
     c.action do
       # prima = Time.now
       Ikigai::Application.call(@env)
@@ -184,14 +188,3 @@ end
 #         3) Vedere se usare bundle oppure il require semplice
 #         4) Abilitare FunctionalLightService nel set_env
 #         5) mettere env di default production riga 14
-
-
-
-def some_method_call
-  a = "ciao"
-  return a
-end
-
-# @type [Integer]
-my_variable = some_method_call
-

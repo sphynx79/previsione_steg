@@ -46,7 +46,6 @@ class ForecastController < Ikigai::BaseController
   #
   # @return [void]
   def self.call(env:)
-    binding.pry
     result = with(env: env).reduce(steps)
     check_result(result)
     nil

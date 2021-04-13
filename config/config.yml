@@ -1,7 +1,8 @@
 defaults: &defaults
   mail:
-    from: 'michele.boscolo@eni.com'
-    to: 'michele.boscolo@eni.com'
+    from: 'michele.boscolo@ttpc.eni.com'
+    to: 'michele.boscolo@ttpc.eni.com'
+    cc: 'michele.boscolo@ttpc.eni.com'
     server: 'relay.eni.pri'
     port: 25
 
@@ -28,6 +29,10 @@ test:
 
 production:
   <<: *defaults
+  mail:
+    from: "michele.boscolo@ttpc.eni.com"
+    to: "Roberto.Pozzer@ttpc.eni.com"
+    cc: "michele.boscolo@ttpc.eni.com; MohamedAli.Gattoufi@ttpc.eni.com; wassim.ouelhazi@ttpc.eni.com"
 
 
 production_local:

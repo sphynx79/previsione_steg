@@ -18,21 +18,17 @@ module PdfActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      # binding.pry
-      subject = "STEG #{type} GasDay #{day} #{date} #{time}"
-      outlook = WIN32OLE.new("Outlook.Application")
-      message = outlook.CreateItem(0)
-      message.Subject = subject
-      message.Body = ""
-      message.To = "Roberto.Pozzer@ttpc.eni.com"
-      message.CC = "michele.boscolo@gmail.com; MohamedAli.Gattoufi@ttpc.eni.com; wassim.ouelhazi@ttpc.eni.com"
-      message.Attachments.Add(ctx.path_pdf_report, 1)
-      message.Send
-
-      # try! do
-      #   ctx.excel = conneti_excel.freeze
-      #   ctx.workbook = conneti_workbook.freeze
-      # end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file Forecast.xlsm, controllare che sia aperto") }
+      try! do
+        subject = "STEG #{type} GasDay #{day} #{date} #{time}"
+        outlook = WIN32OLE.new("Outlook.Application")
+        message = outlook.CreateItem(0)
+        message.Subject = subject
+        message.Body = ""
+        message.To = Ikigai::Config.mail.to
+        message.CC = Ikigai::Config.mail.cc
+        message.Attachments.Add(ctx.path_pdf_report, 1)
+        message.Send
+      end.map_err { ctx.fail_and_return!("Non riesco a inviare l'email controlare che Outllok sia aperto!") }
     end
 
     def self.type
@@ -44,7 +40,7 @@ module PdfActions
     end
 
     def self.time
-      DateTime.now().strftime("%H:%M")
+      DateTime.now.strftime("%H:%M")
     end
 
     def self.day

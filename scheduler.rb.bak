@@ -22,17 +22,11 @@ require "pry"
 ENV["TZ"] = "UTC"
 
 class Handler
-  attr_reader :actions, :logger, :env
+  attr_reader :actions, :logger
 
   def initialize(actions: nil)
     @actions = actions
-    init_env
     init_logger
-  end
-
-  def ini1gt
-    parsed_env = ARGV.join(" ")[/(-e\s|--enviroment=)(production|development)/]
-    @env = parsed_env.nil? || parsed_env.split(/(\s|=)/).last == "production" ? "production" : "development"
   end
 
   def init_logger
@@ -74,7 +68,7 @@ class Handler
   end
 
   def process_is_ok(action)
-    exit_status, _err, out = start_process(action)
+    exit_status, err, out = start_process(action)
 
     if !out.nil? && out != ""
       print out.strip
@@ -95,14 +89,14 @@ class Handler
   def start_process(action)
     cmd = case action
           when "consuntivi"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} consuntivi"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production consuntivi"
           when "report_consuntivo"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")}"
           when "report_forecast"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
           when "forecast"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
-    end
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=production forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
+          end
 
     stdout, stderr, wait_thr = Open3.capture3(cmd)
     [wait_thr.exitstatus, stderr, stdout]
@@ -110,19 +104,19 @@ class Handler
 end
 
 # @todo diminuire la frequenza di rufus-scheduler
-scheduler = Rufus::Scheduler.new(frequency: "5s")
+scheduler = Rufus::Scheduler.new(frequency: "3s")
 
 def scheduler.on_error(job, error)
-  pp ["error in scheduled job", job.class, job.original, error.message]
+  p ["error in scheduled job", job.class, job.original, error.message]
 rescue
   p $!
 end
 
 consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
-scheduler.cron("50 8 * * *", consuntivo, first_in: "5s", timeout: "5m", tag: "consuntivo")
+scheduler.cron("50 10 * * *", consuntivo, first_in: "5s", timeout: "1m", tag: "consuntivo")
 
 forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-scheduler.cron("20 10,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "3m", timeout: "5m", tag: "forecast")
+scheduler.cron("0 11,13,14,15,16,17,18,19 * * *", forecast, first_in: "1m", timeout: "1m", tag: "forecast")
 
 puts "Start Scheduler"
 

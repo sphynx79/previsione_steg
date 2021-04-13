@@ -124,6 +124,7 @@ DEPENDENCIES
   ice_nine (~> 0.11.2)
   lit-cli
   looksee (~> 4.4.0)
+  pastel (~> 0.8.0)
   pry (~> 0.13.1)
   pry-bond (~> 0.0.1)
   pry-byebug (~> 3.9.0)

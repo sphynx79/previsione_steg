@@ -26,12 +26,12 @@ module ForecastConcern
     end
 
     def get_param(variabile, sheet)
-      tmp = @@excel.Run("'Forecast.xlsm'!GetElement", variabile, sheet)
+      tmp = @@excel.Run("GetElement", variabile, sheet)
       tmp == "" ? nil : tmp
     end
 
     def get_range_name(variabile, sheet)
-      tmp = @@excel.Run("'Forecast.xlsm'!GetRangeName", variabile, sheet)
+      tmp = @@excel.Run("GetRangeName", variabile, sheet)
       tmp == "" ? nil : range_to_array(tmp)
     end
 
@@ -93,7 +93,7 @@ module ForecastConcern
     end
 
     def save_pdf(path)
-      @@excel.Run("'Forecast.xlsm'!Save_PDF", path)
+      @@excel.Run("Save_PDF", path)
     end
 
     def set_day(data)
@@ -101,7 +101,7 @@ module ForecastConcern
     end
 
     def leggi_consuntivi
-      @@excel.Run("'DB.xlsm'!LeggiConsuntivi")
+      @@excel.Run("LeggiConsuntivi")
     end
   end
 
