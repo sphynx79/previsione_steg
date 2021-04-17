@@ -397,14 +397,12 @@
 55
 56
 57
-58
-59</pre>
+58</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/forecast_controller.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='label'>env:</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_binding'>binding</span><span class='period'>.</span><span class='id identifier rubyid_pry'>pry</span>
   <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_with'>with</span><span class='lparen'>(</span><span class='label'>env:</span> <span class='id identifier rubyid_env'>env</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='id identifier rubyid_steps'>steps</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_result'>check_result</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
   <span class='kw'>nil</span>
@@ -466,6 +464,7 @@
       <pre class="lines">
 
 
+130
 131
 132
 133
@@ -474,11 +473,10 @@
 136
 137
 138
-139
-140</pre>
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/forecast_controller.rb', line 131</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/forecast_controller.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_result'>check_result</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_failure?'>failure?</span>
@@ -597,6 +595,7 @@ previsone = {&quot;feriana&quot;=&gt;[28513.707674943573, 30426.730663741077],
       <pre class="lines">
 
 
+114
 115
 116
 117
@@ -605,11 +604,10 @@ previsone = {&quot;feriana&quot;=&gt;[28513.707674943573, 30426.730663741077],
 120
 121
 122
-123
-124</pre>
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/forecast_controller.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/forecast_controller.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_steps'>steps</span>
   <span class='lbracket'>[</span>
@@ -631,7 +629,7 @@ previsone = {&quot;feriana&quot;=&gt;[28513.707674943573, 30426.730663741077],
 </div>
 
       <div id="footer">
-  Generated on Mon Apr 12 02:04:54 2021 by
+  Generated on Tue Apr 13 12:56:40 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.0).
 </div>

@@ -1,6 +1,4 @@
 ---
-plugins:
-- runtime
 include:
 - "**/*.rb"
 exclude:
@@ -13,10 +11,8 @@ exclude:
 - ".git/**/*"
 - ".logs/**/*"
 - ".rblcl/**/*"
-- doc/**/*
-- Reportistica/**/*
-- /**/*
 - ".yardoc/**/*"
+- "doc/**/*"
 require: []
 domains: []
 reporters:

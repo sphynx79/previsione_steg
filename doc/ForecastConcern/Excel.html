@@ -861,7 +861,7 @@
       <pre class="code"><span class="info file"># File 'app/controllers/concerns/forecast_concern.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_param'>get_param</span><span class='lparen'>(</span><span class='id identifier rubyid_variabile'>variabile</span><span class='comma'>,</span> <span class='id identifier rubyid_sheet'>sheet</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_tmp'>tmp</span> <span class='op'>=</span> <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>GetElement</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_variabile'>variabile</span><span class='comma'>,</span> <span class='id identifier rubyid_sheet'>sheet</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_tmp'>tmp</span> <span class='op'>=</span> <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;Forecast.xlsm&#39;!GetElement</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_variabile'>variabile</span><span class='comma'>,</span> <span class='id identifier rubyid_sheet'>sheet</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tmp'>tmp</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='id identifier rubyid_tmp'>tmp</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -893,7 +893,7 @@
       <pre class="code"><span class="info file"># File 'app/controllers/concerns/forecast_concern.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_range_name'>get_range_name</span><span class='lparen'>(</span><span class='id identifier rubyid_variabile'>variabile</span><span class='comma'>,</span> <span class='id identifier rubyid_sheet'>sheet</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_tmp'>tmp</span> <span class='op'>=</span> <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>GetRangeName</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_variabile'>variabile</span><span class='comma'>,</span> <span class='id identifier rubyid_sheet'>sheet</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_tmp'>tmp</span> <span class='op'>=</span> <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;Forecast.xlsm&#39;!GetRangeName</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_variabile'>variabile</span><span class='comma'>,</span> <span class='id identifier rubyid_sheet'>sheet</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tmp'>tmp</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='id identifier rubyid_range_to_array'>range_to_array</span><span class='lparen'>(</span><span class='id identifier rubyid_tmp'>tmp</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -954,7 +954,7 @@
       <pre class="code"><span class="info file"># File 'app/controllers/concerns/forecast_concern.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_leggi_consuntivi'>leggi_consuntivi</span>
-  <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>LeggiConsuntivi</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;DB.xlsm&#39;!LeggiConsuntivi</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1122,7 +1122,7 @@
       <pre class="code"><span class="info file"># File 'app/controllers/concerns/forecast_concern.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_save_pdf'>save_pdf</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
-  <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Save_PDF</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
+  <span class='cvar'>@@excel</span><span class='period'>.</span><span class='const'>Run</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;Forecast.xlsm&#39;!Save_PDF</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1254,7 +1254,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Apr 12 02:04:52 2021 by
+  Generated on Tue Apr 13 12:56:38 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.0).
 </div>

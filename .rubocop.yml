@@ -33,5 +33,5 @@ AllCops:
 Layout/EndOfLine:
   Enabled: false
 
-Documentation:
+Style/Documentation:
   Enabled: false

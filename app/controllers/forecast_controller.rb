@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/peek_definitionenv ruby
 # warn_indent: true
 # frozen_string_literal: true
 
@@ -24,9 +24,9 @@ class ForecastController < Ikigai::BaseController
   #
   # @param env [Hash] Enviroment della mia applicazione
   # @option env [String] :controller Controller chiamato
-  # @option env [String] :action Entry point del mio controller da eseguire 
+  # @option env [String] :action Entry point del mio controller da eseguire
   # @option env [Hash] :command_options parametri della mia azione da eseguire
-  # @option env [Hash] :global_options parametri globali dell'applicazione 
+  # @option env [Hash] :global_options parametri globali dell'applicazione
   #
   # @example :env params
   #   {

@@ -18,6 +18,7 @@ module ShareActions
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
       # data = get_data
+      # @type data [String]
       data = ctx.dig(:env, :command_options, :day)
       set_day(data)
       ctx.data = data.delete("/").freeze
