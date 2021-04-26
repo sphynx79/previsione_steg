@@ -116,8 +116,10 @@ class ForecastController < Ikigai::BaseController
       ConnectExcel,
       SetExcelDay,
       GetExcelParams,
+      RefreshLinks,
       ParseCsv,
       with_callback(IterateHours, [FilterData, MediaPonderata]),
+      ForecastV2,
       CompilaForecastExcel
     ]
   end

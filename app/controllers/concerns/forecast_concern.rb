@@ -103,6 +103,10 @@ module ForecastConcern
     def leggi_consuntivi
       @@excel.Run("'DB.xlsm'!LeggiConsuntivi")
     end
+
+    def refresh_links
+      @@excel.Run("'Forecast.xlsm'!RefreshLinks")
+    end
   end
 
   module Csv

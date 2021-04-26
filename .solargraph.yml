@@ -8,11 +8,11 @@ exclude:
 - TEST/**/*
 - test/**/*
 - vendor/**/*
+- doc/**/*
 - ".git/**/*"
 - ".logs/**/*"
 - ".rblcl/**/*"
 - ".yardoc/**/*"
-- "doc/**/*"
 require: []
 domains: []
 reporters:

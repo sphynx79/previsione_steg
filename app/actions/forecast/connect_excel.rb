@@ -4,13 +4,13 @@
 
 module ForecastActions
   # Mi connetto al file Excel del forecast
+  # @promises excel [WIN32OLE]
+  # @promises workbook [WIN32OLE]
   class ConnectExcel
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises excel [WIN32OLE]
-    # @promises workbook [WIN32OLE]
     promises :excel, :workbook
 
     # @!method ConnectExcel

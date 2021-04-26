@@ -19,14 +19,12 @@ module ForecastActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      # previsione = sheet == 'Previsione' ? @previsione : @previsione2
-      compila(ctx.previsione, "Previsione")
+      compila(ctx.previsione, "Previsione_2")
       compila(ctx.previsione2, "Previsione_2")
     end
 
     def self.compila(previsione, sheet)
       previsione.each do |k, v|
-        previsione[k] = v.each_slice(1).to_a
         column = column(k)
         ctx.workbook.Worksheets(sheet).Range("#{column}3:#{column}26").value = v.each_slice(1).to_a
       end

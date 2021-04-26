@@ -19,7 +19,7 @@ require "pry"
 #       "[#{datetime.strftime('%Y-%m-%d %H:%M:%S')}] #{severity}: #{msg}\n"
 # end
 
-ENV["TZ"] = "UTC"
+ENV["TZ"] = "Africa/Algiers"
 
 class Handler
   attr_reader :actions, :logger, :env
@@ -30,7 +30,7 @@ class Handler
     init_logger
   end
 
-  def ini1gt
+  def init_env
     parsed_env = ARGV.join(" ")[/(-e\s|--enviroment=)(production|development)/]
     @env = parsed_env.nil? || parsed_env.split(/(\s|=)/).last == "production" ? "production" : "development"
   end
@@ -119,10 +119,10 @@ rescue
 end
 
 consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
-scheduler.cron("50 8 * * *", consuntivo, first_in: "5s", timeout: "5m", tag: "consuntivo")
+scheduler.cron("49 7 * * *", consuntivo, first_in: "5s", timeout: "5m", tag: "consuntivo")
 
 forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-scheduler.cron("20 10,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "3m", timeout: "5m", tag: "forecast")
+scheduler.cron("19 9,11,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "1m", timeout: "5m", tag: "forecast")
 
 puts "Start Scheduler"
 

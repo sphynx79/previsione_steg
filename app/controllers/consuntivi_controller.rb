@@ -6,7 +6,7 @@ class ConsuntiviController < Ikigai::BaseController
   extend FunctionalLightService::Organizer
   extend FunctionalLightService::Prelude::Result
   include ConsuntiviActions
-  # include ShareActions # include Log
+  include ShareActions # include Log
   # attr_accessor :log
 
   def self.call(env:)
@@ -19,7 +19,8 @@ class ConsuntiviController < Ikigai::BaseController
     [
       DownloadConsuntivi,
       ConnectExcel, #=> [excel, workbook]
-      LeggiConsuntivi
+      LeggiConsuntivi,
+      RefreshLinks,
     ]
   end
 

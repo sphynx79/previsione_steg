@@ -24,11 +24,12 @@ module ForecastActions
                                  applica_somiglianza: get_applica_somiglianza,
                                  nomina_steg: get_nomina_steg,
                                  soglia_sensibilita: get_soglia_sensibilita]
+      ctx.params
     end
 
     # Prendo da "Forecast.xlsm" foglio "Day" la tabella con nome Day, che contiene il giorno di cui devo fare il forecast
     #
-    # @return day_hours [Array] Ogni elemento dell'Array è un'ora del forecast che devo fare
+    # @return [Array] Ogni elemento dell'Array è un'ora del forecast che devo fare
     def self.get_day_hours
       ctx.fail_and_return!("Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day") if day_hours.size != 24
       day_hours
@@ -47,8 +48,10 @@ module ForecastActions
       giorno_settimana
     end
 
+    # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un giorno festivo 
+    #
+    # @return [String] Se è un giorno festivo ["SI", "NO", "ALL"]
     def self.get_festivo
-      binding.pry
       unless ["SI", "NO", "ALL"].include? festivo
         ctx.fail_and_return!(
           <<~HEREDOC
@@ -61,8 +64,10 @@ module ForecastActions
       festivo
     end
 
+    # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un festività 
+    #
+    # @return [String] Se è una festività ["SI", "NO", "ALL"]
     def self.get_festivita
-      binding.pry
       unless ["SI", "NO", "ALL"].include? festivita
         ctx.fail_and_return!(
           <<~HEREDOC
@@ -76,7 +81,7 @@ module ForecastActions
     end
 
     def self.get_applica_somiglianza
-      binding.pry
+      # binding.pry
       unless ["SI", "NO"].include? applica_somiglianza
         ctx.fail_and_return!(
           <<~HEREDOC
@@ -90,7 +95,7 @@ module ForecastActions
     end
 
     def self.get_nomina_steg
-      binding.pry
+      # binding.pry
       unless nomina_steg.is_a?(Float)
         ctx.fail_and_return!(
           <<~HEREDOC
@@ -104,7 +109,7 @@ module ForecastActions
     end
 
     def self.get_soglia_sensibilita
-      binding.pry
+      # binding.pry
       unless soglia_sensibilita.is_a?(Float)
         ctx.fail_and_return!(
           <<~HEREDOC

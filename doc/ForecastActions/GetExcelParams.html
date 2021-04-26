@@ -155,7 +155,7 @@
         <li class="private ">
   <span class="summary_signature">
     
-      <a href="#get_day_hours-class_method" title="get_day_hours (class method)">.<strong>get_day_hours</strong>  &#x21d2; Object </a>
+      <a href="#get_day_hours-class_method" title="get_day_hours (class method)">.<strong>get_day_hours</strong>  &#x21d2; Array </a>
     
 
     
@@ -169,7 +169,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Prendo da “Forecast.xlsm” foglio “Day” la tabella con nome Day, che contiene il giorno di cui devo fare il forecast.</p>
+</div></span>
   
 </li>
 
@@ -340,23 +342,25 @@
       <pre class="lines">
 
 
-73
-74
-75
-76
-77
 78
 79
 80
 81
 82
 83
-84</pre>
+84
+85
+86
+87
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_applica_somiglianza'>get_applica_somiglianza</span>
+  <span class='id identifier rubyid_binding'>binding</span><span class='period'>.</span><span class='id identifier rubyid_pry'>pry</span>
   <span class='kw'>unless</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SI</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NO</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_applica_somiglianza'>applica_somiglianza</span>
     <span class='id identifier rubyid_ctx'>ctx</span><span class='period'>.</span><span class='id identifier rubyid_fail_and_return!'>fail_and_return!</span><span class='lparen'>(</span>
       <span class='heredoc_beg'>&lt;&lt;~HEREDOC</span>
@@ -376,25 +380,54 @@
       <div class="method_details ">
   <h3 class="signature " id="get_day_hours-class_method">
   
-    .<strong>get_day_hours</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(private)</span>
+    .<strong>get_day_hours</strong>  &#x21d2; <tt>Array</tt>  <span class="extras">(private)</span>
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Prendo da “Forecast.xlsm” foglio “Day” la tabella con nome Day, che contiene il giorno di cui devo fare il forecast</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Ogni elemento dell&#39;Array è un&#39;ora del forecast che devo fare</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-29
-30
-31
-32</pre>
+32
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_day_hours'>get_day_hours</span>
   <span class='id identifier rubyid_ctx'>ctx</span><span class='period'>.</span><span class='id identifier rubyid_fail_and_return!'>fail_and_return!</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_day_hours'>day_hours</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>!=</span> <span class='int'>24</span>
@@ -420,10 +453,6 @@
       <pre class="lines">
 
 
-60
-61
-62
-63
 64
 65
 66
@@ -431,12 +460,18 @@
 68
 69
 70
-71</pre>
+71
+72
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_festivita'>get_festivita</span>
+  <span class='id identifier rubyid_binding'>binding</span><span class='period'>.</span><span class='id identifier rubyid_pry'>pry</span>
   <span class='kw'>unless</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SI</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NO</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ALL</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_festivita'>festivita</span>
     <span class='id identifier rubyid_ctx'>ctx</span><span class='period'>.</span><span class='id identifier rubyid_fail_and_return!'>fail_and_return!</span><span class='lparen'>(</span>
       <span class='heredoc_beg'>&lt;&lt;~HEREDOC</span>
@@ -468,9 +503,6 @@
       <pre class="lines">
 
 
-47
-48
-49
 50
 51
 52
@@ -479,12 +511,17 @@
 55
 56
 57
-58</pre>
+58
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_festivo'>get_festivo</span>
+  <span class='id identifier rubyid_binding'>binding</span><span class='period'>.</span><span class='id identifier rubyid_pry'>pry</span>
   <span class='kw'>unless</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SI</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NO</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ALL</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_festivo'>festivo</span>
     <span class='id identifier rubyid_ctx'>ctx</span><span class='period'>.</span><span class='id identifier rubyid_fail_and_return!'>fail_and_return!</span><span class='lparen'>(</span>
       <span class='heredoc_beg'>&lt;&lt;~HEREDOC</span>
@@ -516,9 +553,6 @@
       <pre class="lines">
 
 
-34
-35
-36
 37
 38
 39
@@ -527,10 +561,13 @@
 42
 43
 44
-45</pre>
+45
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_giorno_settimana'>get_giorno_settimana</span>
   <span class='kw'>unless</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SI</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NO</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_giorno_settimana'>giorno_settimana</span>
@@ -564,23 +601,25 @@
       <pre class="lines">
 
 
-86
-87
-88
-89
-90
-91
 92
 93
 94
 95
 96
-97</pre>
+97
+98
+99
+100
+101
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_nomina_steg'>get_nomina_steg</span>
+  <span class='id identifier rubyid_binding'>binding</span><span class='period'>.</span><span class='id identifier rubyid_pry'>pry</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_nomina_steg'>nomina_steg</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Float</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_ctx'>ctx</span><span class='period'>.</span><span class='id identifier rubyid_fail_and_return!'>fail_and_return!</span><span class='lparen'>(</span>
       <span class='heredoc_beg'>&lt;&lt;~HEREDOC</span>
@@ -612,23 +651,25 @@
       <pre class="lines">
 
 
-99
-100
-101
-102
-103
-104
-105
 106
 107
 108
 109
-110</pre>
+110
+111
+112
+113
+114
+115
+116
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'app/actions/forecast/get_excel_params.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_soglia_sensibilita'>get_soglia_sensibilita</span>
+  <span class='id identifier rubyid_binding'>binding</span><span class='period'>.</span><span class='id identifier rubyid_pry'>pry</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_soglia_sensibilita'>soglia_sensibilita</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Float</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_ctx'>ctx</span><span class='period'>.</span><span class='id identifier rubyid_fail_and_return!'>fail_and_return!</span><span class='lparen'>(</span>
       <span class='heredoc_beg'>&lt;&lt;~HEREDOC</span>
@@ -763,7 +804,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Apr 13 12:56:40 2021 by
+  Generated on Mon Apr 19 14:31:26 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.0).
 </div>

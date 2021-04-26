@@ -3,18 +3,14 @@
 # frozen_string_literal: true
 
 module ConsuntiviActions
-  # Mi connetto al file Excel del forecast
+  # Avvio lo script SyncToRemoteScript.bat che mi scarica dal FTP di scada i consuntivi
   class DownloadConsuntivi
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises excel [WIN32OLE]
-    # @promises workbook [WIN32OLE]
-    # promises :excel, :workbook
-
-    # @!method ConnectExcel
-    #   @yield Gestisce l'interfaccia per prendere i parametri da excel
+    # @!method DownloadConsuntivi
+    #   @yield Gestisce lo scaricamento dei consuntivi
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
