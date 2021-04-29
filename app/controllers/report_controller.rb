@@ -21,6 +21,7 @@ class ReportController < Ikigai::BaseController
       GetPath, #=> [path]
       SetPdfPath, #=> [path_pdf_report]
       SavePdf,
+      MakeHtml,
       SendEmail
     ]
   end

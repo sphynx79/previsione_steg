@@ -48,7 +48,7 @@ module ForecastActions
       giorno_settimana
     end
 
-    # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un giorno festivo 
+    # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un giorno festivo
     #
     # @return [String] Se è un giorno festivo ["SI", "NO", "ALL"]
     def self.get_festivo
@@ -64,7 +64,7 @@ module ForecastActions
       festivo
     end
 
-    # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un festività 
+    # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un festività
     #
     # @return [String] Se è una festività ["SI", "NO", "ALL"]
     def self.get_festivita

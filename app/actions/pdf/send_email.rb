@@ -11,7 +11,7 @@ module PdfActions
 
     # @promises excel [WIN32OLE]
     # @promises workbook [WIN32OLE]
-    expects :path_pdf_report
+    expects :path_pdf_report, :html
 
     # @!method ConnectExcel
     #   @yield Gestisce l'interfaccia per prendere i parametri da excel
@@ -23,12 +23,12 @@ module PdfActions
         outlook = WIN32OLE.new("Outlook.Application")
         message = outlook.CreateItem(0)
         message.Subject = subject
-        message.Body = ""
+        message.HTMLBody = ctx.html
         message.To = Ikigai::Config.mail.to
         message.CC = Ikigai::Config.mail.cc
         message.Attachments.Add(ctx.path_pdf_report, 1)
         message.Send
-      end.map_err { ctx.fail_and_return!("Non riesco a inviare l'email controlare che Outllok sia aperto!") }
+      end.map_err { ctx.fail_and_return!("Non riesco a inviare l'email controlare che Outlook sia aperto!") }
     end
 
     def self.type

@@ -19,7 +19,7 @@ module ForecastActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      compila(ctx.previsione, "Previsione_2")
+      compila(ctx.previsione, "Previsione")
       compila(ctx.previsione2, "Previsione_2")
     end
 

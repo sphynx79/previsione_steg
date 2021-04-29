@@ -96,6 +96,30 @@ module ForecastConcern
       @@excel.Run("'Forecast.xlsm'!Save_PDF", path)
     end
 
+    def previsione_v1
+      @@workbook.Worksheets("Forecast").Range("K4").value.round
+    end
+
+    def previsione_v2
+      @@workbook.Worksheets("Forecast").Range("K5").value.round
+    end
+
+    def previsione_v3
+      @@workbook.Worksheets("Forecast").Range("K6").value.round
+    end
+
+    def previsione_v4
+      @@workbook.Worksheets("Forecast").Range("K7").value.round
+    end
+
+    def previsione_v4_delta
+      @@workbook.Worksheets("Forecast").Range("L7").value
+    end
+
+    def previsione_nomina_steg
+      @@workbook.Worksheets("Forecast").Range("K8").value.round
+    end
+
     def set_day(data)
       @@workbook.Worksheets("Forecast V1").Range("M3").value = data + " 08:00:00"
     end

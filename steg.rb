@@ -15,6 +15,7 @@ require "open3"
 require "lib/ikigai"
 
 APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
+
 APP_NAME = APP_ROOT.parent.basename.to_s
 APP_VERSION = File.read("./VERSION").strip
 ENV["TZ"] = "Africa/Algiers"

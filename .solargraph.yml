@@ -9,6 +9,7 @@ exclude:
 - test/**/*
 - vendor/**/*
 - doc/**/*
+- "doc/**/*"
 - ".git/**/*"
 - ".logs/**/*"
 - ".rblcl/**/*"
