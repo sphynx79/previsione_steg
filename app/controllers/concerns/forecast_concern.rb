@@ -108,6 +108,10 @@ module ForecastConcern
       @@workbook.Worksheets("Forecast").Range("K6").value.round
     end
 
+    def previsione_v3_delta
+      @@workbook.Worksheets("Forecast").Range("L6").value
+    end
+
     def previsione_v4
       @@workbook.Worksheets("Forecast").Range("K7").value.round
     end
@@ -118,6 +122,10 @@ module ForecastConcern
 
     def previsione_nomina_steg
       @@workbook.Worksheets("Forecast").Range("K8").value.round
+    end
+
+    def previsione_consuntivi
+      @@workbook.Worksheets("Consuntivo_Finale").Range("I27").value.round
     end
 
     def set_day(data)

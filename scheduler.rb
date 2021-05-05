@@ -70,6 +70,7 @@ class Handler
       @logger.debug "Task #{action} start:"
       break unless process_is_ok(action)
       @logger.debug "Task #{action} end"
+      sleep 2
     end
   end
 
@@ -121,8 +122,8 @@ end
 consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
 scheduler.cron("49 8 * * *", consuntivo, first_in: "5s", timeout: "5m", tag: "consuntivo")
 
-# forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-# scheduler.cron("19 9,11,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "1m", timeout: "5m", tag: "forecast")
+forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
+scheduler.cron("19 9,11,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "1m", timeout: "5m", tag: "forecast")
 
 puts "Start Scheduler"
 

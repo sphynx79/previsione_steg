@@ -20,7 +20,7 @@ class ConsuntiviController < Ikigai::BaseController
       DownloadConsuntivi,
       ConnectExcel, #=> [excel, workbook]
       LeggiConsuntivi,
-      RefreshLinks,
+      RefreshLinks
     ]
   end
 

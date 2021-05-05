@@ -29,7 +29,7 @@ module PrevisioneSteg
   subcommand_option_handling :normal
   arguments :strict
   sort_help :manually
-  wrap_help_text :one_line
+  wrap_help_text :verbatim
 
   desc "Log level [debug, info, warn, error, fatal]"
   default_value "info"
@@ -72,7 +72,7 @@ module PrevisioneSteg
     c.desc "day report [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
 
-    c.example "ruby steg.rb --log=info --interface=cli ----enviroment=production report --type=forecast --dt 10/04/202", desc: "Creo il Report PDF per il forecast"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/202", desc: "Creo il Report PDF per il forecast"
     c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/202", desc: "Creo il Report PDF per il consuntivo"
 
     c.action do

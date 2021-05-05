@@ -31,9 +31,15 @@ production:
   <<: *defaults
   mail:
     from: "michele.boscolo@ttpc.eni.com"
-    to: "michele.boscolo@ttpc.eni.com"
-    cc: "michele.boscolo@ttpc.eni.com"
+    to: "Roberto.Pozzer@ttpc.eni.com"
+    cc: "michele.boscolo@ttpc.eni.com; MohamedAli.Gattoufi@ttpc.eni.com; wassim.ouelhazi@ttpc.eni.com"
 
+    path:
+      root: '../'
+      db: '../DB/'
+      consuntivi_pdf: '../report/consuntivi/'
+      forecast_pdf: '../report/forecast/'
+      scada: '../Consuntivi/'
 
 production_local:
   <<: *defaults

@@ -14,7 +14,7 @@ module ConsuntiviActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      cmd = File.expand_path(Ikigai::Config.path.scada + Ikigai::Config.file.bat_dowload_scada)
+      cmd = Ikigai::Config.path.scada + Ikigai::Config.file.bat_dowload_scada
       _stdout, stderr, wait_thr = Open3.capture3(cmd)
       ctx.fail_and_return!("Errore nello scaricare dall'FTP i consuntivi:\n#{stderr.chomp}") if wait_thr.exitstatus != 0
     end

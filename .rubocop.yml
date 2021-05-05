@@ -23,6 +23,7 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'bin/**/*'
+    - 'doc/**/*'
     - '.rblcl/**/*'
     - '.git/**/*'
     - '.vscode/**/*'
