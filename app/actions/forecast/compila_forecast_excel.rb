@@ -12,7 +12,8 @@ module ForecastActions
     # @expects previsone [Hash] Risultato del forecast per ogni stazione e per ogni ora
     # @expects previsone2 [Hash] Risultato del forecast2 per ogni stazione e per ogni ora
     # @expects workbook [WIN32OLE] File Excel del mio forecast
-    expects :previsione, :previsione2, :workbook
+    # expects :previsione, :previsione2, :workbook
+    expects :previsione, :previsione_up, :previsione_down, :workbook
 
     # @!method CompilaForecastExcel
     #   @yield Inserisce in Excel nel foglio Previsione e Previsione_2 il risultato dei forecast
@@ -20,7 +21,8 @@ module ForecastActions
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
       compila(ctx.previsione, "Previsione")
-      compila(ctx.previsione2, "Previsione_2")
+      compila(ctx.previsione_up, "Previsione_Up")
+      compila(ctx.previsione_down, "Previsione_Down")
     end
 
     def self.compila(previsione, sheet)

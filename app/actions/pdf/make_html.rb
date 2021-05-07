@@ -29,9 +29,8 @@ module PdfActions
     executed do |ctx|
       # rubocop:disable Layout/ExtraSpacing
       prv_1        = number_with_delimiter(previsione_v1)
-      prv_2        = number_with_delimiter(previsione_v2)
+      prv_2        = number_with_delimiter(previsione_v2) + " (#{(previsione_v2_delta * 100).round(2)}%)"
       prv_3        = number_with_delimiter(previsione_v3) + " (#{(previsione_v3_delta * 100).round(2)}%)"
-      prv_4        = number_with_delimiter(previsione_v4) + " (#{(previsione_v4_delta * 100).round(2)}%)"
       prv_nom_steg = number_with_delimiter(previsione_nomina_steg)
       prv_consunto = number_with_delimiter(previsione_consuntivi)
       html = ERB.new(File.read("./template/report.html.erb"), trim_mode: "-").result(binding)

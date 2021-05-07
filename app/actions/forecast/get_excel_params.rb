@@ -17,22 +17,22 @@ module ForecastActions
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      ctx.params = Hamster::Hash[day_hours: get_day_hours,
+      ctx.params = Hamster::Hash[day: get_day,
                                  giorno_settimana: get_giorno_settimana,
                                  festivo: get_festivo,
                                  festivita: get_festivita,
-                                 applica_somiglianza: get_applica_somiglianza,
                                  nomina_steg: get_nomina_steg,
-                                 soglia_sensibilita: get_soglia_sensibilita]
+                                 ]
       ctx.params
     end
 
     # Prendo da "Forecast.xlsm" foglio "Day" la tabella con nome Day, che contiene il giorno di cui devo fare il forecast
     #
     # @return [Array] Ogni elemento dell'Array è un'ora del forecast che devo fare
-    def self.get_day_hours
-      ctx.fail_and_return!("Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day") if day_hours.size != 24
-      day_hours
+    def self.get_day
+      try! do
+        day
+      end.map_err { ctx.fail_and_return!("Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day") }
     end
 
     def self.get_giorno_settimana
@@ -80,20 +80,6 @@ module ForecastActions
       festivita
     end
 
-    def self.get_applica_somiglianza
-      # binding.pry
-      unless ["SI", "NO"].include? applica_somiglianza
-        ctx.fail_and_return!(
-          <<~HEREDOC
-            Controllare che nel file: Forecast.xlsm 
-            Foglio: "Forecast V2"
-            Ranking somiglianza: ci sia "SI" o "NO"
-          HEREDOC
-        )
-      end
-      applica_somiglianza
-    end
-
     def self.get_nomina_steg
       # binding.pry
       unless nomina_steg.is_a?(Float)
@@ -108,27 +94,11 @@ module ForecastActions
       nomina_steg
     end
 
-    def self.get_soglia_sensibilita
-      # binding.pry
-      unless soglia_sensibilita.is_a?(Float)
-        ctx.fail_and_return!(
-          <<~HEREDOC
-            Controllare che nel file: Forecast.xlsm 
-            Foglio: "Forecast V2"
-            Ranking somiglianza cella N4: ci sia la percentuale del ranking di somiglianza
-          HEREDOC
-        )
-      end
-      soglia_sensibilita
-    end
-
     private_class_method \
-      :get_day_hours,
+      :get_day,
       :get_giorno_settimana,
       :get_festivo,
       :get_festivita,
-      :get_applica_somiglianza,
-      :get_nomina_steg,
-      :get_soglia_sensibilita
+      :get_nomina_steg
   end
 end

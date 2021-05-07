@@ -4,14 +4,14 @@
 
 module ForecastActions
   # Esegue la media ponderata dei dati filtrati nelo step precedente e li aggiundo alla mia previsione
-  class MediaPonderata
+  class Previsione
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
     # @expects forecast [FunctionalLightService::Result] Consuntivi filtrati nello Step precedente per il forecast
     # @expects forecast2 [FunctionalLightService::Result] Consuntivi filtrati nello Step precedente per il forecast2
-    expects :forecast
+    expects :filtered_data_group_by_hour
     # @promises previsione [Hash] In questa variabile inserisco il risultato del forecast per ogni stazione e per ogni ora
     # @promises previsione2 [Hash] In questa variabile inserisco il risultato del forecast per ogni stazione e per ogni ora
     #
@@ -28,21 +28,20 @@ module ForecastActions
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
       ctx.previsione ||= PS.to_h { |s| [s, []] }
-      # ctx.previsione2 ||= PS.to_h { |s| [s, []] }
-      PS.each do |ps|
-        ctx.previsione[ps] << media_ponderata(ps, ctx.forecast) * 1000
-        # ctx.previsione2[ps] << (ctx.forecast2.value.nil? ? ctx.previsione[ps].last : media_ponderata(ps, ctx.forecast2) * 1000)
+      ctx.filtered_data_group_by_hour.each_value do |value|
+        PS.each do |ps|
+          ctx.previsione[ps] << media_ponderata(ps, value) * 1000
+        end
       end
     end
 
     def self.media_ponderata(ps, fcs)
-      fcs.value
-        .then do |forecast|
-          forecast.map { |h| [h["Flow_#{ps.capitalize}"], h["Peso"]] }
-        end
+      fcs.then do |forecast|
+        forecast.map { |h| [h["Flow_#{ps.capitalize}"], h["Peso"]] }
+      end
         .then do |tmp|
-          tmp.reduce(0) { |sum, num| sum + num[0] * num[1] } / tmp.reduce(0) { |sum, num| sum + num[1] }
-        end
+        tmp.reduce(0) { |sum, num| sum + num[0] * num[1] } / tmp.reduce(0) { |sum, num| sum + num[1] }
+      end
     end
 
     private_class_method :media_ponderata

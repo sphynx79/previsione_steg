@@ -60,16 +60,12 @@ module ForecastConcern
       @@params[:data] ||= get_param("data", "Forecast V1")
     end
 
-    def day_hours
-      @@params[:day_hours] ||= get_range_name("day", "Day")
-    end
-
-    def applica_somiglianza
-      @@params[:applica_somiglianza] ||= get_param("applica_somiglianza", "Forecast_V2")
+    def day
+      @@params[:day] ||= get_range_name("day", "Day")
     end
 
     def giorno_settimana
-      @@params[:peso_esponenziale] ||= get_param("giorno_settimana", "Forecast V1")
+      @@params[:giorno_settimana] ||= get_param("giorno_settimana", "Forecast V1")
     end
 
     def festivo
@@ -80,16 +76,8 @@ module ForecastConcern
       @@params[:festivita] ||= get_param("festività", "Forecast V1")
     end
 
-    def peso_esponenziale
-      @@params[:peso_esponenziale] ||= get_param("peso_esponenziale", "Forecast V1")
-    end
-
     def nomina_steg
       @@params[:nomina_steg] ||= get_param("nomina_steg", "Forecast V1").nil? ? nil : get_param("nomina_steg", "Forecast V1").sub(",", ".").to_f
-    end
-
-    def soglia_sensibilita
-      @@params[:soglia_sensibilita] ||= get_param("sensibilita", "Forecast_V2").nil? ? nil : get_param("sensibilita", "Forecast_V2").sub(",", ".").to_f
     end
 
     def save_pdf(path)
@@ -97,31 +85,27 @@ module ForecastConcern
     end
 
     def previsione_v1
-      @@workbook.Worksheets("Forecast").Range("K4").value.round
+      @@workbook.Worksheets("Forecast").Range("J4").value.round
     end
 
     def previsione_v2
-      @@workbook.Worksheets("Forecast").Range("K5").value.round
+      @@workbook.Worksheets("Forecast").Range("J6").value.round
     end
 
     def previsione_v3
-      @@workbook.Worksheets("Forecast").Range("K6").value.round
+      @@workbook.Worksheets("Forecast").Range("J7").value.round
+    end
+
+    def previsione_v2_delta
+      @@workbook.Worksheets("Forecast").Range("K6").value
     end
 
     def previsione_v3_delta
-      @@workbook.Worksheets("Forecast").Range("L6").value
-    end
-
-    def previsione_v4
-      @@workbook.Worksheets("Forecast").Range("K7").value.round
-    end
-
-    def previsione_v4_delta
-      @@workbook.Worksheets("Forecast").Range("L7").value
+      @@workbook.Worksheets("Forecast").Range("K7").value
     end
 
     def previsione_nomina_steg
-      @@workbook.Worksheets("Forecast").Range("K8").value.round
+      @@workbook.Worksheets("Forecast").Range("J8").value.round
     end
 
     def previsione_consuntivi
@@ -163,13 +147,48 @@ module ForecastConcern
                 "Flow_Zriba" => {type: :float},
                 "Flow_Nabeul" => {type: :float},
                 "Flow_Korba" => {type: :float},
-                "Flow_Totale" => {type: :float},
-                "Temp_Feriana" => {type: :float},
-                "Temp_Kasserine" => {type: :float},
-                "Temp_Korba" => {type: :float},
-                "Temp_Capbon" => {type: :float}}
+                "Flow_Totale" => {type: :float}}
 
       Rcsv.parse(csv_data, row_as_hash: true, column_separator: ",", header: :use, columns: column, only_listed_columns: true)
+    end
+  end
+
+  module Utility
+    def print_result_with_hirb(result)
+      Hirb.enable pager: true
+      table = Hirb::Helpers::Table.render result,
+        fields: %w[Date
+          Anno
+          Mese
+          Giorno
+          Ora
+          Giorno_Sett_Num
+          Festivo
+          Festivita
+          Stagione
+          Exclude
+          Peso
+          Flow_Feriana
+          Flow_Kasserine
+          Flow_Zriba
+          Flow_Nabeul
+          Flow_Korba
+          Flow_Totale],
+        headers: {"Giorno_Sett_Num" => "Gior_Sett",
+                  "Flow_Feriana" => "Feriana",
+                  "Flow_Kasserine" => "Kesserine",
+                  "Flow_Zriba" => "Zriba",
+                  "Flow_Nabeul" => "Nabeul",
+                  "Flow_Korba" => "Korba",
+                  "Flow_Totale" => "Totale"},
+        description: false,
+        max_width: 260
+      print table
+      # File.open('console.log', 'w') { |f| f.write(table) }
+    end
+
+    def print_with_hirb(data)
+      print Hirb::Helpers::Table.render(data, max_width: 260)
     end
   end
 end

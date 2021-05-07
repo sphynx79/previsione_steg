@@ -118,8 +118,10 @@ class ForecastController < Ikigai::BaseController
       GetExcelParams,
       RefreshLinks,
       ParseCsv,
-      with_callback(IterateHours, [FilterData, MediaPonderata]),
-      ForecastV2,
+      FilterData,
+      GroupByHour,
+      Previsione,
+      PrevisionLimit,
       CompilaForecastExcel
     ]
   end
