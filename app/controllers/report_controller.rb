@@ -22,7 +22,9 @@ class ReportController < Ikigai::BaseController
       SetPdfPath, #=> [path_pdf_report]
       SavePdf,
       MakeHtml,
-      SendEmail
+      SendEmail,
+      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ExportDB),
+      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, SaveAllFile)
     ]
   end
 

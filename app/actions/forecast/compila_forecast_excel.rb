@@ -21,8 +21,8 @@ module ForecastActions
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
       compila(ctx.previsione, "Previsione")
-      compila(ctx.previsione_up, "Previsione_Up")
       compila(ctx.previsione_down, "Previsione_Down")
+      compila(ctx.previsione_up, "Previsione_UP")
     end
 
     def self.compila(previsione, sheet)

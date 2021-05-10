@@ -97,11 +97,11 @@ module ForecastConcern
     end
 
     def previsione_v2_delta
-      @@workbook.Worksheets("Forecast").Range("K6").value
+      @@workbook.Worksheets("Forecast").Range("L6").value
     end
 
     def previsione_v3_delta
-      @@workbook.Worksheets("Forecast").Range("K7").value
+      @@workbook.Worksheets("Forecast").Range("L7").value
     end
 
     def previsione_nomina_steg
@@ -116,12 +116,22 @@ module ForecastConcern
       @@workbook.Worksheets("Forecast V1").Range("M3").value = data + " 08:00:00"
     end
 
+    def save_workbook(name)
+      @@excel.CalculateBeforeSave = false
+      @@excel.Workbooks(name).Save
+      @@excel.CalculateBeforeSave = true
+    end
+
     def leggi_consuntivi
       @@excel.Run("'DB.xlsm'!LeggiConsuntivi")
     end
 
     def refresh_links
       @@excel.Run("'Forecast.xlsm'!RefreshLinks")
+    end
+
+    def export_db
+      @@excel.Run("'DB2.xlsm'!CopyToCSV")
     end
   end
 
