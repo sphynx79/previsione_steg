@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: tru
 
-module PdfActions
+module ReportActions
   # Esporto il DB2.xlsm nel file DB2.csv
   class ExportDB
     # @!parse

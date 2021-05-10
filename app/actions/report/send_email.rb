@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module PdfActions
+module ReportActions
   # Mi connetto al file Excel del forecast
   class SendEmail
     # @!parse

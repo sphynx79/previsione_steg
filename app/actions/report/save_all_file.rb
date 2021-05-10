@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: tru
 
-module PdfActions
+module ReportActions
   # Salvo i file Forecast.xlsm | Db.xlsm | DB2.xlsm
   class SaveAllFile
     # @!parse

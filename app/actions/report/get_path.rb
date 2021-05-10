@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module PdfActions
+module ReportActions
   # Setto il path dove andare a salvare i PDF
   class GetPath
     # @!parse

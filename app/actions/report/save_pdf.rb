@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module PdfActions
+module ReportActions
   # Chiama una funzione Excel per salvare su PDF lo sheet Forecast
   class SavePdf
     # @!parse

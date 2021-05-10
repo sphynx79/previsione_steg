@@ -5,7 +5,7 @@
 class ReportController < Ikigai::BaseController
   extend FunctionalLightService::Organizer
   include ShareActions # include Log
-  include PdfActions
+  include ReportActions
   # attr_accessor :log
 
   def self.call(env:)

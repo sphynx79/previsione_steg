@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module PdfActions
+module ReportActions
   # Crea l'HTML da inserire nel body dell'email
   class MakeHtml
     # @!parse
