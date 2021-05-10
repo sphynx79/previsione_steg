@@ -21,7 +21,6 @@ module ForecastActions
                                  giorno_settimana: get_giorno_settimana,
                                  festivo: get_festivo,
                                  festivita: get_festivita,
-                                 nomina_steg: get_nomina_steg,
                                  ]
       ctx.params
     end
@@ -80,25 +79,10 @@ module ForecastActions
       festivita
     end
 
-    def self.get_nomina_steg
-      # binding.pry
-      unless nomina_steg.is_a?(Float)
-        ctx.fail_and_return!(
-          <<~HEREDOC
-            Controllare che nel file: Forecast.xlsm 
-            Foglio: "Forecast V1"
-            Nomina STEG cella K32: ci sia la sommatoria delle PS nella nomina di STEG 
-          HEREDOC
-        )
-      end
-      nomina_steg
-    end
-
     private_class_method \
       :get_day,
       :get_giorno_settimana,
       :get_festivo,
-      :get_festivita,
-      :get_nomina_steg
+      :get_festivita
   end
 end

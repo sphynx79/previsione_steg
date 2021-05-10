@@ -116,7 +116,7 @@ class ForecastController < Ikigai::BaseController
       ConnectExcel,
       SetExcelDay,
       GetExcelParams,
-      RefreshLinks,
+      # RefreshLinks,
       ParseCsv,
       FilterData,
       GroupByHour,
