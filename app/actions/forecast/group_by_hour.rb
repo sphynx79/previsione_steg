@@ -4,6 +4,8 @@
 
 module ForecastActions
   # Raggruppo i consuntivi filtrati per ora
+  #   @expects filtered_data [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
+  #   @promises filtered_data_group_by_hour [Array<Hash>] Consuntivi filtrati raggraupati per ora
   class GroupByHour
     # @!parse
     #   extend FunctionalLightService::Action
@@ -11,7 +13,6 @@ module ForecastActions
 
     expects :filtered_data
 
-    # @promises filtered_data_group_by_hour [Array<Hash>] Consuntivi filtrati raggraupati per ora
     promises :filtered_data_group_by_hour
 
     # @!method GroupByHour

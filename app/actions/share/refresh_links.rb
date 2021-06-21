@@ -9,9 +9,7 @@ module ShareActions
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    promises :excel, :workbook
-
-    # @!method ConnectExcel
+    # @!method RefreshLinks
     #   @yield Refresha i collegamenti del file Excel
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest

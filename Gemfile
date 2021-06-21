@@ -33,7 +33,7 @@ group :development, :test do
   gem "rubocop", "~>1.12.1", require: false
   gem "rubocop-config-prettier", "~>0.1.12"
   gem "rubocop-performance", "~>1.10.1", require: false
-  gem "rufo", "~>0.12.0", require: false
-  gem "solargraph", "~>0.40.4", require: false
+  gem "rufo", "~>0.13.0", require: false
+  gem "solargraph", "~>0.42.3", require: false
   gem "standard", "1.0.4", require: false
 end

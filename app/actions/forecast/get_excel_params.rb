@@ -4,12 +4,12 @@
 
 module ForecastActions
   # Prendo da excel tutti i dati di input per eseguire il Forecast
+  #   @promises params [Hash]
   class GetExcelParams
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises params [Hash]
     promises :params
 
     # @!method ConnectExcel

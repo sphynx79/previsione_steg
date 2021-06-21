@@ -85,31 +85,31 @@ module ForecastConcern
     end
 
     def previsione_v1
-      @@workbook.Worksheets("Forecast").Range("J4").value.round
+      @@workbook.Worksheets("Forecast").Range("V4").value.round
     end
 
     def previsione_v2
-      @@workbook.Worksheets("Forecast").Range("J6").value.round
+      @@workbook.Worksheets("Forecast").Range("V6").value.round
     end
 
     def previsione_v3
-      @@workbook.Worksheets("Forecast").Range("J7").value.round
+      @@workbook.Worksheets("Forecast").Range("V8").value.round
     end
 
     def previsione_v2_delta
-      @@workbook.Worksheets("Forecast").Range("L6").value
+      @@workbook.Worksheets("Forecast").Range("Y6").value
     end
 
     def previsione_v3_delta
-      @@workbook.Worksheets("Forecast").Range("L7").value
+      @@workbook.Worksheets("Forecast").Range("Y8").value
     end
 
     def previsione_nomina_steg
-      @@workbook.Worksheets("Forecast").Range("J8").value.round
+      @@workbook.Worksheets("Forecast").Range("V10").value.round
     end
 
     def previsione_consuntivi
-      @@workbook.Worksheets("Consuntivo_Finale").Range("I27").value.round
+      @@workbook.Worksheets("Consuntivo").Range("I27").value.round
     end
 
     def set_day(data)
@@ -137,7 +137,6 @@ module ForecastConcern
 
   module Csv
     def parse_csv
-      # @todo: Sistemare dove va a prendere il file del database
       csv_data = File.read(Ikigai::Config.path.db + Ikigai::Config.file.db_csv)
 
       column = {"Date" => {type: :date},
@@ -159,7 +158,7 @@ module ForecastConcern
                 "Flow_Korba" => {type: :float},
                 "Flow_Totale" => {type: :float}}
 
-      Rcsv.parse(csv_data, row_as_hash: true, column_separator: ",", header: :use, columns: column, only_listed_columns: true)
+      Rcsv.parse(csv_data, row_as_hash: true, column_separator: ";", header: :use, columns: column, only_listed_columns: true)
     end
   end
 

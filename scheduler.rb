@@ -8,17 +8,6 @@ require "open3"
 require "pastel"
 require "pry"
 
-# @todo: eliminare questa parte di codice
-# $logger = Logger.new(STDOUT)
-# $logger.level = Logger::DEBUG
-# # $logger.level = Logger::WARN
-# # STDOUT.sync = true
-# # STDERR.sync = true
-
-# $logger.formatter = proc do |severity, datetime, _progname, msg|
-#       "[#{datetime.strftime('%Y-%m-%d %H:%M:%S')}] #{severity}: #{msg}\n"
-# end
-
 ENV["TZ"] = "Africa/Algiers"
 
 class Handler
@@ -70,7 +59,7 @@ class Handler
       @logger.debug "Task #{action} start:"
       break unless process_is_ok(action)
       @logger.debug "Task #{action} end"
-      sleep 2
+      sleep 5
     end
   end
 
@@ -110,8 +99,7 @@ class Handler
   end
 end
 
-# @todo diminuire la frequenza di rufus-scheduler
-scheduler = Rufus::Scheduler.new(frequency: "5s")
+scheduler = Rufus::Scheduler.new(frequency: "30s")
 
 def scheduler.on_error(job, error)
   pp ["error in scheduled job", job.class, job.original, error.message]
@@ -123,7 +111,7 @@ consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
 scheduler.cron("49 8 * * *", consuntivo, first_in: "5s", timeout: "5m", tag: "consuntivo")
 
 forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-scheduler.cron("09 9,11,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "1m", timeout: "5m", tag: "forecast")
+scheduler.cron("09 9,11,12,13,14,15,16,17,18,19,20 * * *", forecast, first_in: "3m", timeout: "5m", tag: "forecast")
 
 puts "Start Scheduler"
 

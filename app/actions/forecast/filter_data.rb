@@ -4,30 +4,27 @@
 
 module ForecastActions
   # Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
+  #   @expects hour [Hash] Ora di cui fare il forecast
+  #   @expects csv [Array<Hash>] Consuntivi di Steg letti dal DB
+  #   @expects params [Hamster::Hash] parametri letti da excel
+  #   @promises filtered_data [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
   class FilterData
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @expects hour [Hash] Ora di cui fare il forecast
-    # @expects csv [Array<Hash>] Consuntivi di Steg letti dal DB
-    # @expects params [Hamster::Hash] parametri letti da excel
     expects :consuntivi, :params
-    # @promises filtered_data [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
     promises :filtered_data
 
-    # @!method ForecastActions
+    # @!method FilterData
     #   @yield Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
     #   @yieldparam ctx {FunctionalLightService::Context} Input contest
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
-      # ctx.forecast_v1 ||= []
       ctx.filtered_data = Success(ctx.consuntivi) \
                      >> method(:filter_giorno) \
                      >> method(:filter_festivo) \
                      >> method(:filter_festivita)
-      # ctx.forecast_v1 << ctx.forecast.value
-      # ctx.forecast2 = ctx.params[:applica_somiglianza] == "SI" ? Success(forecast2(ctx.forecast.value)) : Success(nil)
     end
 
     def self.filter_giorno(consuntivi)

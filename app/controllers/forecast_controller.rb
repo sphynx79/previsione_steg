@@ -76,12 +76,6 @@ class ForecastController < Ikigai::BaseController
   # Prendo dal file csv tutti i dati consuntivi
   #    @promises csv [Array<Hash>] Consuntivi di Steg
   #
-  # {ForecastActions::IterateHours IterateHours}
-  # Itero sulle ore del giorno del Forecast che devo fare ed eseguo [FilterData, MediaPonderata]
-  #    @expects params [Hamster::Hash] parametri letti da excel
-  #    @expects callback [Proc] le azioni da eseguire per ogni ora
-  #    @promises hour [Hash] Ora di cui fare il forecast
-  #
   # {ForecastActions::FilterData FilterData}
   # Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
   #    @expects hour [Hash] Ora di cui fare il forecast
@@ -116,12 +110,13 @@ class ForecastController < Ikigai::BaseController
       ConnectExcel,
       SetExcelDay,
       GetExcelParams,
-      # RefreshLinks,
+      RefreshLinks,
       ParseCsv,
       FilterData,
       GroupByHour,
       Previsione,
       PrevisionLimit,
+      Dispersione,
       CompilaForecastExcel
     ]
   end

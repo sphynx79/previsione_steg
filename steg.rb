@@ -9,6 +9,7 @@ parsed_env = ARGV.join(" ")[/(-e\s|--enviroment=)(production|development)/]
 env = parsed_env.nil? || parsed_env.split(/(\s|=)/).last != "production" ? :development : :production
 
 require "bundler/setup"
+
 Bundler.require(:default, env.to_sym)
 require "win32ole"
 require "open3"
@@ -72,8 +73,8 @@ module PrevisioneSteg
     c.desc "day report [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
 
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/202", desc: "Creo il Report PDF per il forecast"
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/202", desc: "Creo il Report PDF per il consuntivo"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/2021", desc: "Creo il Report PDF per il forecast"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/2021", desc: "Creo il Report PDF per il consuntivo"
 
     c.action do
       # prima = Time.now
@@ -185,7 +186,7 @@ module PrevisioneSteg
   exit run(ARGV) if $PROGRAM_NAME == __FILE__
 end
 
-# @todo:  1) Vedere quale logger utilizzare il mio oppure yell oppure lit
+# @TODO:  1) Vedere quale logger utilizzare il mio oppure yell oppure lit
 #         2) Vedere se usare pretty_backtrace, prendere esempio da Remit_linee_new
 #         3) Vedere se usare bundle oppure il require semplice
 #         4) Abilitare FunctionalLightService nel set_env
