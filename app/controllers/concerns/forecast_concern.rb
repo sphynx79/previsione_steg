@@ -84,32 +84,70 @@ module ForecastConcern
       @@excel.Run("'Forecast.xlsm'!Save_PDF", path)
     end
 
-    def previsione_v1
-      @@workbook.Worksheets("Forecast").Range("V4").value.round
+    def previsione(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("P10").value.round
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("H10").value.round
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("X10").value.round
+      end
     end
 
-    def previsione_v2
-      @@workbook.Worksheets("Forecast").Range("V6").value.round
+    def previsione_delta(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("R10").value
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("J10").value
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("Z10").value
+      end
     end
 
-    def previsione_v3
-      @@workbook.Worksheets("Forecast").Range("V8").value.round
+    def previsione_nomina_steg(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("P12").value.round
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("H12").value.round
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("X12").value.round
+      end
     end
 
-    def previsione_v2_delta
-      @@workbook.Worksheets("Forecast").Range("Y6").value
+    def previsione_nomina_steg_progressivo(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("P14").value.round
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("H14").value.round
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("X14").value.round
+      end
     end
 
-    def previsione_v3_delta
-      @@workbook.Worksheets("Forecast").Range("Y8").value
+    def previsione_nomina_steg_progressivo_delta(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("R14").value
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("J14").value
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("Z14").value
+      end
     end
 
-    def previsione_nomina_steg
-      @@workbook.Worksheets("Forecast").Range("V10").value.round
-    end
-
-    def previsione_consuntivi
-      @@workbook.Worksheets("Consuntivo").Range("I27").value.round
+    def previsione_consuntivi(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("P16").value.round
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("H16").value.round
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("X16").value.round
+      end
     end
 
     def set_day(data)

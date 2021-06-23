@@ -28,13 +28,15 @@ module ReportActions
     #   @yieldreturn {FunctionalLightService::Context} Output contest
     executed do |ctx|
       # rubocop:disable Layout/ExtraSpacing
-      prv_1        = number_with_delimiter(previsione_v1)
-      prv_2        = number_with_delimiter(previsione_v2) + " (#{(previsione_v2_delta * 100).round(2)}%)"
-      prv_3        = number_with_delimiter(previsione_v3) + " (#{(previsione_v3_delta * 100).round(2)}%)"
-      prv_nom_steg = number_with_delimiter(previsione_nomina_steg)
-      prv_consunto = number_with_delimiter(previsione_consuntivi)
-      html = ERB.new(File.read("./template/report.html.erb"), trim_mode: "-").result(binding)
-      ctx.html = html.freeze
+      prv_report = {dicom: {}, prv: {}, simulazione: {}}
+      prv_report.each do |k, v|
+        prv_report[k][:previsione]      = number_with_delimiter(previsione(k)) + " (#{(previsione_delta(k) * 100).round(2)}%)"
+        prv_report[k][:nomina_steg]     = number_with_delimiter(previsione_nomina_steg(k))
+        prv_report[k][:nom_steg_progre] = number_with_delimiter(previsione_nomina_steg_progressivo(k)) + " (#{(previsione_nomina_steg_progressivo_delta(k) * 100).round(2)}%)"
+        prv_report[k][:consuntivo]      = number_with_delimiter(previsione_consuntivi(k))
+      end
+      html                = ERB.new(File.read("./template/report.html.erb"), trim_mode: "-").result(binding)
+      ctx.html            = html.freeze
       # rubocop:enable Layout/ExtraSpacing
     end
 
