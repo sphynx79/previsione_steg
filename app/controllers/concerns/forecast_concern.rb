@@ -2,6 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
+
 module ForecastConcern
   module Excel
     @@excel = nil
