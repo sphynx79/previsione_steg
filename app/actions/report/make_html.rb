@@ -41,6 +41,7 @@ module ReportActions
     end
 
     def self.number_with_delimiter(number)
+      return "0" if number == 0
       number.to_s.gsub!(/(\d)(?=(\d\d\d)+(?!\d))/) do |digit_to_delimit|
         "#{digit_to_delimit}."
       end
