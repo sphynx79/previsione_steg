@@ -19,7 +19,7 @@ APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
 
 APP_NAME = APP_ROOT.parent.basename.to_s
 APP_VERSION = File.read("./VERSION").strip
-ENV["TZ"] = "Africa/Algiers"
+#ENV["TZ"] = "Africa/Algiers"
 
 module PrevisioneSteg
   include GLI::App
@@ -186,8 +186,8 @@ module PrevisioneSteg
   exit run(ARGV) if $PROGRAM_NAME == __FILE__
 end
 
-# @TODO:  1) Vedere quale logger utilizzare il mio oppure yell oppure lit
+# @TODO:  1) Vedere quale logger utilizzare il mio oppure yell oppure lit o semantic_logger
 #         2) Vedere se usare pretty_backtrace, prendere esempio da Remit_linee_new
 #         3) Vedere se usare bundle oppure il require semplice
 #         4) Abilitare FunctionalLightService nel set_env
-#         5) mettere env di default production riga 14
+#         5) mettere env di default production riga 1

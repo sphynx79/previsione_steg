@@ -20,7 +20,7 @@ module Ikigai
 
         render_template do
           Object.const_get(action_view).call(msg)
-        rescue StandardError
+        rescue
           p "action: #{action_view} non esiste"
         end
       end

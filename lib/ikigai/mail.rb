@@ -2,9 +2,9 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-require 'net/smtp'
+require "net/smtp"
 
-module Ikigai 
+module Ikigai
   class Mail
     class << self
       attr_accessor :server, :port, :from, :to, :subject, :msg, :marker
@@ -14,8 +14,8 @@ module Ikigai
         @port = Muletto::Config.mail.port
         @from = Muletto::Config.mail.from
         @to = Muletto::Config.mail.to
-        @subject = "#{subject} #{DateTime.now.strftime('%d-%m-%Y %H:%M')}"
-        @marker = 'AUNIQUEMARKER'
+        @subject = "#{subject} #{DateTime.now.strftime("%d-%m-%Y %H:%M")}"
+        @marker = "AUNIQUEMARKER"
         @msg = msg
         send
       end
@@ -31,8 +31,8 @@ module Ikigai
           Net::SMTP.start(server, port) do |smtp|
             smtp.send_message msg, from, to
           end
-          logger.debug 'Email Inviata'
-        rescue StandardError
+          logger.debug "Email Inviata"
+        rescue
           logger.warn("Errore nell'invio dell'email")
         end
       end

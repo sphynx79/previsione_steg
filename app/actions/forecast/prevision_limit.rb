@@ -36,9 +36,11 @@ module ForecastActions
       limit_down = {}
       ctx.filtered_data_group_by_hour.each do |k, v|
         limit_up[k] = v.select do |row|
+          next if row["Flow_Totale"].nil?
           (row["Flow_Totale"] * 1000) >= totale
         end
         limit_down[k] = v.select do |row|
+          next if row["Flow_Totale"].nil?
           (row["Flow_Totale"] * 1000) < totale
         end
       end

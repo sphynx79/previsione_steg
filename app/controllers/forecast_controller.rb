@@ -1,4 +1,4 @@
-#!/usr/bin/peek_definitionenv ruby
+#!/usr/bin/env ruby
 # warn_indent: true
 # frozen_string_literal: true
 
@@ -28,7 +28,7 @@ class ForecastController < Ikigai::BaseController
   # @option env [Hash] :command_options parametri della mia azione da eseguire
   # @option env [Hash] :global_options parametri globali dell'applicazione
   #
-  # @example :env params
+  # @example param :env
   #   {
   #     :controller      => "forecast",
   #     :action          => "call",
@@ -59,33 +59,39 @@ class ForecastController < Ikigai::BaseController
 
   # Azioni eseguite in serie per il calcolo del Forecast
   #
-  # {ForecastActions::ConnectExcel ConnectExcel}
+  # {ForecastActions::ConnectExcel}
   # Mi connetto ad excel
   #    @promises excel [WIN32OLE] Instance Excel
   #    @promises workbook [WIN32OLE] Instance Excel del file excel del Forecast
   #
-  # {ShareActions::SetExcelDay SetExcelDay}
+  # {ShareActions::SetExcelDay}
   # Setta nel file excel del Forecast la data
   #    @promises data [String] Contiene la data es. "09042021"
   #
-  # {ForecastActions::GetExcelParams GetExcelParams}
+  # {ForecastActions::GetExcelParams}
   # Prendo da excel tutti i dati di input per eseguire il Forecast
   #    @promises params [Hash]
   #
-  # {ForecastActions::ParseCsv ParseCsv}
+  # {ShareActions::RefreshLinks}
+  # Fai il refresh dei link nel file Forecast, chimando una macro presente nel file excel
+  #
+  # {ForecastActions::ParseCsv}
   # Prendo dal file csv tutti i dati consuntivi
-  #    @promises csv [Array<Hash>] Consuntivi di Steg
+  #    @promises consuntivi [Array<Hash>] Consuntivi di Steg
   #
-  # {ForecastActions::FilterData FilterData}
+  # {ForecastActions::FilterData}
   # Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
-  #    @expects hour [Hash] Ora di cui fare il forecast
-  #    @expects csv [Array<Hash>] Consuntivi di Steg letti dal DB
+  #    @expects consuntivi [Array<Hash>] ConsuntiviSymbolsOutline di Steg letti dal DB
   #    @expects params [Hamster::Hash] parametri letti da excel
-  #    @promises forecast [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
-  #    @promises forecast2 [FunctionalLightService::Result] Se finisce con successo forecast2 [Array<Hash>]
+  #    @promises filtered_data [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
   #
-  # {ForecastActions::MediaPonderata MediaPonderata}
-  # Esegue la media ponderata dei dati filtrati nelo step precedente e li aggiundo alla mia previsione
+  # {ForecastActions::GroupByHour}
+  # Raggruppo i consuntivi filtrati per ora
+  #    @expects filtered_data [Array<Hash>] [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
+  #    @promises filtered_data_group_by_hour [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
+  #
+  # {ForecastActions::Previsione}
+  # Esegue la media ponderata dei dati filtrati nelo step precedente e crea la mia previsione
   #    @expects forecast [FunctionalLightService::Result] Consuntivi filtrati nello Step precedente per il forecast
   #    @expects forecast2 [FunctionalLightService::Result] Consuntivi filtrati nello Step precedente per il forecast2
   #    @promises previsione [Hash] In questa variabile inserisco il risultato del forecast per ogni stazione e per ogni ora
@@ -106,19 +112,21 @@ class ForecastController < Ikigai::BaseController
   #
   # @return [FunctionalLightService::Context] Contesto finale dopo aver eseguito tutte le azioni
   def self.steps
+    # rubocop:disable Layout/ExtraSpacing
     [
-      ConnectExcel,
-      SetExcelDay,
-      GetExcelParams,
+      ConnectExcel,    # P:[excel, workbook]
+      SetExcelDay,     # P:[data]
+      GetExcelParams,  # P:[params]
       RefreshLinks,
-      ParseCsv,
-      FilterData,
-      GroupByHour,
-      Previsione,
+      ParseCsv,        # P:[consuntivi]
+      FilterData,      # E:[consuntivi, params], P:[filtered_data]
+      GroupByHour,     # E:[filtered_data], P:[filtered_data_group_by_hour]
+      Previsione,      # E:[filtered_data_group_by_hour], P:[previsione]
       PrevisionLimit,
       Dispersione,
       CompilaForecastExcel
     ]
+    # rubocop:enable Layout/ExtraSpacing
   end
 
   # Controllo il risultato finale e lo stampo sul relativo log

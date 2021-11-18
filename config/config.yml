@@ -32,7 +32,7 @@ production:
   mail:
     from: "michele.boscolo@ttpc.eni.com"
     to: "Roberto.Pozzer@ttpc.eni.com"
-    cc: "michele.boscolo@ttpc.eni.com; MohamedAli.Gattoufi@ttpc.eni.com; wassim.ouelhazi@ttpc.eni.com"
+    cc: "michele.boscolo@ttpc.eni.com; MohamedAli.Gattoufi@ttpc.eni.com; wassim.ouelhazi@ttpc.eni.com; MohamedHedi.Ammar@ttpc.eni.com; Anis.Gamraoui@ttpc.eni.com"
 
     path:
       root: '../'

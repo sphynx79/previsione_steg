@@ -2,15 +2,43 @@
 # warn_indent: true
 # frozen_string_literal: true
 
+# Legge i consuntivi
+#
+# Utilizzo questa classe per avviare le azioni
+# per la lettura de consuntivi, inoltre gestisco
+# qualsiasi errore che possa essere avvenuto dentro le varie
+# azioni eseguite, in caso di errore imprevisto viene gestino
+# da qui e viene stampato il log e inviata un'email di notifica
 class ConsuntiviController < Ikigai::BaseController
+  # @!parse
+  #   extend FunctionalLightService::Organizer
+  #   include ShareAction
+  #   include ConsuntiviActions
   extend FunctionalLightService::Organizer
   extend FunctionalLightService::Prelude::Result
   include ConsuntiviActions
-  include ShareActions # include Log
-  # attr_accessor :log
+  include ShareActions
 
+  # Entry point chiamato per avviare la lettura dei consuntivi
+  #
+  # @param env [Hash] Enviroment della mia applicazione
+  # @option env [String] :controller Controller chiamato
+  # @option env [String] :action Entry point del mio controller da eseguire
+  # @option env [Hash] :command_options parametri della mia azione da eseguire
+  # @option env [Hash] :global_options parametri globali dell'applicazione
+  #
+  # @example :env params
+  #   {
+  #     :controller      => "consuntivi",
+  #     :action          => "call",
+  #     :global_options  => {
+  #       "l"          => "info",
+  #       :l           => "info",
+  #     }
+  #   }
+  #
+  # @return [void]
   def self.call(env:)
-    # @log = Yell["cli"]
     result = with(env: env).reduce(steps)
     check_result(result)
   end

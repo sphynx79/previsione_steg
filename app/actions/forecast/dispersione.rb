@@ -5,7 +5,6 @@
 module ForecastActions
   # Calcolo la dispersione delle curve
   class Dispersione
-
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action

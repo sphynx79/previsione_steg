@@ -4,8 +4,7 @@
 
 module ForecastActions
   # Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
-  #   @expects hour [Hash] Ora di cui fare il forecast
-  #   @expects csv [Array<Hash>] Consuntivi di Steg letti dal DB
+  #   @expects consuntivi [Array<Hash>] Consuntivi di Steg letti dal DB
   #   @expects params [Hamster::Hash] parametri letti da excel
   #   @promises filtered_data [FunctionalLightService::Result] Se finisce con successo forecast [Array<Hash>]
   class FilterData
@@ -18,8 +17,8 @@ module ForecastActions
 
     # @!method FilterData
     #   @yield Filtro i consuntivi letti dal DB in base ai filtri impostati nell'Excel
-    #   @yieldparam ctx {FunctionalLightService::Context} Input contest
-    #   @yieldreturn {FunctionalLightService::Context} Output contest
+    #   @yieldparam ctx [FunctionalLightService::Context] Input contest
+    #   @yieldreturn [FunctionalLightService::Context] Output contest
     executed do |ctx|
       ctx.filtered_data = Success(ctx.consuntivi) \
                      >> method(:filter_giorno) \
@@ -27,10 +26,22 @@ module ForecastActions
                      >> method(:filter_festivita)
     end
 
+    # Applico questo filtro se nei miei filtri ho impostato che devo selezionare il giorno esatto della settimana
+    #
+    # @param consuntivi [Array<Hash>] Consuntivi di Steg letti dal DB
+    #
+    # @return [FunctionalLightService::Result::Success]
+    # @TODO: Gestire glie errori del filtro giorno della settimana estatto
     def self.filter_giorno(consuntivi)
       Success(ctx.params[:giorno_settimana] == "SI" ? consuntivi.select { |row| row["Giorno_Sett_Num"] == ctx.params[:day].value.first["Giorno_Sett_Num"] } : consuntivi)
     end
 
+    # Applico il filtro che mi seleziona se è un festivo o un settimanale
+    #
+    # @param consuntivi [Array<Hash>] Consuntivi di Steg letti dal DB
+    #
+    # @return [FunctionalLightService::Result::Success]
+    # @TODO: Gestire glie errori del filtro festivo
     def self.filter_festivo(consuntivi)
       case ctx.params[:festivo]
       when "SI"
@@ -42,6 +53,12 @@ module ForecastActions
       end
     end
 
+    # Applico il filtro che mi seleziona se è una festivvità
+    #
+    # @param consuntivi [Array<Hash>] Consuntivi di Steg letti dal DB
+    #
+    # @return [FunctionalLightService::Result::Success]
+    # @TODO: Gestire glie errori del filtro festività
     def self.filter_festivita(consuntivi)
       case ctx.params[:festivita]
       when "SI"

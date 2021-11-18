@@ -11,8 +11,8 @@ module ShareActions
 
     # @!method RefreshLinks
     #   @yield Refresha i collegamenti del file Excel
-    #   @yieldparam ctx {FunctionalLightService::Context} Input contest
-    #   @yieldreturn {FunctionalLightService::Context} Output contest
+    #   @yieldparam ctx [FunctionalLightService::Context] Input contest
+    #   @yieldreturn [FunctionalLightService::Context] Output contest
     executed do |ctx|
       try! do
         refresh_links

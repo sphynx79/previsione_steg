@@ -1,5 +1,8 @@
 --title 'Previsione Steg'
 --charset utf-8
+--markup markdown
+--markup-provider redcarpet
+--asset ./css/common.css:css/common.css
 --protected
 --private
 --exclude /Prove/
@@ -8,9 +11,11 @@
 --exclude .rblcl
 --exclude .yardoc
 --exclude /doc/
---type-name-tag promises:"Valore di ritorno della mia action"
---type-name-tag expects:"Valori di input della mia action"
+--type-name-tag promises:"Promises"
+--type-name-tag expects:"Expects"
 --type-name-tag type:"Type"
+--tag comment:"Comment"
+--hide-tag comment
 'steg.rb'
 'app/**/*.rb'
 'lib/**/*.rb'

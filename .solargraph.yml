@@ -1,6 +1,7 @@
 ---
 include:
-- "**/*.rb"
+- "app/**/*.rb"
+- "lib/**/*.rb"
 exclude:
 - Prove/**/*
 - Ruby/**/*
@@ -14,7 +15,8 @@ exclude:
 - ".logs/**/*"
 - ".rblcl/**/*"
 - ".yardoc/**/*"
-require: []
+require:
+- "functional-light-service"
 domains: []
 reporters:
 - rubocop

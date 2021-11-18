@@ -3,8 +3,14 @@
 # frozen_string_literal: true
 
 module ShareActions
-  # Setta nel file excel del Forecast la data
-  # @promises data [String] Contiene la data es. "09042021"
+  ##
+  # Setta nel file excel la data e la salva nella variabile ctx.data
+  #
+  # <div class="lsp">
+  #   <h2>Promises:</h2>
+  #   - data ('String')<br>
+  # </div>
+  #
   class SetExcelDay
     # @!parse
     #   extend FunctionalLightService::Action
@@ -12,12 +18,17 @@ module ShareActions
 
     promises :data
 
-    # @!method SetExcelDay
-    #   @yield Prende dal file excel la data del report PDF
-    #   @yieldparam ctx {FunctionalLightService::Context} Input contest
-    #   @yieldreturn {FunctionalLightService::Context} Output contest
+    # @!method SetExcelDay(ctx)
+    #   Setta nel file excel la data e la salva nella variabile ctx.data
+    #
+    #   @!scope class
+    #
+    #   @param ctx [FunctionalLightService::Context]
+    #
+    #   @promises data [String]
+    #
+    #   @return [FunctionalLightService::Context]
     executed do |ctx|
-      # data = get_data
       # @type data [String]
       data = ctx.dig(:env, :command_options, :day)
       set_day(data)
