@@ -35,12 +35,11 @@ module ReportActions
         prv_report[k][:nom_steg_progre] = number_with_delimiter(previsione_nomina_steg_progressivo(k)) + " (#{(previsione_nomina_steg_progressivo_delta(k) * 100).round}%)"
         prv_report[k][:consuntivo]      = number_with_delimiter(previsione_consuntivi(k))
       end
-      prv_daily_evolution = {nomina: [], previsone: [], steg_progr: []}
+      prv_daily_evolution = {nomina: [], previsione: [], steg_progr: []}
       prv_daily_evolution.each do |k, v|
-        10.upto(20) do |i| 
-          p i 
+        7.upto(17) do |i|
+          v << number_with_delimiter(daily_evolution(k, i))
         end
-
       end
       html                = ERB.new(File.read("./template/report.html.erb"), trim_mode: "-").result(binding)
       ctx.html            = html.freeze
@@ -48,6 +47,7 @@ module ReportActions
     end
 
     def self.number_with_delimiter(number)
+      return "" if number == ""
       return "0" if number == 0
       return number if number < 1000
       number.to_s.gsub!(/(\d)(?=(\d\d\d)+(?!\d))/) do |digit_to_delimit|

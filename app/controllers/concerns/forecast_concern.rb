@@ -152,13 +152,19 @@ module ForecastConcern
 
     def daily_evolution(type, hour)
       case type
-      when :dicom
-        @@workbook.Worksheets("Forecast").Range("T16").value.round
-      when :prv
-        @@workbook.Worksheets("Forecast").Range("M16").value.round
-      when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AA16").value.round
+      when :nomina
+        get_daily_evolution_value("D", hour)
+      when :previsione
+        get_daily_evolution_value("F", hour)
+      when :steg_progr
+        get_daily_evolution_value("H", hour)
       end
+    end
+
+    def get_daily_evolution_value(column, row)
+      value = @@workbook.Worksheets("Forecast").Range("#{column}#{row}").value
+      return "" if value.nil?
+      value.round
     end
 
     def set_day(data)
