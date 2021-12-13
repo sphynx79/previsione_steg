@@ -8,31 +8,29 @@ module ForecastActions
   #
   # <div class="lsp">
   #   <h2>Promises:</h2>
-  #   - params ('Hash')<br>
+  #   - params (Hash) parametri letti da excel per eseguire il forecast<br>
   # </div>
   #
-  # @promises params [Hash]
-  #
-   #
   class GetExcelParams
     # @!parse
     #   extend FunctionalLightService::Action
+    #   extend ForecastConcern::Excel
     extend FunctionalLightService::Action
 
     promises :params
 
     # @!method GetExcelParams(ctx)
-    #   Prendo da excel tutti i dati di input per eseguire il Forecast
     #
     #   @!scope class
     #
     #   @param ctx [FunctionalLightService::Context]
     #
-    #   @promises params [Hash]
+    #   @promises params [Hash] parametri letti da excel per eseguire il forecast
     #
     #   @return [FunctionalLightService::Context]
     executed do |ctx|
-      ctx.params = Hamster::Hash[day: get_day,
+      ctx.params = Hamster::Hash[
+        day: get_day,
         giorno_settimana: get_giorno_settimana,
         festivo: get_festivo,
         festivita: get_festivita,
@@ -42,17 +40,37 @@ module ForecastActions
 
     # Prendo da "Forecast.xlsm" foglio "Day" la tabella con nome Day, che contiene il giorno di cui devo fare il forecast
     #
-    # @return [Array]
-    #  Contiene le caratteristiceh del giorno che devo fare il forecast, tipo il giorno settimana, se è un festivo, ecc..
+    # @return [FunctionalLightService::Result::Success, FunctionalLightService::Context.fail_and_return!]<br>
+    #   Se finisce con seccesso [Array] Contiene le caratteristiche del giorno che devo fare il forecast, tipo il giorno settimana, se è un festivo, ecc..
+    #   ```ruby
+    #     [
+    #        [0] {
+    #          "Date"            => 2021-11-25 08:00:00 +0100,
+    #          "Giorno"          => 25.0,
+    #          "Mese"            => 11.0,
+    #          "Anno"            => 2021.0,
+    #          "Ora"             => 8.0,
+    #          "Giorno_Sett_Num" => 4.0,
+    #          "Giorno_Sett_Txt" => "giovedì",
+    #          "Festivo"         => "N",
+    #          "Festivita"       => "N",
+    #          "Stagione"        => "autunno"
+    #        }
+    #      ]
+    #   ```
+    #   Se Finisce in errore, ritorna in stato failure e il messaggio di errore "Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day"
+    #
     def self.get_day
-      try! do
-        day
-      end.map_err { ctx.fail_and_return!("Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day") }
+      try! { day }.map_err {
+        ctx.fail_and_return!("Controllare che nel file Forecast.xlsm ci sia il foglio Day con presenta la tabella Day")
+      }
     end
 
     # Prendo da "Forecast.xlsm" foglio "Forecast V1" se devo prendere un giorno della settima esatto
     #
-    # @return [String] Se è un giorno della settimana esatto ["SI", "NO"]
+    # @return [FunctionalLightService::Result::Success, FunctionalLightService::Context.fail_and_return!]<br>
+    #   Se finisce con seccesso [String] se è un giorno della settimana esatto ["SI", "NO"]
+    #   Se Finisce in errore, ritorna in stato failure e il messaggio di errore
     def self.get_giorno_settimana
       unless ["SI", "NO"].include? giorno_settimana
         ctx.fail_and_return!(
@@ -68,7 +86,9 @@ module ForecastActions
 
     # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un giorno festivo
     #
-    # @return [String] Se è un giorno festivo ["SI", "NO", "ALL"]
+    # @return [FunctionalLightService::Result::Success, FunctionalLightService::Context.fail_and_return!]<br>
+    #   Se finisce con seccesso [String] Se è un giorno festivo ["SI", "NO", "ALL"]
+    #   Se Finisce in errore, ritorna in stato failure e il messaggio di errore
     def self.get_festivo
       unless ["SI", "NO", "ALL"].include? festivo
         ctx.fail_and_return!(
@@ -84,7 +104,9 @@ module ForecastActions
 
     # Prendo da "Forecast.xlsm" foglio "Forecast V1" se è un festività
     #
-    # @return [String] Se è una festività ["SI", "NO", "ALL"]
+    # @return [FunctionalLightService::Result::Success, FunctionalLightService::Context.fail_and_return!]<br>
+    #   Se finisce con seccesso [String] Se è una festività ["SI", "NO", "ALL"]
+    #   Se Finisce in errore, ritorna in stato failure e il messaggio di errore
     def self.get_festivita
       unless ["SI", "NO", "ALL"].include? festivita
         ctx.fail_and_return!(

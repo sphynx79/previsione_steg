@@ -36,3 +36,7 @@ Layout/EndOfLine:
 
 Style/Documentation:
   Enabled: false
+
+Security/Eval:
+  Enabled: false
+

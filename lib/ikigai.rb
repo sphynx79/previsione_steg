@@ -8,6 +8,7 @@ module Kernel
   alias λ lambda
 end
 
+# @!visibility private
 module Ikigai
   autoload :Log, "ikigai/log"
   autoload :Config, "ikigai/config"

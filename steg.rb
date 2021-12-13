@@ -19,7 +19,6 @@ APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
 
 APP_NAME = APP_ROOT.parent.basename.to_s
 APP_VERSION = File.read("./VERSION").strip
-#ENV["TZ"] = "Africa/Algiers"
 
 module PrevisioneSteg
   include GLI::App
@@ -31,6 +30,9 @@ module PrevisioneSteg
   arguments :strict
   sort_help :manually
   wrap_help_text :verbatim
+
+  desc "Setto se lanciarlo in verbose mode"
+  switch %i[v verbose]
 
   desc "Log level [debug, info, warn, error, fatal]"
   default_value "info"
@@ -100,6 +102,8 @@ module PrevisioneSteg
     set_env(command, global, options)
     check_date(options[:day]) if [:report, :forecast].include? command.name
     init_log(global[:log], global[:interface])
+    set_trace_point if global[:verbose]
+
     Ikigai::Initialization.call
     true
   end
@@ -171,6 +175,41 @@ module PrevisioneSteg
     end
     # binding.pry
     # Object.send :include, Log
+  end
+
+  def set_trace_point
+    # vedere se usare la gemma https://github.com/st0012/object_tracer
+    trace = TracePoint.new(:call) do |tp|
+      tp.disable
+      path = tp.path
+      pastel = Pastel.new
+      if (path =~ /Steg/) && (path !~ /rblcl/i) && (path !~ /ruby/i)
+        parameters = eval <<-RUBY, tp.binding, __FILE__, __LINE__ + 1
+          method(:#{tp.method_id}).parameters
+        RUBY
+
+        # eval("method(:#{tp.method_id}).parameters", tp.binding)
+        parameters.map! do |_, arg|
+          if tp.binding.local_variable_defined?(arg)
+            arg_content = tp.binding.local_variable_get(arg)
+            if arg_content.kind_of?(Array) && arg_content.size > 20
+              "#{arg} = #{arg_content[0..5]}"
+            elsif arg_content.kind_of?(Hash)
+              "#{arg} = #{arg_content.first}"
+            else
+              "#{arg} = #{tp.binding.local_variable_get(arg)}"
+            end
+          end
+        end.join(", ")
+        puts pastel.blue("#{"*" * 40}CALL#{"*" * 40}")
+        puts pastel.green("File: #{tp.path.split("/")[-3..].join("/")}:#{tp.lineno}")
+        puts pastel.green("Class: #{tp.defined_class}")
+        puts pastel.green("Method: #{tp.method_id}")
+        puts pastel.green("Params:\n#{parameters * "\n\n"}") unless parameters.empty?
+      end
+      tp.enable
+    end
+    trace.enable
   end
 
   def check_date(date)

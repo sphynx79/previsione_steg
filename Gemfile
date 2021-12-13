@@ -30,9 +30,9 @@ group :development, :test do
   # gem "pry-clipboard", "~>0.1.1"
   # gem "pry-state", "~>0.1.10"
   gem "redcarpet", "~>3.5.1", require: false
-  gem "rubocop", "~>1.22.3", require: false
+  gem "rubocop", "~>1.23.0", require: false
   gem "rubocop-config-prettier", "~>0.1.12"
-  gem "rubocop-performance", "~>1.11.5", require: false
+  gem "rubocop-performance", "~>1.12.0", require: false
   gem "rufo", "~>0.13.0", require: false
   gem "solargraph", "~>0.44.0", require: false
   gem "standard", git: "https://github.com/testdouble/standard", require: false

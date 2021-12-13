@@ -7,3 +7,7 @@
 .lsp {
   display: none;
 }
+
+li {
+  list-style-type: square;
+}

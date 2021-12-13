@@ -66,19 +66,18 @@ class Handler
   def process_is_ok(action)
     exit_status, _err, out = start_process(action)
 
-    if !out.nil? && out != ""
-      print out.strip
-    end
+    print out.strip if !out.nil? && out != ""
     return false if exit_status == 2
+    return false if exit_status != 0
 
-    if exit_status != 0
-      # p "Invio email"
-      # Email.send(err, action, controparte)
-      # else
-      #   # $logger.info " nessun file da archiviare"
-      # end
-      return false
-    end
+    # if exit_status != 0
+    #   # p "Invio email"
+    #   # Email.send(err, action, controparte)
+    #   # else
+    #   #   # $logger.info " nessun file da archiviare"
+    #   # end
+    #   return false
+    # end
     true
   end
 

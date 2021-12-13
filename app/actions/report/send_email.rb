@@ -3,20 +3,32 @@
 # frozen_string_literal: true
 
 module ReportActions
-  # Mi connetto al file Excel del forecast
+  ##
+  # Invia l'e-mail con allegato il report pdf
+  #
+  # <div class="lsp">
+  #   <h2>Expects:</h2>
+  #   - html (String) html da inserire del body dell'e-mail<br>
+  #   - path_pdf_report (String) Path dove salvare il PDF<br>
+  # </div>
+  #
   class SendEmail
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @promises excel [WIN32OLE]
-    # @promises workbook [WIN32OLE]
     expects :path_pdf_report, :html
 
-    # @!method ConnectExcel
-    #   @yield Gestisce l'interfaccia per prendere i parametri da excel
-    #   @yieldparam ctx {FunctionalLightService::Context} Input contest
-    #   @yieldreturn {FunctionalLightService::Context} Output contest
+    # @!method SendEmail(ctx)
+    #
+    #   @!scope class
+    #
+    #   @param ctx [FunctionalLightService::Context]
+    #
+    #   @expects html [String] html da inserire del body dell'e-mail
+    #   @expects path_pdf_report [String] Path dove salvare il PDF
+    #
+    #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
         subject = "STEG #{type} GasDay #{day} #{date} #{time}"
@@ -28,21 +40,33 @@ module ReportActions
         message.CC = Ikigai::Config.mail.cc
         message.Attachments.Add(ctx.path_pdf_report, 1)
         message.Send
-      end.map_err { ctx.fail_and_return!("Non riesco a inviare l'email controlare che Outlook sia aperto!") }
+      end.map_err { ctx.fail_and_return!("Non riesco a inviare l'email controlare che Outlook sia aperto! | #{__FILE__}:#{__LINE__}") }
     end
 
+    # tipo di report da inviare
+    #
+    # @return [String]
     def self.type
       ctx.dig(:env, :command_options, :type) == "consuntivo" ? "CONS" : "FCT"
     end
 
+    # la data del report
+    #
+    # @return [String]
     def self.date
       ctx.dig(:env, :command_options, :dt)
     end
 
+    # l'ora di generazione del report
+    #
+    # @return [String]
     def self.time
       DateTime.now.strftime("%H:%M")
     end
 
+    # il giorno della settimana del report
+    #
+    # @return [String]
     def self.day
       case Date.parse(date).strftime("%u")
       when "1" then "Lunedì"

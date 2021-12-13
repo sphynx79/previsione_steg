@@ -8,33 +8,69 @@ module ForecastConcern
     @@workbook = nil
     @@params = {}
 
+    # parametri per far girare il forecast
+    #
+    # @return [Hash]
     def params
       @@params
     end
 
+    # file excel che sto usando
+    #
+    # @return [WIN32OLE]
     def workbook
       @@workbook
     end
 
+    # si connette ad Excel
+    #
+    # @return [WIN32OLE]
     def conneti_excel
       @@excel ||= WIN32OLE.connect("Excel.Application")
     end
 
+    # si connette a un file il cui nome è passato come parametro
+    #
+    # @param workbook_name [String] nome del file a cui connettersi
+    #
+    #
+    # @return [WIN32OLE]
     def conneti_workbook(workbook_name)
       @@excel.Workbooks(workbook_name).activate
       @@workbook = @@excel.Workbooks(workbook_name)
     end
 
+    # Avvia la macro GetElement del file Forecast.xlsm
+    #
+    # @param variabile [String] variable del file Forecast.xlsm da leggere
+    # @param sheet [String] foglio in cui si trova la variabile da leggere
+    #
+    # @return [String]
     def get_param(variabile, sheet)
       tmp = @@excel.Run("'Forecast.xlsm'!GetElement", variabile, sheet)
       tmp == "" ? nil : tmp
     end
 
+    # Avvia la macro GetRangeName del file Forecast.xlsm
+    #
+    # @param variabile [String] variable del file Forecast.xlsm da leggere
+    # @param sheet [String] foglio in cui si trova la variabile da leggere
+    #
+    # @example return value
+    #   [{"Date"=>2021-12-13 08:00:00 +0100, "Giorno"=>13.0, "Mese"=>12.0, "Anno"=>2021.0, "Ora"=>8.0, "Giorno_Sett_Num"=>1.0, "Giorno_Sett_Txt"=>"lunedì", "Festivo"=>"N", "Festivita"=>"N", "Stagione"=>"autunno"}]
+    #
+    # @return [Array]
     def get_range_name(variabile, sheet)
       tmp = @@excel.Run("'Forecast.xlsm'!GetRangeName", variabile, sheet)
       tmp == "" ? nil : range_to_array(tmp)
     end
 
+    # trasforma il range del giorno da fare in un hash
+    #
+    # @param range [WIN32OLE] range letto dal file del forecast per il girono da fare,
+    #     dal quale poi prendo se è un festivo o altre cose che mi servono per il forecast
+    #
+    # @return [Array]
     def range_to_array(range)
       header = %w[Date Giorno Mese Anno Ora Giorno_Sett_Num Giorno_Sett_Txt Festivo Festivita Stagione]
       x = []
@@ -48,42 +84,97 @@ module ForecastConcern
       x
     end
 
+    # abilito o disavilito ScreenUpdating in excel
+    #
+    # @param value [Boolean]
+    #
+    # @return [Void]
     def screen_updating=(value)
       @@excel.ScreenUpdating = value
     end
 
+    # abilito o disavilito Calculation in excel
+    #
+    # @param value [Boolean]
+    #
+    # @return [Void]
     def calculation=(value)
       @@excel.Calculation = value
     end
 
+    # setto la data nelle mie variable params prendendola dal file del forecast
+    #
+    # @return [String]
     def data
       @@params[:data] ||= get_param("data", "Forecast V1")
     end
 
+    # legge le caratteristiche del giorno che devo fare il forecast, tipo il giorno settimana, se è un festivo, ecc..
+    #
+    # @return [Array]
+    #
+    # ```ruby
+    #   [
+    #      [0] {
+    #        "Date"            => 2021-11-25 08:00:00 +0100,
+    #        "Giorno"          => 25.0,
+    #        "Mese"            => 11.0,
+    #        "Anno"            => 2021.0,
+    #        "Ora"             => 8.0,
+    #        "Giorno_Sett_Num" => 4.0,
+    #        "Giorno_Sett_Txt" => "giovedì",
+    #        "Festivo"         => "N",
+    #        "Festivita"       => "N",
+    #        "Stagione"        => "autunno"
+    #      }
+    #    ]
+    # ```
     def day
       @@params[:day] ||= get_range_name("day", "Day")
     end
 
+    # setto il giorno_settimana nelle mie variable params prendendola dal file del forecast
+    #
+    # @return [String]
     def giorno_settimana
       @@params[:giorno_settimana] ||= get_param("giorno_settimana", "Forecast V1")
     end
 
+    # prendo da "Forecast.xlsm" foglio "Forecast V1" se devo prendere un giorno della settima esatto
+    #
+    # @return [String] se è un giorno festivo ["SI", "NO", "ALL"]
     def festivo
       @@params[:festivo] ||= get_param("festivo", "Forecast V1")
     end
 
+    # prendo da "Forecast.xlsm" foglio "Forecast V1" se è un festività
+    #
+    # @return [String] Se è una festività ["SI", "NO", "ALL"]
     def festivita
       @@params[:festivita] ||= get_param("festività", "Forecast V1")
     end
 
+    # legge la nomina di STEG
+    #
+    # @return [Float]
     def nomina_steg
       @@params[:nomina_steg] ||= get_param("nomina_steg", "Forecast V1").nil? ? nil : get_param("nomina_steg", "Forecast V1").sub(",", ".").to_f
     end
 
+    # Avvia la macro Save_PDF del file Forecat.xlsm
+    #
+    # @param path [String] dove salvare il file pdf
+    #
+    # @return [Void]
     def save_pdf(path)
       @@excel.Run("'Forecast.xlsm'!Save_PDF", path)
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativo tipo di previsone [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di prevsione che devo leggere [dicom,prv,simulazione]
+    #
+    # @return [Integer]
     def previsione(type)
       case type
       when :dicom
@@ -95,6 +186,11 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativo tipo di delta di scostamento [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di delta di scostamento che devo leggere [dicom,prv,simulazione]
+    #
+    # @return [Float]
     def previsione_delta(type)
       case type
       when :dicom
@@ -106,6 +202,11 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast la relativa nomina di STEG [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di nomina di STEG da leggere [dicom,prv,simulazione]
+    #
+    # @return [Integer]
     def previsione_nomina_steg(type)
       case type
       when :dicom
@@ -117,6 +218,11 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativa consuntivo progressivo [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di consuntivo progressivo da leggere [dicom,prv,simulazione]
+    #
+    # @return [Integer]
     def previsione_nomina_steg_progressivo(type)
       case type
       when :dicom
@@ -128,6 +234,11 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativa scostamento percentuale progressivo [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di scostamento percentuale progressivo da leggere [dicom,prv,simulazione]
+    #
+    # @return [Float]
     def previsione_nomina_steg_progressivo_delta(type)
       case type
       when :dicom
@@ -139,6 +250,11 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativa consuntivo [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di scostamento percentuale progressivo da leggere [dicom,prv,simulazione]
+    #
+    # @return [Integer]
     def previsione_consuntivi(type)
       case type
       when :dicom
@@ -150,6 +266,12 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativa valore di daily evolution in base all'ora e al tipo [nomina,previsione,steg_progr]
+    #
+    # @param type [Symbol] tipo di daily evolution da leggere [nomina,previsione,steg_progr]
+    # @param hour [Integer] l'ora che devo leggere mi serve per prendere la riga giusta
+    #
+    # @return [Integer]
     def daily_evolution(type, hour)
       case type
       when :nomina
@@ -161,16 +283,33 @@ module ForecastConcern
       end
     end
 
+    # legge dal file Forecast.xlsm foglio forecast il relativa valore della tabella daily evolution
+    #
+    # @param column [String] colonnna del file excel da leggere
+    # @param row [Integer] riga del file excel da leggere
+    #
+    # @return [Integer]
     def get_daily_evolution_value(column, row)
       value = @@workbook.Worksheets("Forecast").Range("#{column}#{row}").value
       return "" if value.nil?
       value.round
     end
 
+    # Setto la data nel file Excel del Forecast
+    #
+    # @param  data [String] Data da impostare nel file excel
+    #
+    # @return [void]
     def set_day(data)
       @@workbook.Worksheets("Forecast V1").Range("M3").value = data + " 08:00:00"
+      nil
     end
 
+    # salvo il file passato parametro
+    #
+    # @param name [String]
+    #
+    # @return [Void]
     def save_workbook(name)
       @@excel.CalculateBeforeSave = false
       @@excel.Workbooks(name).Save
@@ -181,16 +320,46 @@ module ForecastConcern
       @@excel.Run("'DB.xlsm'!LeggiConsuntivi")
     end
 
+    # Avvia la macro nel file Forecast.xlsm che refresha tutti i link del file
     def refresh_links
       @@excel.Run("'Forecast.xlsm'!RefreshLinks")
     end
 
+    # Avvia la macro CopyToCSV del fileDB2.xlsm
+    #
+    # @return [Void]
     def export_db
       @@excel.Run("'DB2.xlsm'!CopyToCSV")
     end
   end
 
   module Csv
+    # fa il parser del file csv delle misure
+    #
+    # @example return value
+    #   [
+    #      [0] {
+    #       "Date"            => #<DateTime: 2015-10-20T08:00:00+00:00 ((2457316j,28800s,0n),+0s,2299161j)>,
+    #       "Giorno"          => 20,
+    #       "Mese"            => 10,
+    #       "Anno"            => 2015,
+    #       "Ora"             => 8,
+    #       "Giorno_Sett_Num" => 2,
+    #       "Festivo"         => "N",
+    #       "Festivita"       => "N",
+    #       "Stagione"        => "autunno",
+    #       "Exclude"         => "N",
+    #       "Peso"            => 1.0,
+    #       "Flow_Feriana"    => 70.0,
+    #       "Flow_Kasserine"  => 1.0,
+    #       "Flow_Zriba"      => 256.0,
+    #       "Flow_Nabeul"     => 49.0,
+    #       "Flow_Korba"      => 7.0,
+    #       "Flow_Totale"     => 9235.0
+    #     }
+    #   ]
+    #
+    # @return [Array<Hash>]
     def parse_csv
       csv_data = File.read(Ikigai::Config.path.db + Ikigai::Config.file.db_csv)
 

@@ -3,24 +3,26 @@
 # frozen_string_literal: true
 
 module ConsuntiviActions
-  # Mi connetto al file Excel del forecast
+  ##
+  # Avvio la macro nel file DB.xlsm che legge i file consuntivi, e li mette nel file stesso
+  #
   class LeggiConsuntivi
     # @!parse
     #   extend FunctionalLightService::Action
+    #   extend ForecastConcern::Excel
     extend FunctionalLightService::Action
 
-    # @promises excel [WIN32OLE]
-    # @promises workbook [WIN32OLE]
-    # promises :excel, :workbook
-
-    # @!method ConnectExcel
-    #   @yield Gestisce l'interfaccia per prendere i parametri da excel
-    #   @yieldparam ctx {FunctionalLightService::Context} Input contest
-    #   @yieldreturn {FunctionalLightService::Context} Output contest
+    # @!method LeggiConsuntivi(ctx)
+    #
+    #   @!scope class
+    #
+    #   @param ctx [FunctionalLightService::Context]
+    #
+    #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
         raise "Errore imprevisto esecuzione macro" unless leggi_consuntivi
-      end.map_err { |err| ctx.fail_and_return!("Errore macro \"LeggiConsuntivi\" file  #{Ikigai::Config.file.db_xls}:\n#{err}") }
+      end.map_err { |err| ctx.fail_and_return!("Errore macro \"LeggiConsuntivi\" file  #{Ikigai::Config.file.db_xls}:\n#{err} | #{__FILE__}:#{__LINE__}") }
     end
   end
 end

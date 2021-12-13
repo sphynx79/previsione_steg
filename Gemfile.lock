@@ -8,11 +8,11 @@ GIT
 
 GIT
   remote: https://github.com/testdouble/standard
-  revision: ee3314d30ec6d9d511324552c3e7e3be7df7b3cc
+  revision: 9a716f768d44cd7dec708ad449b668d1b778256d
   specs:
-    standard (1.4.0)
-      rubocop (= 1.22.3)
-      rubocop-performance (= 1.11.5)
+    standard (1.5.0)
+      rubocop (= 1.23.0)
+      rubocop-performance (= 1.12.0)
 
 GEM
   remote: http://rubygems.org/
@@ -58,7 +58,7 @@ GEM
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     parallel (1.21.0)
-    parser (3.0.2.0)
+    parser (3.0.3.2)
       ast (~> 2.4.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
@@ -74,11 +74,11 @@ GEM
     rb-readline (0.5.5)
     rcsv (0.3.1)
     redcarpet (3.5.1)
-    regexp_parser (2.1.1)
+    regexp_parser (2.2.0)
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.5)
-    rubocop (1.22.3)
+    rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -87,17 +87,17 @@ GEM
       rubocop-ast (>= 1.12.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.12.0)
+    rubocop-ast (1.15.0)
       parser (>= 3.0.1.1)
     rubocop-config-prettier (0.1.13)
-    rubocop-performance (1.11.5)
+    rubocop-performance (1.12.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
     rufo (0.13.0)
     rufus-scheduler (3.8.0)
       fugit (~> 1.1, >= 1.1.6)
-    solargraph (0.44.0)
+    solargraph (0.44.2)
       backport (~> 1.2)
       benchmark
       bundler (>= 1.17.2)
@@ -118,7 +118,9 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    yard (0.9.26)
+    webrick (1.7.0)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
 
 PLATFORMS
   ruby
@@ -141,9 +143,9 @@ DEPENDENCIES
   pry-byebug!
   rcsv (~> 0.3.1)
   redcarpet (~> 3.5.1)
-  rubocop (~> 1.22.3)
+  rubocop (~> 1.23.0)
   rubocop-config-prettier (~> 0.1.12)
-  rubocop-performance (~> 1.11.5)
+  rubocop-performance (~> 1.12.0)
   rufo (~> 0.13.0)
   rufus-scheduler (~> 3.8.0)
   solargraph (~> 0.44.0)
@@ -153,4 +155,4 @@ RUBY VERSION
    ruby 3.0.0p0
 
 BUNDLED WITH
-   2.2.28
+   2.2.30

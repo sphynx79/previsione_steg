@@ -3,21 +3,37 @@
 # frozen_string_literal: true
 
 module ReportActions
-  # Setto il path dove andare a salvare i PDF
+  ##
+  # Setto il path della directory dove andare a salvare i PDF
+  #
+  # <div class="lsp">
+  #   <h2>Expects:</h2>
+  #   - env (Hash) Enviroment Application<br>
+  #   <h2>Promises:</h2>
+  #   - path (String) Path dei file pdf<br>
+  # </div>
+  #
   class GetPath
     # @!parse
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    # @expects env[Array<Hash>] Enviroment Application
+    # @expects env[Hash] Enviroment Application
     # @promises path[String] Path dei file pdf
     expects :env
     promises :path
 
-    # @!method GetPath
-    #   @yield Cerco la directory dove salvare i PDF
-    #   @yieldparam ctx {FunctionalLightService::Context} Input contest
-    #   @yieldreturn {FunctionalLightService::Context} Output contest
+    # @!method GetPath(ctx)
+    #
+    #   @!scope class
+    #
+    #   @param ctx [FunctionalLightService::Context]
+    #
+    #   @expects env [Hash] Enviroment Application
+    #
+    #   @promises path [String] Path dei file pdf
+    #
+    #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       path = case ctx.env.dig(:command_options, :type)
                  when "consuntivo"

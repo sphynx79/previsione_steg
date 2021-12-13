@@ -52,6 +52,26 @@ module Ikigai
       def action_view
         env[:action].capitalize
       end
+
+      # Controllo il risultato dell'elaborazione dei miei step
+      #
+      # @param result [FunctionalLightService::Context] esito finale di tutte le azioni eseguite
+      #
+      # @return [void, Process::Status] non restituisce nulla se ha finito corretamente tutto il processo, altrimenti restituisce il codice di errore 2
+      def check_result(result, detail: false)
+        controller = name.sub("Controller", "")
+        if result.failure?
+          msg, location = result.message.split("|")
+          message = detail && location ? (msg + ": " + location) : msg
+          log.error "#{controller} => #{message} "
+          exit 2
+        elsif !result.message.empty?
+          log.info "#{controller} => #{result.message.split("|")[0]}" && nil
+        else
+          print "\n"
+          log.info { "#{controller} eseguito corretamente" } && nil
+        end
+      end
     end
   end
 end

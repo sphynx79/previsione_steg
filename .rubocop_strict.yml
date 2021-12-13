@@ -1,3 +1,6 @@
 Lint/Debugger: # don't leave binding.pry
   Enabled: true
   Exclude: []
+
+Security/Eval:
+  Enabled: false
