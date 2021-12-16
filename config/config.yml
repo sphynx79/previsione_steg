@@ -12,6 +12,7 @@ defaults: &defaults
     consuntivi_pdf: '../report/consuntivi/'
     forecast_pdf: '../report/forecast/'
     scada: '../Consuntivi/'
+    consuntivi_scada: '../Consuntivi/Download/'
   
   file:
     excel_forecast: 'Forecast.xlsm'
@@ -40,6 +41,7 @@ production:
       consuntivi_pdf: '../report/consuntivi/'
       forecast_pdf: '../report/forecast/'
       scada: '../Consuntivi/'
+      consuntivi_scada: '../Consuntivi/Download/'
 
 production_local:
   <<: *defaults

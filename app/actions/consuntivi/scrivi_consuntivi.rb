@@ -2,41 +2,39 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-module ReportActions
+module ConsuntiviActions
   ##
-  # Mi connetto al file Excel del forecast
+  # Scrivi i consuntivi letti del file del DB
   #
   # <div class="lsp">
-  #   <h2>Promises:</h2>
-  #   - excel (WIN32OLE)<br>
-  #   - workbook (WIN32OLE)<br>
+  #   <h2>Expects:</h2>
+  #   - consuntivi (Array) consuntivi di Steg letti dai file scaricati via FTP<br>
   # </div>
   #
-  class ConnectExcel
+  class ScriviConsuntivi
     # @!parse
     #   extend FunctionalLightService::Action
     #   extend ForecastConcern::Excel
     extend FunctionalLightService::Action
 
-    promises :excel, :workbook
+    expects :consuntivi
 
-    # @!method ConnectExcel(ctx)
+    # @!method DownloadConsuntivi(ctx)
     #
     #   @!scope class
     #
     #   @param ctx [FunctionalLightService::Context]
     #
-    #   @promises excel [WIN32OLE]
-    #   @promises workbook [WIN32OLE]
+    #   @expects consuntivi [Array] consuntivi di Steg letti dai file scaricati via FTP
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
-        ctx.excel = conneti_excel.freeze
-        ctx.workbook = conneti_workbook(Ikigai::Config.file.excel_forecast).freeze
+        first_row = worksheets("DB").Range("B4").end(-4121).row + 1
+        worksheets("DB").Range("B#{first_row}").Resize(ctx.consuntivi.size, ctx.consuntivi.first.size).Value = ctx.consuntivi
       end.map_err do |err|
         ctx.fail_and_return!(
-          {message: "Non riesco a connetermi al file #{Ikigai::Config.file.excel_forecast}, controllare che sia aperto",
+          {message: "Non riesco a scrivere i consuntivi al file #{Ikigai::Config.file.db_xls}",
            detail: err.message,
            location: "#{__FILE__}:#{__LINE__}"}
         )

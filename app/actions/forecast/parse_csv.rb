@@ -53,7 +53,13 @@ module ForecastActions
     executed do |ctx|
       try! do
         ctx.consuntivi = IceNine.deep_freeze!(parse_csv.reject { |row| row["Exclude"] == "Y" })
-      end.map_err { ctx.fail_and_return!("Non riesco a leggere il file DB2.csv controllare di avere fatto l'esportazione del database") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a leggere il file #{Ikigai::Config.file.db_csv} controllare di avere fatto l'esportazione del database",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
       ctx.fail_and_return!("Controllare che nel file DB2.csv siano presenti i dati esportortati dal DB") if ctx.consuntivi.nil?
     end
   end

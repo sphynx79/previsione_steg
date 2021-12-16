@@ -40,7 +40,13 @@ module ReportActions
         message.CC = Ikigai::Config.mail.cc
         message.Attachments.Add(ctx.path_pdf_report, 1)
         message.Send
-      end.map_err { ctx.fail_and_return!("Non riesco a inviare l'email controlare che Outlook sia aperto! | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a inviare l'email controlare che Outlook sia aperto!",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
 
     # tipo di report da inviare

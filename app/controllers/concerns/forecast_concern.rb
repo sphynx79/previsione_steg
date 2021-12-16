@@ -2,10 +2,13 @@
 # warn_indent: true
 # frozen_string_literal: true
 
+module ExcelConst end
+
 module ForecastConcern
   module Excel
     @@excel = nil
     @@workbook = nil
+    @@worksheet = nil
     @@params = {}
 
     # parametri per far girare il forecast
@@ -27,6 +30,8 @@ module ForecastConcern
     # @return [WIN32OLE]
     def conneti_excel
       @@excel ||= WIN32OLE.connect("Excel.Application")
+      WIN32OLE.const_load(@@excel, ExcelConst)
+      @@excel
     end
 
     # si connette a un file il cui nome è passato come parametro
@@ -38,6 +43,16 @@ module ForecastConcern
     def conneti_workbook(workbook_name)
       @@excel.Workbooks(workbook_name).activate
       @@workbook = @@excel.Workbooks(workbook_name)
+    end
+
+    # si connette alllo sheet del file excel
+    #
+    # @param worksheet_name [String] nome dello sheet a cui connetersi
+    #
+    #
+    # @return [WIN32OLE]
+    def worksheets(worksheet_name)
+      @@worksheet = @@workbook.worksheets(worksheet_name)
     end
 
     # Avvia la macro GetElement del file Forecast.xlsm
@@ -320,9 +335,15 @@ module ForecastConcern
       @@excel.Run("'DB.xlsm'!LeggiConsuntivi")
     end
 
-    # Avvia la macro nel file Forecast.xlsm che refresha tutti i link del file
-    def refresh_links
-      @@excel.Run("'Forecast.xlsm'!RefreshLinks")
+    # Aggiorna i link al file passato come parametro
+    #
+    # @param workbook [WIN32OLE]
+    # @param path [String]
+    #
+    # @return [Void]
+    def refresh_links(workbook, path)
+      workbook.UpdateLink(path, ExcelConst::XlExcelLinks)
+      # @@excel.Run("'Forecast.xlsm'!RefreshLinks")
     end
 
     # Avvia la macro CopyToCSV del fileDB2.xlsm

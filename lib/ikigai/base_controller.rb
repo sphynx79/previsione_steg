@@ -61,12 +61,18 @@ module Ikigai
       def check_result(result, detail: false)
         controller = name.sub("Controller", "")
         if result.failure?
-          msg, location = result.message.split("|")
-          message = detail && location ? (msg + ": " + location) : msg
+          if result.message.is_a?(Hash)
+            msg = result.message.dig(:message) || ""
+            location = result.message.dig(:location) || ""
+            error = result.message.dig(:detail) || ""
+            message = detail ? (msg + "\n\n" + location + "\n\n" + error) : msg
+          else
+            message = result.message
+          end
           log.error "#{controller} => #{message} "
           exit 2
         elsif !result.message.empty?
-          log.info "#{controller} => #{result.message.split("|")[0]}" && nil
+          log.info "#{controller} => #{result.message} "
         else
           print "\n"
           log.info { "#{controller} eseguito corretamente" } && nil

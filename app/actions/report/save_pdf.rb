@@ -28,7 +28,12 @@ module ReportActions
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       feedback = save_pdf(ctx.path_pdf_report)
-      ctx.fail_and_return!("Non sono riuscito a salvare il file \"#{ctx.path_pdf_report}\" | #{__FILE__}:#{__LINE__}") unless feedback
+      unless feedback
+        ctx.fail_and_return!(
+          {message: "Non sono riuscito a salvare il file \"#{ctx.path_pdf_report}\"",
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
   end
 end

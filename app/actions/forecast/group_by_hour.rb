@@ -88,7 +88,13 @@ module ForecastActions
         hours.each do |h|
           ctx.filtered_data_group_by_hour[h] = group_by_hour[h]
         end
-      end.map_err { ctx.fail_and_return!("Errore nel raggruppare i consuntivi per ora | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Errore nel raggruppare i consuntivi per ora",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
       ctx.filtered_data_group_by_hour.freeze
     end
   end

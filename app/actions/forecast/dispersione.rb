@@ -84,7 +84,13 @@ module ForecastActions
             w["Flow_Totale"] * 1000
           end.each_slice(1).to_a
         end
-      end.map_err { ctx.fail_and_return!("Errore non sono riuscito a calcolare la dispersione delle curve | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Errore non sono riuscito a calcolare la dispersione delle curve",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
 
     # fa la somma di tutte le ore per ogni stazione, e somma tutte le stazioni, quindi ottengo un totale giorno di tutte le stazioni

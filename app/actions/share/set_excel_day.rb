@@ -29,12 +29,19 @@ module ShareActions
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]<br>
     executed do |ctx|
+      ctx.data = nil
       # @type [String]
       data = ctx.dig(:env, :command_options, :day)
       try! do
         set_day(data)
-      end.map_err { ctx.fail_and_return!("#{self.to_s.split("::").last}: Non riesco a impostare la data in file #{Ikigai::Config.file.excel_forecast} Forecast V1 cella M3 | #{__FILE__}:#{__LINE__} ") }
-      ctx.data = data.delete("/").freeze
+        ctx.data = data.delete("/").freeze
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a impostare la data in file #{Ikigai::Config.file.excel_forecast} Forecast V1 cella M3",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
   end
 end

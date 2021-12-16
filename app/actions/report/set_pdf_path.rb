@@ -36,10 +36,17 @@ module ReportActions
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
+        ctx.path_pdf_report = nil
         file_name = "/STEG_#{type}_#{ctx.data}_rev#{version}.pdf"
         full_path = (ctx.path + file_name).gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR)
         ctx.path_pdf_report = full_path.freeze
-      end.map_err { ctx.fail_and_return!("Non riesco a settare il path dove salvare i PDF dei report | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a settare il path dove salvare i PDF dei report",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
 
     # cerco l'ultima versionamento da assegnarli
@@ -60,6 +67,8 @@ module ReportActions
       ctx.env.dig(:command_options, :type) == "forecast" ? "FCT" : "CONS"
     end
 
-    private_class_method :version, :type
+    private_class_method \
+      :version,
+      :type
   end
 end

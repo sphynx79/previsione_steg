@@ -35,6 +35,7 @@ module ReportActions
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
+      ctx.path = nil
       path = case ctx.env.dig(:command_options, :type)
                  when "consuntivo"
                    Ikigai::Config.path.consuntivi_pdf
@@ -42,7 +43,12 @@ module ReportActions
                    Ikigai::Config.path.forecast_pdf
 
       end
-      ctx.fail_and_return!("Constrollare che la directory \"#{File.expand_path(path)}\" esiste") if path.nil? || !File.directory?(path)
+      if path.nil? || !File.directory?(path)
+        ctx.fail_and_return!(
+          {message: "Constrollare che la directory \"#{File.expand_path(path)}\" esiste",
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
       ctx.path = File.expand_path(path).freeze
     end
   end

@@ -48,7 +48,13 @@ module ReportActions
         end
         ctx.html = ERB.new(File.read("./template/report.html.erb"), trim_mode: "-").result(binding).freeze
         # rubocop:enable Layout/ExtraSpacing
-      end.map_err { ctx.fail_and_return!("Non riesco a creare l'HTML da inserire nel body dell'email | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a creare l'HTML da inserire nel body dell'email",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
 
     # Trasforma un numero senza punti in un numero con il punto per separare le migliaia

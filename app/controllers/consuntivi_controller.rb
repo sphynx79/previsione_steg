@@ -49,8 +49,8 @@ class ConsuntiviController < Ikigai::BaseController
   def self.call(env:)
     # @type [FunctionalLightService::Context]
     result = with(env: env).reduce(steps)
-    verbose = env.dig(:global_options, :verbose)
-    check_result(result, detail: verbose)
+    err_datail_enabled = env.dig(:global_options, :verbose) > "0"
+    check_result(result, detail: err_datail_enabled)
     nil
   rescue => e
     msg = e.message + "\n"
@@ -70,10 +70,14 @@ class ConsuntiviController < Ikigai::BaseController
   #  - **@promises** workbook [WIN32OLE] Instance Excel del file excel del DB
   #
   # {ConsuntiviActions::LeggiConsuntivi}
-  # Avvio la macro nel file DB.xlsm che legge i file consuntivi, e li mette nel file stesso
+  # Legge i consuntivi e li scrive nel DB
   #
-  # {ShareActions::RefreshLinks}
+  # {ConsuntiviActions::LeggiConsuntivi}
+  # Legge i consuntivi e li scrive nel DB
+  #
+  # {ShareActions::ScriviConsuntivi}
   # Refresha i collegamenti del file Excel del forecast
+  #   - **@expects** consuntivi [Array] consuntivi di Steg letti dai file scaricati via FTP
   #
   # @return [FunctionalLightService::Context] Contesto finale dopo aver eseguito tutte le azioni
   def self.steps
@@ -82,7 +86,8 @@ class ConsuntiviController < Ikigai::BaseController
       DownloadConsuntivi,
       ConnectExcel,       # P:[excel, workbook]
       LeggiConsuntivi,
-      RefreshLinks
+      ScriviConsuntivi,
+      RefreshLinks        # E[excel]
     ]
     # rubocop:enable Layout/ExtraSpacing
   end

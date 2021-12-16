@@ -56,10 +56,16 @@ module ForecastActions
     def self.compila(previsione, sheet)
       try! do
         previsione.each do |ps, v|
-          column = column(ps)
-          ctx.workbook.Worksheets(sheet).Range("#{column}3:#{column}26").alue = v.each_slice(1).to_a
+          column = column_ps(ps)
+          ctx.workbook.Worksheets(sheet).Range("#{column}3:#{column}26").value = v.each_slice(1).to_a
         end
-      end.map_err { Failure("Non riesco a compilare la #{previsione} | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco scrivere la #{sheet} nel file #{Ikigai::Config.file.excel_forecast}",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
 
     # compila il foglio della dispersione del file forecast
@@ -76,23 +82,38 @@ module ForecastActions
           else
             first_cell = last_cell == 0 ? 3 : last_cell + 1
             last_cell += last_cell == 0 ? ctx.dispersione[k].size + 2 : ctx.dispersione[k].size
-            column = case k
-                    when 2015 then "C"
-                    when 2016 then "D"
-                    when 2017 then "E"
-                    when 2018 then "F"
-                    when 2019 then "G"
-                    when 2020 then "H"
-                    when 2021 then "I"
-                    when 2022 then "J"
-                    when 2023 then "K"
-                    when 2024 then "L"
-                    when 2025 then "M"
-            end
-            ctx.workbook.Worksheets("Previsione_Dispersione").Range("#{column}#{first_cell}:#{column}#{last_cell}").value = ctx.dispersione[k]
+            column_year = column_year(k)
+            ctx.workbook.Worksheets("Previsione_Dispersione").Range("#{column_year}#{first_cell}:#{column_year}#{last_cell}").value = ctx.dispersione[k]
           end
         end
-      end.map_err { Failure("Non riesco a compilare la disperzione delle curve | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco scrivere disperzione delle curve nel file #{Ikigai::Config.file.excel_forecast}",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
+    end
+
+    # seleziona la colonna relativa all'anno
+    #
+    # @param year [Integer]
+    #
+    # @return [String]
+    def self.column_year(year)
+      case year
+      when 2015 then "C"
+      when 2016 then "D"
+      when 2017 then "E"
+      when 2018 then "F"
+      when 2019 then "G"
+      when 2020 then "H"
+      when 2021 then "I"
+      when 2022 then "J"
+      when 2023 then "K"
+      when 2024 then "L"
+      when 2025 then "M"
+      end
     end
 
     # seleziona la colonna relativa alla ps
@@ -100,7 +121,7 @@ module ForecastActions
     # @param ps [String]
     #
     # @return [String]
-    def self.column(ps)
+    def self.column_ps(ps)
       case ps
       when "feriana" then "C"
       when "kasserine" then "D"
@@ -111,7 +132,8 @@ module ForecastActions
     end
 
     private_class_method \
-      :column,
+      :column_ps,
+      :column_year,
       :compila,
       :compila_dispersione
   end

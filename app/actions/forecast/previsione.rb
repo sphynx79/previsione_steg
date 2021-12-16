@@ -66,7 +66,13 @@ module ForecastActions
         PS.each do |ps|
           try! do
             ctx.previsione[ps] << media_ponderata(ps, fcs_hour) * 1000
-          end.map_err { ctx.fail_and_return!("Errore non sono riuscito a fare la media ponderata per la ps:#{ps.capitalize} ora:#{hour} | #{__FILE__}:#{__LINE__}") }
+          end.map_err do |err|
+            ctx.fail_and_return!(
+              {message: "Errore non sono riuscito a fare la media ponderata per la ps:#{ps.capitalize} ora:#{hour}",
+               detail: err.message,
+               location: "#{__FILE__}:#{__LINE__}"}
+            )
+          end
         end
       end
     end

@@ -75,7 +75,7 @@ module ForecastActions
       return Success(consuntivi) if ctx.params[:giorno_settimana] == "NO"
       try! do
         consuntivi.select { |row| row["Giorno_Sett_Num"] == ctx.params[:day].value.first["Giorno_Sett_Num"] }
-      end.map_err { Failure("Non riesco ad applicare il filtro giorno_settimana | #{__FILE__}:#{__LINE__}") }
+      end.map_err { Failure("Non riesco ad applicare il filtro giorno_settimana") }
     end
 
     # Applico il filtro che mi seleziona se è un festivo o un settimanale
@@ -88,7 +88,7 @@ module ForecastActions
       try! do
         yes_not = ctx.params[:festivo] == "SI" ? "Y" : "N"
         consuntivi.select { |row| row["Festivo"] == yes_not }
-      end.map_err { Failure("Non riesco ad applicare il filtro festivo | #{__FILE__}:#{__LINE__}") }
+      end.map_err { Failure("Non riesco ad applicare il filtro festivo") }
     end
 
     # Applico il filtro che mi seleziona se è una festività
@@ -101,7 +101,7 @@ module ForecastActions
       try! do
         yes_not = ctx.params[:festivita] == "SI" ? "Y" : "N"
         consuntivi.select { |row| row["Festivita"] == yes_not }
-      end.map_err { Failure("Non riesco ad applicare il filtro festivita | #{__FILE__}:#{__LINE__}") }
+      end.map_err { Failure("Non riesco ad applicare il filtro festivita") }
     end
 
     private_class_method \

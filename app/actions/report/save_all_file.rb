@@ -33,7 +33,13 @@ module ReportActions
     def self.save(workbook_name)
       try! do
         save_workbook(workbook_name)
-      end.map_err { ctx.fail_and_return!("Non riesco a salvare il file #{workbook_name} | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a salvare il file #{workbook_name}",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
 
     private_class_method :save

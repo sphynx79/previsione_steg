@@ -22,7 +22,13 @@ module ReportActions
     executed do |ctx|
       try! do
         export_db
-      end.map_err { ctx.fail_and_return!("Non riesco ad esportare il DB nel file #{Ikigai::Config.file.db_csv} | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco ad esportare il DB nel file #{Ikigai::Config.file.db_csv}",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
   end
 end

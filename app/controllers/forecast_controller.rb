@@ -48,8 +48,8 @@ class ForecastController < Ikigai::BaseController
   def self.call(env:)
     # @type [FunctionalLightService::Context]
     result = with(env: env).reduce(steps)
-    verbose = env.dig(:global_options, :verbose)
-    check_result(result, detail: verbose)
+    err_datail_enabled = env.dig(:global_options, :verbose) > "0"
+    check_result(result, detail: err_datail_enabled)
     nil
   rescue => e
     msg = e.message + "\n"
@@ -75,6 +75,7 @@ class ForecastController < Ikigai::BaseController
   #
   # {ShareActions::RefreshLinks}
   # Fai il refresh dei link nel file Forecast, chimando una macro presente nel file excel
+  #   - **@expects** excel [WIN32OLE]
   #
   # {ForecastActions::ParseCsv}
   # Prendo dal file csv tutti i dati consuntivi
@@ -149,7 +150,7 @@ class ForecastController < Ikigai::BaseController
       ConnectExcel,         # E:[]                                                                  P:[excel, workbook]
       SetExcelDay,          # E:[]                                                                  P:[data]
       GetExcelParams,       # E:[],                                                                 P:[params]
-      RefreshLinks,         # E:[]                                                                  P:[]
+      RefreshLinks,         # E:[excel]                                                                  P:[]
       ParseCsv,             # E:[]                                                                  P:[consuntivi]
       FilterData,           # E:[consuntivi, params]                                                P:[filtered_data]
       GroupByHour,          # E:[filtered_data]                                                     P:[filtered_data_group_by_hour]

@@ -37,7 +37,13 @@ module ConsuntiviActions
         ctx.excel = conneti_excel.freeze
         # @type [WIN32OLE]
         ctx.workbook = conneti_workbook(Ikigai::Config.file.db_xls).freeze
-      end.map_err { ctx.fail_and_return!("Non riesco a connetermi al file #{Ikigai::Config.file.db_xls}, controllare che sia aperto | #{__FILE__}:#{__LINE__}") }
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a connetermi al file #{Ikigai::Config.file.db_xls}, controllare che sia aperto",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
   end
 end
