@@ -1,3 +1,9 @@
+## 1.3.0 (2021-12-20)
+### Changed
+-  Implementato in ruby lo scaricamento dei consuntivi dal server FTP  ( 2021-12-20 ) [ sphynx79]
+
+
+
 ## 1.2.5 (2021-12-16)
 
 
