@@ -19,7 +19,6 @@ defaults: &defaults
     db_xls: 'DB.xlsm'
     db2_xls: 'DB2.xlsm'
     db_csv: 'DB2.csv'
-    bat_dowload_scada: 'SyncToRemoteScript.bat'
 
 development:
   <<: *defaults

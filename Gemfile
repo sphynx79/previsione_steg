@@ -16,6 +16,7 @@ gem "rcsv", "~>0.3.1"
 gem "pastel", "~>0.8.0"
 gem "better_settings", "~>1.0.1"
 gem "rufus-scheduler", "~>3.8.0", require: false
+gem "net-sftp", "~>3.0.0"
 
 group :development, :test do
   gem "amazing_print", "~>1.4.0", require: "ap"

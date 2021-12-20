@@ -62,7 +62,7 @@ class ConsuntiviController < Ikigai::BaseController
   # Azioni eseguite in serie per lo scaricamento e lettura consuntivi
   #
   # {ConsuntiviActions::DownloadConsuntivi}
-  # Avvio lo script SyncToRemoteScript.bat che mi scarica dal FTP di scada i consuntivi
+  # Avvio lo scaricamento dei consuntivi dal FTP di scada
   #
   # {ConsuntiviActions::ConnectExcel}
   # Mi connetto al file Excel del db<br/>

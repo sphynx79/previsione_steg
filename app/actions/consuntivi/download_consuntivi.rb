@@ -4,7 +4,7 @@
 
 module ConsuntiviActions
   ##
-  # Avvio lo script SyncToRemoteScript.bat che mi scarica dal FTP di scada i consuntivi
+  # Avvio lo scaricamento dei consuntivi dal FTP di scada
   #
   class DownloadConsuntivi
     # @!parse
@@ -19,17 +19,41 @@ module ConsuntiviActions
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
-      # @type [String]
-      cmd = Ikigai::Config.path.scada + Ikigai::Config.file.bat_dowload_scada
+      now = DateTime.now - 5
 
-      # @type [String]
-      _stdout,
-      # @type [String]
-      stderr,
-      # @type [Process::Status]
-      wait_thr = Open3.capture3(cmd)
-
-      ctx.fail_and_return!("Errore nello scaricare dall'FTP i consuntivi:\n#{stderr.chomp}") if wait_thr.exitstatus != 0
+      begin
+        Net::SFTP.start("10.97.195.213", "SCADA", {password: "scadaprod", port: 10022, timeout: 30, non_interactive: true}) do |sftp|
+          sftp.dir.glob("/Archive", "*.dat") do |file|
+            # puts entry.longname
+            if Time.at(file.attributes.mtime).to_datetime > now
+              name = file.name
+              local_path = "#{Ikigai::Config.path.consuntivi_scada}#{name}"
+              unless File.exist?(local_path)
+                sftp.download("/Archive/#{name}", local_path)
+              end
+            end
+          end
+        end
+      rescue Net::SSH::AuthenticationFailed => err
+        ctx.fail_and_return!(
+          {message: "Errore di auteticazione al server FTP controllare user e password",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+        ctx.fail_and_return!("Errore di auteticazione al server FTP controllare user e password")
+      rescue Net::SFTP::StatusException => err
+        ctx.fail_and_return!(
+          {message: "Errore nello scariamenti del file #{err.text.sub("open ", "")} dal server FTP",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      rescue => err
+        ctx.fail_and_return!(
+          {message: "Errore nello scariamenti dei consuntivi dal server FTP",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
     end
   end
 end
