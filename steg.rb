@@ -60,8 +60,7 @@ module PrevisioneSteg
   command :forecast do |c|
     c.desc "day report [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production forecast --dt 10/04/2021", \
-      desc: "Avvio del forecast"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production forecast --dt 10/04/2021", desc: "Avvio del forecast"
 
     c.action do
       Ikigai::Application.call(@env)
@@ -205,9 +204,9 @@ module PrevisioneSteg
         parameters.map! do |_, arg|
           if tp.binding.local_variable_defined?(arg)
             arg_content = tp.binding.local_variable_get(arg)
-            if arg_content.kind_of?(Array) && arg_content.size > 20
+            if arg_content.is_a?(Array) && arg_content.size > 20
               "#{arg} = #{arg_content[0..5]}"
-            elsif arg_content.kind_of?(Hash)
+            elsif arg_content.is_a?(Hash)
               "#{arg} = #{arg_content.first}"
             else
               "#{arg} = #{tp.binding.local_variable_get(arg)}"

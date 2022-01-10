@@ -57,7 +57,7 @@ module ForecastActions
         curve_up, curve_down = limit
         ctx.previsione_up = previsione(curve_up)
         ctx.previsione_down = previsione(curve_down)
-      end.map_err do
+      end.map_err do |err|
         ctx.fail_and_return!(
           {message: "Errore non sono riuscito a calcolare il limite superiore o inferiore della mia previsione",
            detail: err.message,
