@@ -135,29 +135,36 @@ class ForecastController < Ikigai::BaseController
   # @example dispersione
   #     {2015 => [75000, 80000], 2016 => [8000, 445544], 2017 => [332432, 31243, 4324342], 2018 => [32314, 3243432] ... }
   #
+  # {ForecastActions::DailyEvolution}
+  # Prendo i valori della previsione corrente per copiarli nella tabella daily evolution del forecast
+  #   - **@expects** workbook [WIN32OLE]
+  #   - **@promises** daily_evolution [Hash] Previsione corrente
+  #
   # {ForecastActions::CompilaForecastExcel}
   # Compila in il file Forecast,xlsm con la mia previsone
   #   **@expects** previsione [Hash<Array>] la mia previsione ogni chiave dell'Hash è una stazione
   #   **@expects** previsione_up [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sopra la mia previsione
   #   **@expects** previsione_down [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sotto la mia previsione
   #   **@expects** dispersione [Hash<Array>] hash della disperzione, nel quale ogni chiave e un anno, e i valori sono un array con tutti le curve relative a quell'anno
+  #   **@expects** daily_evolution [Hash] contiene previsione corrente
   #   **@expects** workbook [WIN32OLE] file excel del mio forecast
   #
   # @return [FunctionalLightService::Context] Contesto finale dopo aver eseguito tutte le azioni
   def self.steps
     # rubocop:disable Layout/ExtraSpacing
     [
-      ConnectExcel,         # E:[]                                                                  P:[excel, workbook]
-      SetExcelDay,          # E:[]                                                                  P:[data]
-      GetExcelParams,       # E:[],                                                                 P:[params]
-      RefreshLinks,         # E:[excel]                                                                  P:[]
-      ParseCsv,             # E:[]                                                                  P:[consuntivi]
-      FilterData,           # E:[consuntivi, params]                                                P:[filtered_data]
-      GroupByHour,          # E:[filtered_data]                                                     P:[filtered_data_group_by_hour]
-      Previsione,           # E:[filtered_data_group_by_hour]                                       P:[previsione]
-      PrevisionLimit,       # E:[previsione,filtered_data_group_by_hour, params]                    P:[previsone_up, previsone_down]
-      Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down]          P:[dispersione]
-      CompilaForecastExcel  # E:[previsione, previsione_up, previsione_down, dispersione, workbook] P:[]
+      ConnectExcel,         # E:[]                                                                                   P:[excel, workbook]
+      SetExcelDay,          # E:[]                                                                                   P:[data]
+      GetExcelParams,       # E:[],                                                                                  P:[params]
+      RefreshLinks,         # E:[excel]                                                                              P:[]
+      ParseCsv,             # E:[]                                                                                   P:[consuntivi]
+      FilterData,           # E:[consuntivi, params]                                                                 P:[filtered_data]
+      GroupByHour,          # E:[filtered_data]                                                                      P:[filtered_data_group_by_hour]
+      Previsione,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]
+      PrevisionLimit,       # E:[previsione,filtered_data_group_by_hour, params]                                     P:[previsone_up, previsone_down]
+      Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down]                           P:[dispersione]
+      DailyEvolution,       # E:[workbook]                                                                           P:[daily_evolution]
+      CompilaForecastExcel  # E:[previsione, previsione_up, previsione_down, dispersione, daily_evolution, workbook] P:[]
     ]
     # rubocop:enable Layout/ExtraSpacing
   end

@@ -94,21 +94,25 @@ class ReportController < Ikigai::BaseController
   # {ReportActions::ExportDB}
   # Esporto il DB2.xlsm nel file DB2.csv se il report che sto generando è un consuntivo
   #
+  # {ReportActions::ClearDailyEvolution}
+  # Pulisco la tabella daily evolution del forecast
+  #
   # {ReportActions::SaveAllFile}
   # Salvo i file Forecast.xlsm | Db.xlsm | DB2.xlsm se il report che sto generando è un consuntivo
   #
   def self.steps
     # rubocop:disable Layout/ExtraSpacing
     [
-      ConnectExcel,                                                                             # E:[]                       P:[excel, workbook]
-      SetExcelDay,                                                                              # E:[]                       P:[data]
-      GetPath,                                                                                  # E:[]                       P:[path]
-      SetPdfPath,                                                                               # E:[]                       P:[path_pdf_report]
-      SavePdf,                                                                                  # E:[path_pdf_report]        P:[]
-      MakeHtml,                                                                                 # E:[]                       P:[html]
-      SendEmail,                                                                                # E:[html, path_pdf_report]  P:[]
-      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ExportDB),    # E:[]                       P:[]
-      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, SaveAllFile)  # E:[]                       P:[]
+      ConnectExcel,                                                                                      # E:[]                       P:[excel, workbook]
+      SetExcelDay,                                                                                       # E:[]                       P:[data]
+      GetPath,                                                                                           # E:[]                       P:[path]
+      SetPdfPath,                                                                                        # E:[]                       P:[path_pdf_report]
+      SavePdf,                                                                                           # E:[path_pdf_report]        P:[]
+      MakeHtml,                                                                                          # E:[]                       P:[html]
+      SendEmail,                                                                                         # E:[html, path_pdf_report]  P:[]
+      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ExportDB),             # E:[]                       P:[]
+      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ClearDailyEvolution),  # E:[]                       P:[]
+      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, SaveAllFile)           # E:[]                       P:[]
     ]
     # rubocop:enable Layout/ExtraSpacing
   end

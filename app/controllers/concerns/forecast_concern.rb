@@ -352,6 +352,13 @@ module ForecastConcern
     def export_db
       @@excel.Run("'DB2.xlsm'!CopyToCSV")
     end
+
+    # Pulisco la tabella daily evolution del forecast
+    #
+    # @return [Void]
+    def clear_daily_evolution
+      @@workbook.Worksheets("Forecast").Range("$D$7:$H$17").value = ""
+    end
   end
 
   module Csv

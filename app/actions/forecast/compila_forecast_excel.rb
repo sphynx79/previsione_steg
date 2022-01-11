@@ -12,6 +12,7 @@ module ForecastActions
   #   - previsione_up (Hash(Array)) Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione<br>
   #   - previsione_down (Hash(Array)) Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione<br>
   #   - dispersione (Hash(Array)) Mette in un hash la mia disperzione, nel quale ogni chiave e un anno, e i valoru sono un array con tutti le curve relative a quell'anno<br>
+  #   - daily_evolution (Hash) contiene previsione corrente<br>
   #   - workbook (WIN32OLE)<br>
   # </div>
   #
@@ -25,6 +26,7 @@ module ForecastActions
       :previsione_up,
       :previsione_down,
       :dispersione,
+      :daily_evolution,
       :workbook
 
     # @!method CompilaForecastExcel(ctx)
@@ -37,6 +39,7 @@ module ForecastActions
     #   @expects previsione_up [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sopra la mia previsione
     #   @expects previsione_down [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sotto la mia previsione
     #   @expects dispersione [Hash<Array>] hash della disperzione, nel quale ogni chiave e un anno, e i valori sono un array con tutti le curve relative a quell'anno
+    #   @expects daily_evolution [Hash] Previsione corrente
     #   @expects workbook [WIN32OLE] file excel del mio forecast
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
@@ -44,6 +47,7 @@ module ForecastActions
       compila(ctx.previsione, "Previsione")
       compila(ctx.previsione_down, "Previsione_Down")
       compila(ctx.previsione_up, "Previsione_UP")
+      compila_daily_evolution
       compila_dispersione
     end
 
@@ -62,6 +66,28 @@ module ForecastActions
       end.map_err do |err|
         ctx.fail_and_return!(
           {message: "Non riesco scrivere la #{sheet} nel file #{Ikigai::Config.file.excel_forecast}",
+           detail: err.message,
+           location: "#{__FILE__}:#{__LINE__}"}
+        )
+      end
+    end
+
+    # compila la tabella daily evolution del foglio forecast del forecast
+    #
+    # @return [Void]
+    def self.compila_daily_evolution
+      try! do
+        now = Time.now().hour
+        if now.between?(10, 20)
+          rnum = now - 3
+          worksheet = ctx.workbook.sheets("Forecast")
+          worksheet.Range("$D$#{rnum}").value = ctx.daily_evolution[:nomina]
+          worksheet.Range("$F$#{rnum}").value = ctx.daily_evolution[:previsione]
+          worksheet.Range("$H$#{rnum}").value = ctx.daily_evolution[:progressivo]
+        end
+      end.map_err do |err|
+        ctx.fail_and_return!(
+          {message: "Non riesco a compilare la tabella daily evolution foglio forecast del file #{Ikigai::Config.file.excel_forecast}",
            detail: err.message,
            location: "#{__FILE__}:#{__LINE__}"}
         )
@@ -135,6 +161,7 @@ module ForecastActions
       :column_ps,
       :column_year,
       :compila,
+      :compila_daily_evolution,
       :compila_dispersione
   end
 end
