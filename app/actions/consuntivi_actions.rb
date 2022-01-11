@@ -5,6 +5,7 @@
 module ConsuntiviActions
   Dir.glob(Dir.glob(__dir__ + "/consuntivi/" + "**/*.rb"), &method(:require))
   constants.each do |action_class|
+    const_get(action_class).include(Ikigai::Log)
     ForecastConcern.constants.each do |concern_module|
       const_get(action_class).extend(ForecastConcern.const_get(concern_module))
     end
