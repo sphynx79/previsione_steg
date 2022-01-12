@@ -119,9 +119,10 @@ module ForecastConcern
 
     # setto la data nelle mie variable params prendendola dal file del forecast
     #
-    # @return [String]
+    # @return [DateTime]
     def data
-      @@params[:data] ||= get_param("data", "Forecast V1")
+      # @@params[:data] ||= get_param("data", "Forecast V1")
+      @@params[:data] ||= @@workbook.sheets("Forecast V1").Range("$M$3").value.to_datetime
     end
 
     # legge le caratteristiche del giorno che devo fare il forecast, tipo il giorno settimana, se è un festivo, ecc..
@@ -315,8 +316,9 @@ module ForecastConcern
     # @param  data [String] Data da impostare nel file excel
     #
     # @return [void]
-    def set_day(data)
-      @@workbook.Worksheets("Forecast V1").Range("M3").value = data + " 08:00:00"
+    def set_day(data_hour)
+      # @TODO: vedere se questo cambiamento da problemi per gli altri comandi
+      @@workbook.Worksheets("Forecast V1").Range("M3").value = data_hour
       nil
     end
 

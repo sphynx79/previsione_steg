@@ -37,7 +37,7 @@ module ReportActions
     executed do |ctx|
       try! do
         ctx.path_pdf_report = nil
-        file_name = "/STEG_#{type}_#{ctx.data}_rev#{version}.pdf"
+        file_name = "/STEG_#{type}_#{data}_rev#{version}.pdf"
         full_path = (ctx.path + file_name).gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR)
         ctx.path_pdf_report = full_path.freeze
       end.map_err do |err|
@@ -53,7 +53,7 @@ module ReportActions
     #
     # @return [Integer]
     def self.version
-      files = Dir.glob("#{ctx.path}/STEG_*_#{ctx.data}_rev*.pdf")
+      files = Dir.glob("#{ctx.path}/STEG_*_#{data}_rev*.pdf")
       return "1" if files.empty?
       last_version = files.max_by { |x| x.scan(/rev\d/) }.match(%r{(?<version>rev\d)})
       return "1" if last_version.nil?
@@ -67,8 +67,16 @@ module ReportActions
       ctx.env.dig(:command_options, :type) == "forecast" ? "FCT" : "CONS"
     end
 
+    # setto la data
+    #
+    # @return [String]
+    def self.data
+      ctx.env.dig(:command_options, :type) == "forecast" ? ctx.data.tr(" ", "_")[0..10] : ctx.data[0..7]
+    end
+
     private_class_method \
       :version,
-      :type
+      :type,
+      :data
   end
 end

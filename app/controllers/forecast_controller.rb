@@ -149,7 +149,10 @@ class ForecastController < Ikigai::BaseController
   #   **@expects** daily_evolution [Hash] contiene previsione corrente
   #   **@expects** workbook [WIN32OLE] file excel del mio forecast
   #
-  # @return [FunctionalLightService::Context] Contesto finale dopo aver eseguito tutte le azioni
+  # {ForecastActions::SaveHistory}
+  # Salvo nel database la previsione corrente
+  #   - **@expects** daily_evolution [Hash] contiene previsione corrente
+  #
   def self.steps
     # rubocop:disable Layout/ExtraSpacing
     [
@@ -164,7 +167,8 @@ class ForecastController < Ikigai::BaseController
       PrevisionLimit,       # E:[previsione,filtered_data_group_by_hour, params]                                     P:[previsone_up, previsone_down]
       Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down]                           P:[dispersione]
       DailyEvolution,       # E:[workbook]                                                                           P:[daily_evolution]
-      CompilaForecastExcel  # E:[previsione, previsione_up, previsione_down, dispersione, daily_evolution, workbook] P:[]
+      CompilaForecastExcel, # E:[previsione, previsione_up, previsione_down, dispersione, daily_evolution, workbook] P:[]
+      SaveHistory           # E:[daily_evolution] P:[]
     ]
     # rubocop:enable Layout/ExtraSpacing
   end

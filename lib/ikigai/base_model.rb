@@ -9,11 +9,11 @@ module Ikigai
     attr_reader :message
 
     def initialize(database: nil)
-      # @type = database
+      @type = database
     end
 
     def connect
-      # @type == 'access' ? connect_access : connect_sqlite
+      @type == "access" ? connect_access : connect_sqlite
     end
 
     #
@@ -24,20 +24,22 @@ module Ikigai
     # @return [SQLite3::Database]
     #
     def connect_sqlite
-      # db_path = File.expand_path(Muletto::Config.database.path + '.db', APP_ROOT)
-      # begin
-      #   @client = SQLite3::Database.open db_path
-      #   @client.execute 'PRAGMA journal_mode = MEMORY;'
-      #   @client.execute 'PRAGMA cache_size=4000;'
-      #   @client.execute 'PRAGMA synchronous = OFF;'
-      #   @client.execute 'PRAGMA count_changes=OFF;'
-      # rescue StandardError
-      #   @message = <<~MESSAGE
-      #     Non riesco connetermi al db Sqlite:
-      #     1) Controllare che il file #{db_path} esiste
-      #   MESSAGE
-      #   @client = nil
-      # end
+      db_path = File.expand_path(Ikigai::Config.database.path + ".db", APP_ROOT)
+      begin
+        @client = SQLite3::Database.open db_path
+        @client.execute "PRAGMA journal_mode = MEMORY;"
+        @client.execute "PRAGMA cache_size=4000;"
+        @client.execute "PRAGMA synchronous = OFF;"
+        @client.execute "PRAGMA count_changes=OFF;"
+        # @TODO: e piu pratico ma degrada le performance vedere se lasciarlo
+        @client.results_as_hash = true
+      rescue
+        @message = <<~MESSAGE
+          Non riesco connetermi al db Sqlite:
+          1) Controllare che il file #{db_path} esiste
+        MESSAGE
+        @client = nil
+      end
     end
 
     def connect_access

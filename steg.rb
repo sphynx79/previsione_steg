@@ -58,9 +58,14 @@ module PrevisioneSteg
   desc "Avvio forecast STEG"
   long_desc "Legge dal file Excel Forecast.xlsm i parametri di input e avvia il forecast"
   command :forecast do |c|
-    c.desc "day report [dd/mm/aaaa]"
+    c.desc "day prevision [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production forecast --dt 10/04/2021", desc: "Avvio del forecast"
+    c.desc "hour prevision [dd/mm/aaaa]"
+
+    # @TODO: vedere se devo fare un check sulla ora come faccio per la data
+    c.flag %i[H hour], required: true, type: String
+
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production forecast --dt 10/04/2021 --H 10", desc: "Avvio del forecast"
 
     c.action do
       Ikigai::Application.call(@env)
@@ -76,9 +81,12 @@ module PrevisioneSteg
     c.desc "day report [dd/mm/aaaa]"
     c.flag %i[dt day], required: false, type: String
 
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/2021", \
+    # @TODO: vedere se devo fare un check sulla ora come faccio per la data
+    c.flag %i[H hour], required: true, type: String
+
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/2021 -H 08", \
       desc: "Creo il Report PDF per il forecast"
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/2021", \
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/2021 -H 08", \
       desc: "Creo il Report PDF per il consuntivo"
 
     c.action do

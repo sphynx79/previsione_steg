@@ -17,6 +17,7 @@ gem "pastel", "~>0.8.0"
 gem "better_settings", "~>1.0.1"
 gem "rufus-scheduler", "~>3.8.0", require: false
 gem "net-sftp", "~>3.0.0"
+gem "sqlite3", "~>1.4.2"
 
 group :development, :test do
   gem "amazing_print", "~>1.4.0", require: "ap"

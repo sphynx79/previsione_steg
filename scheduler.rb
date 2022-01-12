@@ -86,11 +86,11 @@ class Handler
           when "consuntivi"
             "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} consuntivi"
           when "report_consuntivo"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")} -H 23"
           when "report_forecast"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")} -H #{(Time.now).strftime("%H")}"
           when "forecast"
-            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} forecast --dt #{(Date.today).strftime("%d/%m/%Y")}"
+            "#{RbConfig.ruby} steg.rb --log=info --interface=scheduler --enviroment=#{@env} forecast --dt #{(Date.today).strftime("%d/%m/%Y")} -H #{(Time.now).strftime("%H")}"
     end
 
     stdout, stderr, wait_thr = Open3.capture3(cmd)

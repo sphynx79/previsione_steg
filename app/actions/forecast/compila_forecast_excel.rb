@@ -77,12 +77,12 @@ module ForecastActions
     # @return [Void]
     def self.compila_daily_evolution
       try! do
-        now = Time.now().hour
-        if now.between?(10, 20)
-          rnum = now - 3
+        hour = ctx.dig(:env, :command_options, :H).to_i
+        if hour.between?(10, 20)
+          rnum = hour - 3
           worksheet = ctx.workbook.sheets("Forecast")
           worksheet.Range("$D$#{rnum}").value = ctx.daily_evolution[:nomina]
-          worksheet.Range("$F$#{rnum}").value = ctx.daily_evolution[:previsione]
+          worksheet.Range("$F$#{rnum}").value = ctx.daily_evolution[:previsione_v3]
           worksheet.Range("$H$#{rnum}").value = ctx.daily_evolution[:progressivo]
         end
       end.map_err do |err|

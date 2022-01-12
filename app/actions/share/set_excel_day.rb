@@ -31,10 +31,11 @@ module ShareActions
     executed do |ctx|
       ctx.data = nil
       # @type [String]
-      data = ctx.dig(:env, :command_options, :day)
+      data_hour = ctx.dig(:env, :command_options, :day) + " #{ctx.dig(:env, :command_options, :hour)}:00:00"
       try! do
-        set_day(data)
-        ctx.data = data.delete("/").freeze
+        set_day(data_hour)
+        # @TODO: vedere qui se ci devo trogliere l'ora dalla data o come gestirlo
+        ctx.data = data_hour.delete("/").freeze
       end.map_err do |err|
         ctx.fail_and_return!(
           {message: "Non riesco a impostare la data in file #{Ikigai::Config.file.excel_forecast} Forecast V1 cella M3",
