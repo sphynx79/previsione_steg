@@ -18,6 +18,13 @@ module ForecastConcern
       @@params
     end
 
+    # excel application
+    #
+    # @return [WIN32OLE]
+    def excel
+      @@excel
+    end
+
     # file excel che sto usando
     #
     # @return [WIN32OLE]
@@ -62,7 +69,7 @@ module ForecastConcern
     #
     # @return [String]
     def get_param(variabile, sheet)
-      tmp = @@excel.Run("'Forecast.xlsm'!GetElement", variabile, sheet)
+      tmp = @@excel.Evaluate(@@workbook.Sheets(sheet).Names(variabile).Value).value
       tmp == "" ? nil : tmp
     end
 
@@ -76,7 +83,7 @@ module ForecastConcern
     #
     # @return [Array]
     def get_range_name(variabile, sheet)
-      tmp = @@excel.Run("'Forecast.xlsm'!GetRangeName", variabile, sheet)
+      tmp = @@excel.Evaluate(@@workbook.Sheets(sheet).Names(variabile).Value)
       tmp == "" ? nil : range_to_array(tmp)
     end
 
@@ -317,7 +324,6 @@ module ForecastConcern
     #
     # @return [void]
     def set_day(data_hour)
-      # @TODO: vedere se questo cambiamento da problemi per gli altri comandi
       @@workbook.Worksheets("Forecast V1").Range("M3").value = data_hour
       nil
     end
@@ -345,7 +351,7 @@ module ForecastConcern
     # @return [Void]
     def refresh_links(workbook, path)
       workbook.UpdateLink(path, ExcelConst::XlExcelLinks)
-      # @@excel.Run("'Forecast.xlsm'!RefreshLinks")
+      @@excel.Calculate
     end
 
     # Avvia la macro CopyToCSV del fileDB2.xlsm
@@ -359,7 +365,9 @@ module ForecastConcern
     #
     # @return [Void]
     def clear_daily_evolution
-      @@workbook.Worksheets("Forecast").Range("$D$7:$H$17").value = ""
+      @@workbook.Worksheets("Forecast").Range("$D$7:$D$17").value = ""
+      @@workbook.Worksheets("Forecast").Range("$F$7:$F$17").value = ""
+      @@workbook.Worksheets("Forecast").Range("$H$7:$H$17").value = ""
     end
   end
 

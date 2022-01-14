@@ -78,6 +78,7 @@ module ForecastActions
     def self.compila_daily_evolution
       try! do
         hour = ctx.dig(:env, :command_options, :H).to_i
+        binding.pry
         if hour.between?(10, 20)
           rnum = hour - 3
           worksheet = ctx.workbook.sheets("Forecast")
@@ -99,7 +100,7 @@ module ForecastActions
     # @return [Void]
     def self.compila_dispersione
       try! do
-        ctx.workbook.Worksheets("Previsione_Dispersione").Range("B3:I10000").ClearContents
+        ctx.workbook.Worksheets("Previsione_Dispersione").Range("B3:H4000").ClearContents
         first_cell = 3
         last_cell = 0
         ctx.dispersione.each do |k, v|
@@ -128,17 +129,15 @@ module ForecastActions
     # @return [String]
     def self.column_year(year)
       case year
-      when 2015 then "C"
-      when 2016 then "D"
-      when 2017 then "E"
-      when 2018 then "F"
-      when 2019 then "G"
-      when 2020 then "H"
-      when 2021 then "I"
-      when 2022 then "J"
-      when 2023 then "K"
-      when 2024 then "L"
-      when 2025 then "M"
+      when 2017 then "C"
+      when 2018 then "D"
+      when 2019 then "E"
+      when 2020 then "F"
+      when 2021 then "G"
+      when 2022 then "H"
+      when 2023 then "I"
+      when 2024 then "J"
+      when 2025 then "K"
       end
     end
 

@@ -27,14 +27,13 @@ module ShareActions
     #
     #   @promises data [String]
     #
-    #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]<br>
+    #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       ctx.data = nil
       # @type [String]
       data_hour = ctx.dig(:env, :command_options, :day) + " #{ctx.dig(:env, :command_options, :hour)}:00:00"
       try! do
         set_day(data_hour)
-        # @TODO: vedere qui se ci devo trogliere l'ora dalla data o come gestirlo
         ctx.data = data_hour.delete("/").freeze
       end.map_err do |err|
         ctx.fail_and_return!(

@@ -76,6 +76,7 @@ module Ikigai
         else
           print "\n"
           log.info { "#{controller} eseguito corretamente" } && nil
+          sleep 3
         end
       end
     end
