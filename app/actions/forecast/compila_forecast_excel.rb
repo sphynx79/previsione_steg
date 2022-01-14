@@ -78,7 +78,6 @@ module ForecastActions
     def self.compila_daily_evolution
       try! do
         hour = ctx.dig(:env, :command_options, :H).to_i
-        binding.pry
         if hour.between?(10, 20)
           rnum = hour - 3
           worksheet = ctx.workbook.sheets("Forecast")

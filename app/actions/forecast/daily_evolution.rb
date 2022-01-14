@@ -38,12 +38,12 @@ module ForecastActions
       try! do
         ctx.workbook.sheets("Forecast").Activate
         daily_evolution = {}
-        daily_evolution[:previsione_v1] = ctx.workbook.sheets("Forecast").Range("$T$6").value.to_i
-        daily_evolution[:previsione_v2] = ctx.workbook.sheets("Forecast").Range("$T$8").value.to_i
-        daily_evolution[:previsione_v3] = ctx.workbook.sheets("Forecast").Range("$T$10").value.to_i
-        daily_evolution[:nomina] = ctx.workbook.sheets("Forecast").Range("$T$12").value.to_i
-        daily_evolution[:progressivo] = ctx.workbook.sheets("Forecast").Range("$T$14").value.to_i
-        daily_evolution[:consuntivo] = ctx.workbook.sheets("Forecast").Range("$T$16").value.to_i
+        daily_evolution[:previsione_v1] = ctx.workbook.sheets("Forecast").Range("$T$6").value.round(0 / 0.5)
+        daily_evolution[:previsione_v2] = ctx.workbook.sheets("Forecast").Range("$T$8").value.round(0 / 0.5)
+        daily_evolution[:previsione_v3] = ctx.workbook.sheets("Forecast").Range("$T$10").value.round(0 / 0.5)
+        daily_evolution[:nomina] = ctx.workbook.sheets("Forecast").Range("$T$12").value.round(0 / 0.5)
+        daily_evolution[:progressivo] = ctx.workbook.sheets("Forecast").Range("$T$14").value.round(0 / 0.5)
+        daily_evolution[:consuntivo] = ctx.workbook.sheets("Forecast").Range("$T$16").value.round(0 / 0.5)
         daily_evolution[:peso_previsione_nomina] = ctx.workbook.sheets("Forecast").Range("$AF$11").value
         daily_evolution[:correzione_cons_parziale] = ctx.workbook.sheets("Forecast").Range("$AF$13").value
         ctx.daily_evolution = daily_evolution.freeze
