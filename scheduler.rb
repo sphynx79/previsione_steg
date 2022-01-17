@@ -110,7 +110,7 @@ consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
 scheduler.cron("49 8 * * *", consuntivo, first_in: "2m", timeout: "5m", tag: "consuntivo")
 
 forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-scheduler.cron("09 9,11,12,13,14,15,16,17,18,19,20,21 * * *", forecast, timeout: "5m", tag: "forecast")
+scheduler.cron("09 9,10,11,12,13,14,15,16,17,18,19,20,21 * * *", forecast, timeout: "5m", tag: "forecast")
 
 puts "Start Scheduler"
 
