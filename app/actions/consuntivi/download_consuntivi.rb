@@ -22,7 +22,7 @@ module ConsuntiviActions
       now = DateTime.now - 5
 
       begin
-        Net::SFTP.start("10.97.95.213", "SCADA", {password: "scadaprod", port: 10022, timeout: 30, non_interactive: true}) do |sftp|
+        Net::SFTP.start("10.97.195.213", "SCADA", {password: "scadaprod", port: 10022, timeout: 30, non_interactive: true}) do |sftp|
           sftp.dir.glob("/Archive", "*.dat") do |file|
             # puts entry.longname
             if Time.at(file.attributes.mtime).to_datetime > now
