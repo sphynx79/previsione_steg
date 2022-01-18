@@ -44,4 +44,3 @@ module ReportActions
     end
   end
 end
-
