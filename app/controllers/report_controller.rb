@@ -86,6 +86,14 @@ class ReportController < Ikigai::BaseController
   # Crea l'HTML da inserire nel body dell'e-mail
   #   - **@promises** html [String] html da inserire del body dell'e-mail
   #
+  # {ReportActions::PrintScreenScada}
+  # Faccio il printscreen di scada
+  #   - **@promises** path_pdf_old_report [String] Path del printscreen di scada
+  #
+  # {ReportActions::PathPdfOldForecast}
+  # Setto il path dove prendere il PDF del vecchio forecast
+  #   - **@promises** path_printscreen_scada [String] Path del pdf dell'ultimo report creato dal vecchio forecast
+  #
   # {ReportActions::SendEmail}
   # Invia l'e-mail con allegato il report pdf
   #   - **@expects** html [String] html da inserire del body dell'e-mail
@@ -109,6 +117,8 @@ class ReportController < Ikigai::BaseController
       SetPdfPath,                                                                                        # E:[]                       P:[path_pdf_report]
       SavePdf,                                                                                           # E:[path_pdf_report]        P:[]
       MakeHtml,                                                                                          # E:[]                       P:[html]
+      PrintScreenScada,                                                                                  # E:[]                       P:[path_printscreen_scada]
+      PathPdfOldForecast,                                                                                # E:[]                       P:[path_pdf_old_report]
       SendEmail,                                                                                         # E:[html, path_pdf_report]  P:[]
       reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ExportDB),             # E:[]                       P:[]
       reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ClearDailyEvolution),  # E:[]                       P:[]

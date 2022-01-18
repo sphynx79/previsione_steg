@@ -10,6 +10,8 @@ module ReportActions
   #   <h2>Expects:</h2>
   #   - html (String) html da inserire del body dell'e-mail<br>
   #   - path_pdf_report (String) Path dove salvare il PDF<br>
+  #   - path_pdf_old_report (String) Path del pdf dell'ultimo report creato dal vecchio forecast<br>
+  #   - path_printscreen_scada (String) Path del printscreen di scada<br>
   # </div>
   #
   class SendEmail
@@ -17,7 +19,7 @@ module ReportActions
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    expects :path_pdf_report, :html
+    expects :path_pdf_report, :path_pdf_old_report, :path_printscreen_scada, :html
 
     # @!method SendEmail(ctx)
     #
@@ -27,6 +29,8 @@ module ReportActions
     #
     #   @expects html [String] html da inserire del body dell'e-mail
     #   @expects path_pdf_report [String] Path dove salvare il PDF
+    #   @expects path_pdf_old_report [String] Path del pdf dell'ultimo report creato dal vecchio forecast
+    #   @expects path_printscreen_scada [String] Path del printscreen di scada
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
@@ -39,6 +43,8 @@ module ReportActions
         message.To = Ikigai::Config.mail.to
         message.CC = Ikigai::Config.mail.cc
         message.Attachments.Add(ctx.path_pdf_report, 1)
+        message.Attachments.Add(ctx.path_pdf_old_report, 1) unless ctx.path_pdf_old_report.nil?
+        message.Attachments.Add(ctx.path_printscreen_scada, 1)
         message.Send
       end.map_err do |err|
         ctx.fail_and_return!(

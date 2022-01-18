@@ -11,6 +11,8 @@ defaults: &defaults
     db: '../DB/'
     consuntivi_pdf: '../report/consuntivi/'
     forecast_pdf: '../report/forecast/'
+    print_screen_scada: '../report/scada/'
+    forecast_old_pdf: '//kbsv1005.scogat.intranet/mico/A) Commerciale/F bis)Forecasting/Prévision prélévement STEG'
     scada: '../Consuntivi/'
     consuntivi_scada: '../Consuntivi/Download/'
   
@@ -42,6 +44,8 @@ production:
     db: '../DB/'
     consuntivi_pdf: '../report/consuntivi/'
     forecast_pdf: '../report/forecast/'
+    print_screen_scada: '../report/scada/'
+    forecast_old_pdf: '//kbsv1005.scogat.intranet/mico/A) Commerciale/F bis)Forecasting/Prévision prélévement STEG'
     scada: '../Consuntivi/'
     consuntivi_scada: '../Consuntivi/Download/'
 
