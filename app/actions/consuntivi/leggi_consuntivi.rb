@@ -88,9 +88,13 @@ module ConsuntiviActions
     def self.consuntivi
       consuntivi = []
       worksheets("DB").range("A#{first_row}:B#{last_row - 1}").rows.each do |row|
-        data = (row.cells(1, 1).value + 7200)
-        file_name = "DatiSITE_#{data.strftime("%Y%m%d%H")}00.dat"
-        full_pathname = Ikigai::Config.path.consuntivi_scada + file_name
+        full_pathname = nil
+        (0..7200).step(3600).each do |index|
+          data = (row.cells(1, 1).value + 7200 - index)
+          file_name = "DatiSITE_#{data.strftime("%Y%m%d%H")}00.dat"
+          full_pathname = Ikigai::Config.path.consuntivi_scada + file_name
+          break if File.exist?(full_pathname)
+        end
         if File.exist?(full_pathname)
           file = File.readlines(full_pathname).map(&:chomp)
           parse_value = []
