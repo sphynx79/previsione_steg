@@ -74,7 +74,7 @@ module ForecastActions
     def self.filter_giorno(consuntivi)
       return Success(consuntivi) if ctx.params[:giorno_settimana] == "NO"
       try! do
-        consuntivi.select { |row| row["Giorno_Sett_Num"] == ctx.params[:day].value.first["Giorno_Sett_Num"] }
+        consuntivi.select { |row| row["Giorno_Sett_Num"] == ctx.params[:day].value[5].to_i }
       end.map_err { Failure("Non riesco ad applicare il filtro giorno_settimana") }
     end
 

@@ -10,3 +10,6 @@ Per la documentazione:
 
 Ho dovuto fare cosi perchè con il comando "yard server" non mi vedeva i miei custom css nella cartella css
 e in questo modo posso fare anche il live reload
+
+Per calcolare la curva esponenziale
+11.times{|x| puts "#{x}, #{2.5**(0.2*x)}"}

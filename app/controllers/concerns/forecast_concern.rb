@@ -153,7 +153,7 @@ module ForecastConcern
     #    ]
     # ```
     def day
-      @@params[:day] ||= get_range_name("day", "Day")
+      @@params[:day] ||= @@workbook.Worksheets("Day").Range("C3:L3").value[0]
     end
 
     # setto il giorno_settimana nelle mie variable params prendendola dal file del forecast

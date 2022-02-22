@@ -8,11 +8,11 @@ GIT
 
 GIT
   remote: https://github.com/testdouble/standard
-  revision: 2f9f1d585e463598011cb2ead75a6ec2e7b21333
+  revision: a0e33f4f49596fd8d898408f2a16e87817294e1c
   specs:
-    standard (1.6.0)
-      rubocop (= 1.24.1)
-      rubocop-performance (= 1.13.1)
+    standard (1.7.2)
+      rubocop (= 1.25.1)
+      rubocop-performance (= 1.13.2)
 
 GEM
   remote: http://rubygems.org/
@@ -43,7 +43,7 @@ GEM
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     hirb (0.7.3)
-    i18n (1.8.11)
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     jaro_winkler (1.5.4)
@@ -57,7 +57,7 @@ GEM
     net-sftp (3.0.0)
       net-ssh (>= 5.0.0, < 7.0.0)
     net-ssh (6.1.0)
-    nokogiri (1.13.0)
+    nokogiri (1.13.1)
       mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     parallel (1.21.0)
@@ -77,30 +77,30 @@ GEM
     rb-readline (0.5.5)
     rcsv (0.3.1)
     redcarpet (3.5.1)
-    regexp_parser (2.2.0)
+    regexp_parser (2.2.1)
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.5)
-    rubocop (1.24.1)
+    rubocop (1.25.1)
       parallel (~> 1.10)
-      parser (>= 3.0.0.0)
+      parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
       rubocop-ast (>= 1.15.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.15.1)
+    rubocop-ast (1.15.2)
       parser (>= 3.0.1.1)
     rubocop-config-prettier (0.1.13)
-    rubocop-performance (1.13.1)
+    rubocop-performance (1.13.2)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
     rufo (0.13.0)
     rufus-scheduler (3.8.1)
       fugit (~> 1.1, >= 1.1.6)
-    solargraph (0.44.2)
+    solargraph (0.44.3)
       backport (~> 1.2)
       benchmark
       bundler (>= 1.17.2)
@@ -142,18 +142,19 @@ DEPENDENCIES
   ice_nine (~> 0.11.2)
   looksee (~> 4.4.0)
   net-sftp (~> 3.0.0)
+  nokogiri (~> 1.13.0)
   pastel (~> 0.8.0)
   pry (~> 0.14.1)
   pry-bond (~> 0.0.1)
   pry-byebug!
   rcsv (~> 0.3.1)
   redcarpet (~> 3.5.1)
-  rubocop (~> 1.24.1)
+  rubocop (~> 1.25.1)
   rubocop-config-prettier (~> 0.1.12)
-  rubocop-performance (~> 1.13.1)
+  rubocop-performance (~> 1.13.2)
   rufo (~> 0.13.0)
   rufus-scheduler (~> 3.8.0)
-  solargraph (~> 0.44.0)
+  solargraph (~> 0.44.3)
   sqlite3 (~> 1.4.2)
   standard!
 
@@ -161,4 +162,4 @@ RUBY VERSION
    ruby 3.0.0p0
 
 BUNDLED WITH
-   2.2.30
+   2.3.7
