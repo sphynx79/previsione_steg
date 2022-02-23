@@ -38,14 +38,15 @@ module ForecastActions
       try! do
         ctx.workbook.sheets("Forecast").Activate
         daily_evolution = {}
-        daily_evolution[:previsione_v1] = ctx.workbook.sheets("Forecast").Range("$T$6").value.round(0 / 0.5)
-        daily_evolution[:previsione_v2] = ctx.workbook.sheets("Forecast").Range("$T$8").value.round(0 / 0.5)
-        daily_evolution[:previsione_v3] = ctx.workbook.sheets("Forecast").Range("$T$10").value.round(0 / 0.5)
-        daily_evolution[:nomina] = ctx.workbook.sheets("Forecast").Range("$T$12").value.round(0 / 0.5)
-        daily_evolution[:progressivo] = ctx.workbook.sheets("Forecast").Range("$T$14").value.round(0 / 0.5)
-        daily_evolution[:consuntivo] = ctx.workbook.sheets("Forecast").Range("$T$16").value.round(0 / 0.5)
-        daily_evolution[:peso_previsione_nomina] = ctx.workbook.sheets("Forecast").Range("$AF$11").value
-        daily_evolution[:correzione_cons_parziale] = ctx.workbook.sheets("Forecast").Range("$AF$13").value
+        daily_evolution[:previsione_v1] = ctx.workbook.sheets("Forecast").Range("$V$6").value.round(0 / 0.5)
+        daily_evolution[:previsione_v2] = ctx.workbook.sheets("Forecast").Range("$V$8").value.round(0 / 0.5)
+        daily_evolution[:previsione_v3] = ctx.workbook.sheets("Forecast").Range("$V$10").value.round(0 / 0.5)
+        daily_evolution[:nomina] = ctx.workbook.sheets("Forecast").Range("$V$12").value.round(0 / 0.5)
+        daily_evolution[:progressivo] = ctx.workbook.sheets("Forecast").Range("$V$14").value.round(0 / 0.5)
+        daily_evolution[:consuntivo] = ctx.workbook.sheets("Forecast").Range("$V$16").value.round(0 / 0.5)
+        daily_evolution[:peso_previsione_nomina] = ctx.workbook.sheets("Forecast").Range("$AH$11").value
+        daily_evolution[:correzione_cons_parziale] = ctx.workbook.sheets("Forecast").Range("$AH$13").value
+        daily_evolution[:nomina_goal] = (ctx.workbook.sheets("Nomina_Goal").Range("$D$32").value / 1000).round(0 / 0.5)
         ctx.daily_evolution = daily_evolution.freeze
       end.map_err do |err|
         ctx.fail_and_return!(

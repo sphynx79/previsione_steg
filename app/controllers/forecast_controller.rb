@@ -164,6 +164,7 @@ class ForecastController < Ikigai::BaseController
       FilterData,           # E:[consuntivi, params]                                                                 P:[filtered_data]
       GroupByHour,          # E:[filtered_data]                                                                      P:[filtered_data_group_by_hour]
       Previsione,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]
+      GoalNomination,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]
       PrevisionLimit,       # E:[previsione,filtered_data_group_by_hour, params]                                     P:[previsone_up, previsone_down]
       Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down]                           P:[dispersione]
       DailyEvolution,       # E:[workbook]                                                                           P:[daily_evolution]

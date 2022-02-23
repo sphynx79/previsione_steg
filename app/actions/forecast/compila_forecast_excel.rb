@@ -84,6 +84,7 @@ module ForecastActions
           worksheet.Range("$D$#{rnum}").value = ctx.daily_evolution[:nomina]
           worksheet.Range("$F$#{rnum}").value = ctx.daily_evolution[:previsione_v3]
           worksheet.Range("$H$#{rnum}").value = ctx.daily_evolution[:progressivo]
+          worksheet.Range("$J$#{rnum}").value = ctx.daily_evolution[:nomina_goal]
         end
       end.map_err do |err|
         ctx.fail_and_return!(

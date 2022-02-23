@@ -40,7 +40,7 @@ module ReportActions
           prv_report[k][:consuntivo]      = number_with_delimiter(previsione_consuntivi(k))
         end
         # @type [Hash]
-        prv_daily_evolution = {nomina: [], previsione: [], steg_progr: []}
+        prv_daily_evolution = {nomina: [], previsione: [], steg_progr: [], nomina_goal: []}
         prv_daily_evolution.each do |k, v|
           7.upto(17) do |i|
             v << number_with_delimiter(daily_evolution(k, i))

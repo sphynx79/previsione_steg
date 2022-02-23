@@ -21,6 +21,7 @@ class StegModel < Ikigai::BaseModel
                 nomina_steg INTEGER DEFAULT 0,
                 steg_progressivo INTEGER DEFAULT 0,
                 consuntivo INTEGER DEFAULT 0,
+                nomina_goal INTEGER DEFAULT 0,
                 peso_nomina REAL DEFAULT 0,
                 correzione_cons_parziale REAL DEFAULT 0,
                 UNIQUE(data_time, previson_type)

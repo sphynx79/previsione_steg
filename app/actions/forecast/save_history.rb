@@ -55,7 +55,7 @@ module ForecastActions
     def self.insert_to_sqlite(db, row)
       db.client.execute <<-SQL
           INSERT INTO Previsione
-          (data_time, data, anno, mese, giorno, ora, previson_type, previsione_v1, previsione_v2, previsione_v3, nomina_steg, steg_progressivo, consuntivo, peso_nomina, correzione_cons_parziale)
+          (data_time, data, anno, mese, giorno, ora, previson_type, previsione_v1, previsione_v2, previsione_v3, nomina_steg, steg_progressivo, consuntivo, peso_nomina, correzione_cons_parziale, nomina_goal)
           VALUES(#{values(row)})
             ON CONFLICT(data_time, previson_type)
             DO UPDATE SET
@@ -66,7 +66,8 @@ module ForecastActions
             steg_progressivo=excluded.steg_progressivo,
             consuntivo=excluded.consuntivo,
             peso_nomina=excluded.peso_nomina,
-            correzione_cons_parziale=excluded.correzione_cons_parziale;
+            correzione_cons_parziale=excluded.correzione_cons_parziale,
+            nomina_goal=excluded.nomina_goal;
       SQL
     end
 
@@ -92,7 +93,8 @@ module ForecastActions
        steg_progressivo: row[:progressivo],
        consuntivo: row[:consuntivo],
        peso_nomina: row[:peso_previsione_nomina],
-       correzione_cons_parziale: row[:correzione_cons_parziale]}
+       correzione_cons_parziale: row[:correzione_cons_parziale],
+       nomina_goal: row[:nomina_goal]}
     end
 
     # prende i valori da inserire nel databse e crea una stringa pronta per seeere passata alla insert nel database
@@ -115,7 +117,8 @@ module ForecastActions
                 '#{sql_row[:steg_progressivo]}',
                 '#{sql_row[:consuntivo]}',
                 '#{sql_row[:peso_nomina]}',
-                 #{sql_row[:correzione_cons_parziale]}"
+                '#{sql_row[:correzione_cons_parziale]}',
+                 #{sql_row[:nomina_goal]}"
     end
 
     # crea la stringa per la colonna data_time

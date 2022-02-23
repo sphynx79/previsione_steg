@@ -201,11 +201,11 @@ module ForecastConcern
     def previsione(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("T10").value.round
+        @@workbook.Worksheets("Forecast").Range("V10").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("M10").value.round
+        @@workbook.Worksheets("Forecast").Range("O10").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AA10").value.round
+        @@workbook.Worksheets("Forecast").Range("AC10").value.round
       end
     end
 
@@ -217,11 +217,11 @@ module ForecastConcern
     def previsione_delta(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V10").value
+        @@workbook.Worksheets("Forecast").Range("X10").value
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O10").value
+        @@workbook.Worksheets("Forecast").Range("Q10").value
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC10").value
+        @@workbook.Worksheets("Forecast").Range("AE10").value
       end
     end
 
@@ -233,11 +233,11 @@ module ForecastConcern
     def previsione_nomina_steg(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("T12").value.round
+        @@workbook.Worksheets("Forecast").Range("V12").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("M12").value.round
+        @@workbook.Worksheets("Forecast").Range("O12").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AA12").value.round
+        @@workbook.Worksheets("Forecast").Range("AC12").value.round
       end
     end
 
@@ -249,11 +249,11 @@ module ForecastConcern
     def previsione_nomina_steg_progressivo(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("T14").value.round
+        @@workbook.Worksheets("Forecast").Range("V14").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("M14").value.round
+        @@workbook.Worksheets("Forecast").Range("O14").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AA14").value.round
+        @@workbook.Worksheets("Forecast").Range("AC14").value.round
       end
     end
 
@@ -265,11 +265,11 @@ module ForecastConcern
     def previsione_nomina_steg_progressivo_delta(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V14").value
+        @@workbook.Worksheets("Forecast").Range("X14").value
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O14").value
+        @@workbook.Worksheets("Forecast").Range("Q14").value
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC14").value
+        @@workbook.Worksheets("Forecast").Range("AE14").value
       end
     end
 
@@ -281,11 +281,11 @@ module ForecastConcern
     def previsione_consuntivi(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("T16").value.round
+        @@workbook.Worksheets("Forecast").Range("V16").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("M16").value.round
+        @@workbook.Worksheets("Forecast").Range("O16").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AA16").value.round
+        @@workbook.Worksheets("Forecast").Range("AC16").value.round
       end
     end
 
@@ -303,6 +303,8 @@ module ForecastConcern
         get_daily_evolution_value("F", hour)
       when :steg_progr
         get_daily_evolution_value("H", hour)
+      when :nomina_goal
+        get_daily_evolution_value("J", hour)
       end
     end
 
@@ -368,6 +370,14 @@ module ForecastConcern
       @@workbook.Worksheets("Forecast").Range("$D$7:$D$17").value = ""
       @@workbook.Worksheets("Forecast").Range("$F$7:$F$17").value = ""
       @@workbook.Worksheets("Forecast").Range("$H$7:$H$17").value = ""
+      @@workbook.Worksheets("Forecast").Range("$J$7:$J$17").value = ""
+    end
+
+    # Avvia la macro nel file Forecast.xlsm che mi trova la nomina Goal
+    #
+    # @return [Void]
+    def run_goal_macro
+      @@excel.Run("'Forecast.xlsm'!RunGoal")
     end
   end
 
