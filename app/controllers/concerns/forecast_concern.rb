@@ -111,7 +111,7 @@ module ForecastConcern
     # @param value [Boolean]
     #
     # @return [Void]
-    def screen_updating=(value)
+    def screen_updating(value)
       @@excel.ScreenUpdating = value
     end
 
@@ -120,7 +120,7 @@ module ForecastConcern
     # @param value [Boolean]
     #
     # @return [Void]
-    def calculation=(value)
+    def calculation(value)
       @@excel.Calculation = value
     end
 
@@ -275,7 +275,7 @@ module ForecastConcern
 
     # legge dal file Forecast.xlsm foglio forecast il relativa consuntivo [dicom,prv,simulazione]
     #
-    # @param type [Symbol] tipo di scostamento percentuale progressivo da leggere [dicom,prv,simulazione]
+    # @param type [Symbol] tipo di consuntivo da leggere [dicom,prv,simulazione]
     #
     # @return [Integer]
     def previsione_consuntivi(type)
@@ -286,6 +286,22 @@ module ForecastConcern
         @@workbook.Worksheets("Forecast").Range("O16").value.round
       when :simulazione
         @@workbook.Worksheets("Forecast").Range("AC16").value.round
+      end
+    end
+
+    # legge dal file Forecast.xlsm foglio forecast il relativa consuntivo del D-1 [dicom,prv,simulazione]
+    #
+    # @param type [Symbol] tipo di consuntivo D-1 da leggere [dicom,prv,simulazione]
+    #
+    # @return [Integer]
+    def previsione_consuntivi_consuntivo_d_meno_1(type)
+      case type
+      when :dicom
+        @@workbook.Worksheets("Forecast").Range("V18").value.round
+      when :prv
+        @@workbook.Worksheets("Forecast").Range("O18").value.round
+      when :simulazione
+        @@workbook.Worksheets("Forecast").Range("AC18").value.round
       end
     end
 
@@ -367,10 +383,10 @@ module ForecastConcern
     #
     # @return [Void]
     def clear_daily_evolution
-      @@workbook.Worksheets("Forecast").Range("$D$7:$D$17").value = ""
-      @@workbook.Worksheets("Forecast").Range("$F$7:$F$17").value = ""
-      @@workbook.Worksheets("Forecast").Range("$H$7:$H$17").value = ""
-      @@workbook.Worksheets("Forecast").Range("$J$7:$J$17").value = ""
+      @@workbook.Worksheets("Forecast").Range("$D$7:$D$19").value = ""
+      @@workbook.Worksheets("Forecast").Range("$F$7:$F$19").value = ""
+      @@workbook.Worksheets("Forecast").Range("$H$7:$H$19").value = ""
+      @@workbook.Worksheets("Forecast").Range("$J$7:$J$19").value = ""
     end
 
     # Avvia la macro nel file Forecast.xlsm che mi trova la nomina Goal

@@ -3,7 +3,7 @@
 # frozen_string_literal: true
 
 module ForecastActions
-  # Avvia la macro che trova la moglior nomina di STEG
+  # Avvia la macro che trova la miglior nomina di STEG
   #
   class GoalNomination
     # @!parse

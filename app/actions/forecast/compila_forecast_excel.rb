@@ -44,11 +44,15 @@ module ForecastActions
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
+      screen_updating(false)
+      calculation(ExcelConst::XlManual)
       compila(ctx.previsione, "Previsione")
-      compila(ctx.previsione_down, "Previsione_Down")
-      compila(ctx.previsione_up, "Previsione_UP")
+      compila(ctx.previsione_down, "Previsione_Down") unless ctx.previsione_down.nil?
+      compila(ctx.previsione_up, "Previsione_UP") unless ctx.previsione_up.nil?
+      compila_dispersione unless ctx.dispersione.nil?
       compila_daily_evolution
-      compila_dispersione
+      screen_updating(true)
+      calculation(ExcelConst::XlAutomatic)
     end
 
     # compila il relativo foglio del file forecast con la previsione passata come parametro
@@ -78,7 +82,7 @@ module ForecastActions
     def self.compila_daily_evolution
       try! do
         hour = ctx.dig(:env, :command_options, :H).to_i
-        if hour.between?(10, 20)
+        if hour.between?(10, 22)
           rnum = hour - 3
           worksheet = ctx.workbook.sheets("Forecast")
           worksheet.Range("$D$#{rnum}").value = ctx.daily_evolution[:nomina]

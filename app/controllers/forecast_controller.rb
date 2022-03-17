@@ -67,7 +67,7 @@ class ForecastController < Ikigai::BaseController
   #
   # {ShareActions::SetExcelDay}
   # Setta nel file excel del Forecast la data
-  #  - **@promises** data [String] Contiene la data es. "09042021"
+  #  - **@promises** data [String] Contiene la data e ora es. "17032022 10:00:00"
   #
   # {ForecastActions::GetExcelParams}
   # Prendo da excel tutti i dati di input per eseguire il Forecast
@@ -103,10 +103,13 @@ class ForecastController < Ikigai::BaseController
   #                 "nabeul"=>[79220.02257336344, 87046.02303894682],
   #                 "korba"=>[5760.112866817157, 6106.385079539223]}
   #
+  # {ForecastActions::GoalNomination}
+  # Avvia la macro che trova la miglior nomina di STEG
+  #
   # {ForecastActions::PrevisionLimit}
   # Genero gli estremi superiore e inferiore del mio forecast
   #   - **@expects** previsione [Hash<Array>] Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione
-  #   - **@expects** params [Hamster::Hash] parametri letti da excel
+  #   - **@expects** data [String] Contiene data e ora del forecast da eseguire
   #   - **@expects** filtered_data_group_by_hour [Hash<Array>] Consuntivi filtrati raggraupati per ora
   #   - **@promises** previsione_up [Hash<Array>] Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione
   #   - **@promises** previsione_down [Hash<Array>] Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione
@@ -130,6 +133,7 @@ class ForecastController < Ikigai::BaseController
   #   - **@expects** filtered_data_group_by_hour [Hash<Array>] Consuntivi filtrati raggraupati per ora
   #   - **@expects** previsione_up [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sopra la mia previsione
   #   - **@expects** previsione_down [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sotto la mia previsione
+  #   - **@expects** data [String] Contiene data e ora del forecast da eseguire
   #   - **@promises** dispersione [Hash<Array>] Mette in un hash la mia disperzione, nel quale ogni chiave e un anno, e i valori sono un array con tutti le curve relative a quell'anno
   #
   # @example dispersione
@@ -164,9 +168,9 @@ class ForecastController < Ikigai::BaseController
       FilterData,           # E:[consuntivi, params]                                                                 P:[filtered_data]
       GroupByHour,          # E:[filtered_data]                                                                      P:[filtered_data_group_by_hour]
       Previsione,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]
-      GoalNomination,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]
-      PrevisionLimit,       # E:[previsione,filtered_data_group_by_hour, params]                                     P:[previsone_up, previsone_down]
-      Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down]                           P:[dispersione]
+      GoalNomination,       # E:[filtered_data_group_by_hour]                                                        P:[previsione]
+      PrevisionLimit,       # E:[previsione,filtered_data_group_by_hour, data]                                       P:[previsone_up, previsone_down]
+      Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down, data]                     P:[dispersione]
       DailyEvolution,       # E:[workbook]                                                                           P:[daily_evolution]
       CompilaForecastExcel, # E:[previsione, previsione_up, previsione_down, dispersione, daily_evolution, workbook] P:[]
       SaveHistory           # E:[daily_evolution] P:[]

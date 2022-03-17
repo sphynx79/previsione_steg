@@ -10,6 +10,7 @@ module ForecastActions
   #   - filtered_data_group_by_hour (Hash(Array)) Consuntivi filtrati raggraupati per ora<br>
   #   - previsione_up (Hash(Array)) contiene tutte le curve suddivise per stazione che sono sopra la mia previsione<br>
   #   - previsione_down (Hash(Array)) contiene tutte le curve suddivise per stazione che sono sotto la mia previsione<br>
+  #   - data (String) Contiene data e ora del forecast da eseguire<br>
   #   <h2>Promises:</h2>
   #   - dispersione (Hash(Array)) Mette in un hash la mia disperzione, nel quale ogni chiave e un anno, e i valori sono un array con tutti le curve relative a quell'anno<br>
   # </div>
@@ -22,7 +23,8 @@ module ForecastActions
     expects \
       :filtered_data_group_by_hour,
       :previsione_up,
-      :previsione_down
+      :previsione_down,
+      :data
 
     promises \
       :dispersione
@@ -33,7 +35,10 @@ module ForecastActions
     #
     #   @param ctx [FunctionalLightService::Context]
     #
-    #   @expects previsione [Hash<Array>] Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione
+    #   @expects filtered_data_group_by_hour [Hash<Array>] Consuntivi filtrati raggraupati per ora
+    #   @expects previsione_up [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sopra la mia previsione
+    #   @expects previsione_down [Hash<Array>] contiene tutte le curve suddivise per stazione che sono sotto la mia previsione
+    #   @expects data [String] Contiene data e ora del forecast da eseguire
     #
     #   @promises dispersione [Hash<Array>] Mette in un hash la mia disperzione, nel quale ogni chiave e un anno, e i valori sono un array con tutti le curve relative a quell'anno
     #
@@ -42,6 +47,7 @@ module ForecastActions
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
+      next ctx.dispersione = nil unless ctx.data[/\s\d\d/].strip == "09"
       try! do
         # @type [Float]
         upper_limit = totale(ctx.previsione_up)

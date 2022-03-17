@@ -32,17 +32,18 @@ module ReportActions
       # rubocop:disable Layout/ExtraSpacing
       try! do
         # @type [Hash]
-        prv_report = {dicom: {}, prv: {}, simulazione: {}}
+        prv_report = {dicom: {title: "DICOM"}, prv: {title: "PREVISIONE"}, simulazione: {title: "SIMULAZIONE"}}
         prv_report.each do |k, v|
-          prv_report[k][:previsione]      = number_with_delimiter(previsione(k)) + " (#{(previsione_delta(k) * 100).round}%)"
-          prv_report[k][:nomina_steg]     = number_with_delimiter(previsione_nomina_steg(k))
-          prv_report[k][:nom_steg_progre] = number_with_delimiter(previsione_nomina_steg_progressivo(k)) + " (#{(previsione_nomina_steg_progressivo_delta(k) * 100).round}%)"
-          prv_report[k][:consuntivo]      = number_with_delimiter(previsione_consuntivi(k))
+          prv_report[k][:previsione]          = {value: number_with_delimiter(previsione(k)) + " (#{(previsione_delta(k) * 100).round}%)", name: "Previsione V3"}
+          prv_report[k][:nomina_steg]         = {value: number_with_delimiter(previsione_nomina_steg(k)), name: "Nomina STEG"}
+          prv_report[k][:nom_steg_progre]     = {value: number_with_delimiter(previsione_nomina_steg_progressivo(k)) + " (#{(previsione_nomina_steg_progressivo_delta(k) * 100).round}%)", name: "STEG Progres."}
+          prv_report[k][:consuntivo]          = {value: number_with_delimiter(previsione_consuntivi(k)), name: "Consuntivo"}
+          prv_report[k][:consuntivo_d_meno_1] = {value: number_with_delimiter(previsione_consuntivi_consuntivo_d_meno_1(k)), name: "Consuntivo D-1"}
         end
         # @type [Hash]
         prv_daily_evolution = {nomina: [], previsione: [], steg_progr: [], nomina_goal: []}
         prv_daily_evolution.each do |k, v|
-          7.upto(17) do |i|
+          7.upto(19) do |i|
             v << number_with_delimiter(daily_evolution(k, i))
           end
         end

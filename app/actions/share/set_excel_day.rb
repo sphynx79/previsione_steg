@@ -8,7 +8,7 @@ module ShareActions
   #
   # <div class="lsp">
   #   <h2>Promises:</h2>
-  #   - data (String)<br>
+  #   - data (String) Contiene data e ora del forecast da eseguire<br>
   # </div>
   #
   class SetExcelDay
@@ -25,7 +25,7 @@ module ShareActions
     #
     #   @param ctx [FunctionalLightService::Context]
     #
-    #   @promises data [String]
+    #   @promises data [String] Contiene data e ora del forecast da eseguire
     #
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|

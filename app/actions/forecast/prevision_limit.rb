@@ -9,7 +9,7 @@ module ForecastActions
   #   <h2>Expects:</h2>
   #   - previsione (Hash(Array)) Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione<br>
   #   - filtered_data_group_by_hour (Hash(Array)) Consuntivi filtrati raggraupati per ora<br>
-  #   - params (Hash) parametri letti da excel per eseguire il forecast<br>
+  #   - data (String) Contiene data e ora del forecast da eseguire<br>
   #   <h2>Promises:</h2>
   #   - previsione_up (Hash(Array)) Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione<br>
   #   - previsione_down (Hash(Array)) Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione<br>
@@ -20,7 +20,7 @@ module ForecastActions
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    expects :previsione, :filtered_data_group_by_hour, :params
+    expects :previsione, :filtered_data_group_by_hour, :data
     promises :previsione_up, :previsione_down
 
     # @!method Previsione(ctx)
@@ -31,7 +31,7 @@ module ForecastActions
     #
     #   @expects previsione [Hash<Array>] Mette in un hash la mia previsione ogni chiave dell'Hash è una stazione
     #   @expects filtered_data_group_by_hour [Hash<Array>] Consuntivi filtrati raggraupati per ora
-    #   @expects params [Hash] parametri letti da excel per eseguire il forecast
+    #   @expects data [String] Contiene data e ora del forecast da eseguire
     #
     #   @promises previsione_up [Hash<Array>] Mette in un hash la mia previsione_up ogni chiave dell'Hash è una stazione
     #   @promises previsione_down [Hash<Array>] Mette in un hash la mia previsione_down ogni chiave dell'Hash è una stazione
@@ -54,9 +54,14 @@ module ForecastActions
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
-        curve_up, curve_down = limit
-        ctx.previsione_up = previsione(curve_up)
-        ctx.previsione_down = previsione(curve_down)
+        if ctx.data[/\s\d\d/].strip == "09"
+          curve_up, curve_down = limit
+          ctx.previsione_up = previsione(curve_up)
+          ctx.previsione_down = previsione(curve_down)
+        else
+          ctx.previsione_up = nil
+          ctx.previsione_down = nil
+        end
       end.map_err do |err|
         ctx.fail_and_return!(
           {message: "Errore non sono riuscito a calcolare il limite superiore o inferiore della mia previsione",
