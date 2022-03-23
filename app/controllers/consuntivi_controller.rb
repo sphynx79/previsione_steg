@@ -75,7 +75,7 @@ class ConsuntiviController < Ikigai::BaseController
   # {ConsuntiviActions::LeggiConsuntivi}
   # Legge i consuntivi e li scrive nel DB
   #
-  # {ShareActions::ScriviConsuntivi}
+  # {ShareActions::RefreshLinks}
   # Refresha i collegamenti del file Excel del forecast
   #   - **@expects** consuntivi [Array] consuntivi di Steg letti dai file scaricati via FTP
   #

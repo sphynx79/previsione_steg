@@ -21,7 +21,7 @@ module ReportActions
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
-        data_hour = (Date.strptime(ctx.data,"%d%m%Y") + 1).strftime("%d/%m/%Y") + " 08:00:00"
+        data_hour = (Date.strptime(ctx.data, "%d%m%Y") + 1).strftime("%d/%m/%Y") + " 08:00:00"
         set_day(data_hour)
         export_db
       end.map_err do |err|

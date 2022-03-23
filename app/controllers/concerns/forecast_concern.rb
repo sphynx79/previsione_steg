@@ -201,11 +201,11 @@ module ForecastConcern
     def previsione(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V10").value.round
+        @@workbook.Worksheets("Forecast").Range("X10").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O10").value.round
+        @@workbook.Worksheets("Forecast").Range("Q10").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC10").value.round
+        @@workbook.Worksheets("Forecast").Range("AE10").value.round
       end
     end
 
@@ -217,11 +217,11 @@ module ForecastConcern
     def previsione_delta(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("X10").value
+        @@workbook.Worksheets("Forecast").Range("Z10").value
       when :prv
-        @@workbook.Worksheets("Forecast").Range("Q10").value
+        @@workbook.Worksheets("Forecast").Range("S10").value
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AE10").value
+        @@workbook.Worksheets("Forecast").Range("AG10").value
       end
     end
 
@@ -233,11 +233,11 @@ module ForecastConcern
     def previsione_nomina_steg(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V12").value.round
+        @@workbook.Worksheets("Forecast").Range("X12").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O12").value.round
+        @@workbook.Worksheets("Forecast").Range("Q12").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC12").value.round
+        @@workbook.Worksheets("Forecast").Range("AE12").value.round
       end
     end
 
@@ -249,11 +249,11 @@ module ForecastConcern
     def previsione_nomina_steg_progressivo(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V14").value.round
+        @@workbook.Worksheets("Forecast").Range("X14").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O14").value.round
+        @@workbook.Worksheets("Forecast").Range("Q14").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC14").value.round
+        @@workbook.Worksheets("Forecast").Range("AE14").value.round
       end
     end
 
@@ -265,11 +265,11 @@ module ForecastConcern
     def previsione_nomina_steg_progressivo_delta(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("X14").value
+        @@workbook.Worksheets("Forecast").Range("Z14").value
       when :prv
-        @@workbook.Worksheets("Forecast").Range("Q14").value
+        @@workbook.Worksheets("Forecast").Range("S14").value
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AE14").value
+        @@workbook.Worksheets("Forecast").Range("AG14").value
       end
     end
 
@@ -281,11 +281,11 @@ module ForecastConcern
     def previsione_consuntivi(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V16").value.round
+        @@workbook.Worksheets("Forecast").Range("X16").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O16").value.round
+        @@workbook.Worksheets("Forecast").Range("Q16").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC16").value.round
+        @@workbook.Worksheets("Forecast").Range("AE16").value.round
       end
     end
 
@@ -297,11 +297,11 @@ module ForecastConcern
     def previsione_consuntivi_consuntivo_d_meno_1(type)
       case type
       when :dicom
-        @@workbook.Worksheets("Forecast").Range("V18").value.round
+        @@workbook.Worksheets("Forecast").Range("X18").value.round
       when :prv
-        @@workbook.Worksheets("Forecast").Range("O18").value.round
+        @@workbook.Worksheets("Forecast").Range("Q18").value.round
       when :simulazione
-        @@workbook.Worksheets("Forecast").Range("AC18").value.round
+        @@workbook.Worksheets("Forecast").Range("AE18").value.round
       end
     end
 
@@ -321,6 +321,8 @@ module ForecastConcern
         get_daily_evolution_value("H", hour)
       when :nomina_goal
         get_daily_evolution_value("J", hour)
+      when :goal_avg
+        get_daily_evolution_value("L", hour)
       end
     end
 
@@ -332,13 +334,13 @@ module ForecastConcern
     # @return [Integer]
     def get_daily_evolution_value(column, row)
       value = @@workbook.Worksheets("Forecast").Range("#{column}#{row}").value
-      return "" if value.nil?
+      return "" if value.nil? || value == ""
       value.round
     end
 
     # Setto la data nel file Excel del Forecast
     #
-    # @param  data [String] Data da impostare nel file excel
+    # @param data_hour [String] Data da impostare nel file excel
     #
     # @return [void]
     def set_day(data_hour)
