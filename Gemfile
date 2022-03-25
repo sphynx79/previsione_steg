@@ -17,6 +17,7 @@ gem "pastel", "~>0.8.0"
 gem "better_settings", "~>1.0.1"
 gem "rufus-scheduler", "~>3.8.0", require: false
 gem "net-sftp", "~>3.0.0"
+# gem "psych", "< 4" # serve per far funzionare better_settings
 gem "sqlite3", "~>1.4.2"
 
 group :development, :test do
@@ -38,5 +39,5 @@ group :development, :test do
   gem "rufo", "~>0.13.0", require: false
   gem "solargraph", "~>0.44.3", require: false
   gem "nokogiri", "1.13.1", require: false
-  gem "standard", "~> 1.8.0", require: false
+  gem "standard", "~> 1.9.0", require: false
 end

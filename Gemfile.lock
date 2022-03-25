@@ -107,7 +107,7 @@ GEM
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
     sqlite3 (1.4.2)
-    standard (1.8.0)
+    standard (1.9.0)
       rubocop (= 1.26.0)
       rubocop-performance (= 1.13.3)
     thor (1.2.1)
@@ -149,10 +149,10 @@ DEPENDENCIES
   rufus-scheduler (~> 3.8.0)
   solargraph (~> 0.44.3)
   sqlite3 (~> 1.4.2)
-  standard (~> 1.8.0)
+  standard (~> 1.9.0)
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 3.1.1p18
 
 BUNDLED WITH
    2.3.9

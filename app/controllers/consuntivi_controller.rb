@@ -71,9 +71,11 @@ class ConsuntiviController < Ikigai::BaseController
   #
   # {ConsuntiviActions::LeggiConsuntivi}
   # Legge i consuntivi e li scrive nel DB
+  #  - **@promises** consuntivi [Array] consuntivi di Steg letti dai file scaricati via FTP
   #
-  # {ConsuntiviActions::LeggiConsuntivi}
-  # Legge i consuntivi e li scrive nel DB
+  # {ConsuntiviActions::ScriviConsuntivi}
+  # Scrivi i consuntivi letti del file del DB
+  #   - **@expects** consuntivi [Array] consuntivi di Steg letti dai file scaricati via FTP
   #
   # {ShareActions::RefreshLinks}
   # Refresha i collegamenti del file Excel del forecast
@@ -84,10 +86,10 @@ class ConsuntiviController < Ikigai::BaseController
     # rubocop:disable Layout/ExtraSpacing
     [
       DownloadConsuntivi,
-      ConnectExcel,       # P:[excel, workbook]
-      LeggiConsuntivi,
-      ScriviConsuntivi,
-      RefreshLinks        # E[excel]
+      ConnectExcel,             # E:[]               P:[excel, workbook]
+      LeggiConsuntivi,          # E:[]               P:[consuntivi]
+      ScriviConsuntivi,         # E:[consuntivi]     P:[]
+      RefreshLinks              # E:[excel]
     ]
     # rubocop:enable Layout/ExtraSpacing
   end
