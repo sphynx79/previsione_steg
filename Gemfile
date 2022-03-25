@@ -12,7 +12,7 @@ gem "gli", "~>2.21.0"
 gem "hamster", "~>3.0.0"
 gem "ice_nine", "~>0.11.2"
 # gem "lit-cli"
-gem "rcsv", "~>0.3.1"
+# gem "rcsv", "~>0.3.1"
 gem "pastel", "~>0.8.0"
 gem "better_settings", "~>1.0.1"
 gem "rufus-scheduler", "~>3.8.0", require: false

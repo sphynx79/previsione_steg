@@ -399,59 +399,6 @@ module ForecastConcern
     end
   end
 
-  module Csv
-    # fa il parser del file csv delle misure
-    #
-    # @example return value
-    #   [
-    #      [0] {
-    #       "Date"            => #<DateTime: 2015-10-20T08:00:00+00:00 ((2457316j,28800s,0n),+0s,2299161j)>,
-    #       "Giorno"          => 20,
-    #       "Mese"            => 10,
-    #       "Anno"            => 2015,
-    #       "Ora"             => 8,
-    #       "Giorno_Sett_Num" => 2,
-    #       "Festivo"         => "N",
-    #       "Festivita"       => "N",
-    #       "Stagione"        => "autunno",
-    #       "Exclude"         => "N",
-    #       "Peso"            => 1.0,
-    #       "Flow_Feriana"    => 70.0,
-    #       "Flow_Kasserine"  => 1.0,
-    #       "Flow_Zriba"      => 256.0,
-    #       "Flow_Nabeul"     => 49.0,
-    #       "Flow_Korba"      => 7.0,
-    #       "Flow_Totale"     => 9235.0
-    #     }
-    #   ]
-    #
-    # @return [Array<Hash>]
-    def parse_csv
-      csv_data = File.read(Ikigai::Config.path.db + Ikigai::Config.file.db_csv)
-
-      column = {"Date" => {type: :date},
-                "Giorno" => {type: :int},
-                "Mese" => {type: :int},
-                "Anno" => {type: :int},
-                "Ora" => {type: :int},
-                "Giorno_Sett_Num" => {type: :int},
-                "Festivo" => {type: :string},
-                "Festivita" => {type: :string},
-                "Stagione" => {type: :string},
-                "Exclude" => {type: :string},
-                "Peso" => {type: :float},
-                # 'Flow_Feriana' => { type: :float },
-                "Flow_Feriana" => {type: :float, not_match: [nil]},
-                "Flow_Kasserine" => {type: :float},
-                "Flow_Zriba" => {type: :float},
-                "Flow_Nabeul" => {type: :float},
-                "Flow_Korba" => {type: :float},
-                "Flow_Totale" => {type: :float}}
-
-      Rcsv.parse(csv_data, row_as_hash: true, column_separator: ";", header: :use, columns: column, only_listed_columns: true)
-    end
-  end
-
   module Utility
     def print_result_with_hirb(result)
       Hirb.enable pager: true

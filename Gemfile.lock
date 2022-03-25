@@ -67,7 +67,6 @@ GEM
     racc (1.6.0)
     rainbow (3.1.1)
     rb-readline (0.5.5)
-    rcsv (0.3.1)
     redcarpet (3.5.1)
     regexp_parser (2.2.1)
     reverse_markdown (2.1.1)
@@ -141,7 +140,6 @@ DEPENDENCIES
   pry (~> 0.14.1)
   pry-bond (~> 0.0.1)
   pry-byebug!
-  rcsv (~> 0.3.1)
   redcarpet (~> 3.5.1)
   rubocop (~> 1.26.0)
   rubocop-performance (~> 1.13.3)

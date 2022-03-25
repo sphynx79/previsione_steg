@@ -99,9 +99,6 @@ class ReportController < Ikigai::BaseController
   #   - **@expects** html [String] html da inserire del body dell'e-mail
   #   - **@expects** path_pdf_report [String] Path dove salvare il PDF
   #
-  # {ReportActions::ExportDB}
-  # Esporto il DB2.xlsm nel file DB2.csv se il report che sto generando è un consuntivo
-  #
   # {ReportActions::ClearDailyEvolution}
   # Pulisco la tabella daily evolution del forecast
   #
@@ -120,7 +117,6 @@ class ReportController < Ikigai::BaseController
       PrintScreenScada,                                                                                  # E:[]                       P:[path_printscreen_scada]
       PathPdfOldForecast,                                                                                # E:[]                       P:[path_pdf_old_report]
       SendEmail,                                                                                         # E:[html, path_pdf_report]  P:[]
-      reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ExportDB),             # E:[]                       P:[]
       reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, ClearDailyEvolution),  # E:[]                       P:[]
       reduce_if(->(ctx) { ctx.env.dig(:command_options, :type) == "consuntivo" }, SaveAllFile)           # E:[]                       P:[]
     ]

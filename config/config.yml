@@ -24,6 +24,13 @@ defaults:
 
 
 development:
+  mail:
+    from: 'michele.boscolo@ttpc.eni.com'
+    to: 'michele.boscolo@ttpc.eni.com'
+    cc: 'michele.boscolo@ttpc.eni.com'
+    server: 'relay.eni.pri'
+    port: 25
+
   database:
     name: 'Steg'
     path: "./DB/steg_dev"
@@ -42,7 +49,6 @@ development:
     excel_forecast: 'Forecast.xlsm'
     db_xls: 'DB.xlsm'
     db2_xls: 'DB2.xlsm'
-    db_csv: 'DB2.csv'
 
 test:
 
@@ -70,7 +76,6 @@ production:
     excel_forecast: 'Forecast.xlsm'
     db_xls: 'DB.xlsm'
     db2_xls: 'DB2.xlsm'
-    db_csv: 'DB2.csv'
 
 
 production_local:

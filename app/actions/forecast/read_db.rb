@@ -4,28 +4,32 @@
 
 module ForecastActions
   ##
-  # Prendo dal file csv tutti i dati consuntivi
+  # Prendo dal db tutti i dati consuntivi
   #
   # <div class="lsp">
   #   <h2>Promises:</h2>
   #   - consuntivi (Array(Hash)) Consuntivi di Steg<br>
+  #   <h2>Expects:</h2>
+  #   - excel (WIN32OLE)<br>
   # </div>
   #
-  class ParseCsv
+  class ReadDb
     # @!parse
     #   extend FunctionalLightService::Action
-    #   extend ForecastConcern::Csv
     extend FunctionalLightService::Action
 
     promises :consuntivi
+    expects :excel
 
-    # @!method ParseCsv(ctx)
+    # @!method ReadDb(ctx)
     #
     #   @!scope class
     #
     #   @param ctx [FunctionalLightService::Context]
     #
     #   @promises consuntivi [Array<Hash>] Consuntivi di Steg
+    #
+    #   @expects excel [WIN32OLE]
     #
     #   @example promises consuntivi value
     #       [
@@ -34,7 +38,7 @@ module ForecastActions
     #           "Giorno"          => 20,
     #           "Mese"            => 10,
     #           "Anno"            => 2015,
-    #           "Ora"             => 8,
+    #           "Ora"             => 8.0,
     #           "Giorno_Sett_Num" => 2,
     #           "Festivo"         => "N",
     #           "Festivita"       => "N",
@@ -52,7 +56,11 @@ module ForecastActions
     #   @return [FunctionalLightService::Context, FunctionalLightService::Context.fail_and_return!]
     executed do |ctx|
       try! do
-        ctx.consuntivi = IceNine.deep_freeze!(parse_csv.reject { |row| row["Exclude"] == "Y" })
+        workbook = ctx.excel.Workbooks(Ikigai::Config.file.db2_xls)
+        worksheet = workbook.worksheets("DB2")
+        last_row = worksheet.Range("S2").end(-4121).row
+        value = worksheet.Range("$A$1:$T$#{last_row}").value.reject { |x| x[18] == "" || x[12] == "Y" }
+        ctx.consuntivi = IceNine.deep_freeze!(value[1..].map(&value[0].method(:zip)).map(&:to_h))
       end.map_err do |err|
         ctx.fail_and_return!(
           {message: "Non riesco a leggere il file #{Ikigai::Config.file.db_csv} controllare di avere fatto l'esportazione del database",

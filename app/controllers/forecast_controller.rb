@@ -63,7 +63,7 @@ class ForecastController < Ikigai::BaseController
   # {ForecastActions::ConnectExcel}
   # Mi connetto ad excel<br/>
   #  - **@promises** excel [WIN32OLE] Instance Excel\
-  #  - **@promises** workbook [WIN32OLE] Instance Excel del file excel del Forecast\
+  #  - **@promises** workbook [WIN32OLE] Instance Excel del file excel del Forecast
   #
   # {ShareActions::SetExcelDay}
   # Setta nel file excel del Forecast la data
@@ -77,8 +77,9 @@ class ForecastController < Ikigai::BaseController
   # Fai il refresh dei link nel file Forecast, chimando una macro presente nel file excel
   #   - **@expects** excel [WIN32OLE]
   #
-  # {ForecastActions::ParseCsv}
-  # Prendo dal file csv tutti i dati consuntivi
+  # {ForecastActions::ReadDb}
+  # Prendo dal db tutti i dati consuntivi
+  #  - **@expects** excel [WIN32OLE]
   #  - **@promises** consuntivi [Array<Hash>] Consuntivi di Steg
   #
   # {ForecastActions::FilterData}
@@ -164,7 +165,7 @@ class ForecastController < Ikigai::BaseController
       SetExcelDay,          # E:[]                                                                                   P:[data]
       GetExcelParams,       # E:[],                                                                                  P:[params]
       RefreshLinks,         # E:[excel]                                                                              P:[]
-      ParseCsv,             # E:[]                                                                                   P:[consuntivi]
+      ReadDb,             # E:[excel]                                                                              P:[consuntivi]
       FilterData,           # E:[consuntivi, params]                                                                 P:[filtered_data]
       GroupByHour,          # E:[filtered_data]                                                                      P:[filtered_data_group_by_hour]
       Previsione,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]

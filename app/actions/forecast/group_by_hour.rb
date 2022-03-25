@@ -86,7 +86,7 @@ module ForecastActions
       ctx.filtered_data_group_by_hour = {}
       try! do
         hours.each do |h|
-          ctx.filtered_data_group_by_hour[h] = group_by_hour[h]
+          ctx.filtered_data_group_by_hour[h] = group_by_hour[h.to_f]
         end
       end.map_err do |err|
         ctx.fail_and_return!(
