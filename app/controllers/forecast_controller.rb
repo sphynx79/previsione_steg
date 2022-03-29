@@ -165,7 +165,7 @@ class ForecastController < Ikigai::BaseController
       SetExcelDay,          # E:[]                                                                                   P:[data]
       GetExcelParams,       # E:[],                                                                                  P:[params]
       RefreshLinks,         # E:[excel]                                                                              P:[]
-      ReadDb,             # E:[excel]                                                                              P:[consuntivi]
+      ReadDb,               # E:[excel]                                                                              P:[consuntivi]
       FilterData,           # E:[consuntivi, params]                                                                 P:[filtered_data]
       GroupByHour,          # E:[filtered_data]                                                                      P:[filtered_data_group_by_hour]
       Previsione,           # E:[filtered_data_group_by_hour]                                                        P:[previsione]

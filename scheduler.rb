@@ -9,7 +9,7 @@ require "pastel"
 require "pry"
 require "win32ole"
 
-# ENV["TZ"] = "Africa/Tunis"
+ENV["TZ"] = "Africa/Tunis"
 
 class Handler
   attr_reader :actions, :logger, :env

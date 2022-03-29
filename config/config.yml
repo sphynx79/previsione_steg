@@ -1,4 +1,4 @@
-defaults:
+defaults: &defaults
   mail:
     from: 'michele.boscolo@ttpc.eni.com'
     to: 'michele.boscolo@ttpc.eni.com'
@@ -24,35 +24,16 @@ defaults:
 
 
 development:
-  mail:
-    from: 'michele.boscolo@ttpc.eni.com'
-    to: 'michele.boscolo@ttpc.eni.com'
-    cc: 'michele.boscolo@ttpc.eni.com'
-    server: 'relay.eni.pri'
-    port: 25
-
+  <<: *defaults
   database:
     name: 'Steg'
     path: "./DB/steg_dev"
 
-  path:
-    root: '../'
-    db: '../DB/'
-    consuntivi_pdf: '../report/consuntivi/'
-    forecast_pdf: '../report/forecast/'
-    print_screen_scada: '../report/scada/'
-    forecast_old_pdf: '//kbsv1005.scogat.intranet/mico/A) Commerciale/F bis)Forecasting/Prévision prélévement STEG'
-    scada: '../Consuntivi/'
-    consuntivi_scada: '../Consuntivi/Download/'
-
-  file:
-    excel_forecast: 'Forecast.xlsm'
-    db_xls: 'DB.xlsm'
-    db2_xls: 'DB2.xlsm'
-
 test:
+  <<: *defaults
 
 production:
+  <<: *defaults
   mail:
     from: "michele.boscolo@ttpc.eni.com"
     to: "Roberto.Pozzer@ttpc.eni.com"
@@ -72,10 +53,5 @@ production:
     name: 'Steg'
     path: "./DB/steg"
 
-  file:
-    excel_forecast: 'Forecast.xlsm'
-    db_xls: 'DB.xlsm'
-    db2_xls: 'DB2.xlsm'
-
-
 production_local:
+  <<: *defaults
