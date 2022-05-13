@@ -15,8 +15,6 @@ require "win32ole"
 require "open3"
 require "lib/ikigai"
 
-ENV["TZ"] = "Africa/Tunis"
-
 APP_ROOT = Pathname.new(File.expand_path(".", __dir__))
 
 APP_NAME = APP_ROOT.parent.basename.to_s
@@ -251,4 +249,4 @@ end
 #         2) Vedere se usare pretty_backtrace, prendere esempio da Remit_linee_new
 #         3) Vedere se usare bundle oppure il require semplice
 #         4) Abilitare FunctionalLightService nel set_env
-#         5) mettere env di default production riga 1
+#         5) mettere env di default prouction riga 1

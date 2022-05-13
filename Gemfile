@@ -2,7 +2,7 @@
 # warn_indent: true
 # frozen_string_literal: true
 
-ruby ">=3.0.0"
+ruby ">=3.1.0"
 
 source "http://rubygems.org"
 
@@ -14,7 +14,7 @@ gem "ice_nine", "~>0.11.2"
 # gem "lit-cli"
 # gem "rcsv", "~>0.3.1"
 gem "pastel", "~>0.8.0"
-gem "better_settings", "~>1.0.1"
+gem "better_settings", "~>1.0.2"
 gem "rufus-scheduler", "~>3.8.0", require: false
 gem "net-sftp", "~>3.0.0"
 # gem "psych", "< 4" # serve per far funzionare better_settings
@@ -33,11 +33,11 @@ group :development, :test do
   # gem "pry-clipboard", "~>0.1.1"
   # gem "pry-state", "~>0.1.10"
   gem "redcarpet", "~>3.5.1", require: false
-  gem "rubocop", "~>1.26.0", require: false
+  gem "rubocop", "~>1.27.0", require: false
   # gem "rubocop-config-prettier", "~>0.1.12"
   gem "rubocop-performance", "~>1.13.3", require: false
   gem "rufo", "~>0.13.0", require: false
   gem "solargraph", "~>0.44.3", require: false
-  gem "nokogiri", "1.13.1", require: false
-  gem "standard", "~> 1.9.0", require: false
+  gem "nokogiri", "1.13.4", require: false
+  gem "standard", "~> 1.10.0", require: false
 end

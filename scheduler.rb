@@ -9,7 +9,7 @@ require "pastel"
 require "pry"
 require "win32ole"
 
-ENV["TZ"] = "Africa/Tunis"
+# ENV["TZ"] = "Africa/Tunis"
 
 class Handler
   attr_reader :actions, :logger, :env
@@ -48,8 +48,8 @@ class Handler
     end
   end
 
-  def call(job)
-    # $logger.info "#{job} at #{Time.now}"
+  def call(job, time)
+    # @logger.debug "#{job} at #{Time.now}"
     start_task
   rescue Rufus::Scheduler::TimeoutError
     @logger.warn "Sono andato in Timeout"
@@ -87,14 +87,14 @@ class Handler
 
   def start_process(action)
     cmd = case action
-          when "consuntivi"
-            "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} consuntivi"
-          when "report_consuntivo"
-            "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")} -H 23"
-          when "report_forecast"
-            "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")} -H #{(Time.now).strftime("%H")}"
-          when "forecast"
-            "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} forecast --dt #{(Date.today).strftime("%d/%m/%Y")} -H #{(Time.now).strftime("%H")}"
+    when "consuntivi"
+      "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} consuntivi"
+    when "report_consuntivo"
+      "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} report --type=consuntivo --dt #{(Date.today - 1).strftime("%d/%m/%Y")} -H 23"
+    when "report_forecast"
+      "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} report --type=forecast --dt #{(Date.today).strftime("%d/%m/%Y")} -H #{(Time.now).strftime("%H")}"
+    when "forecast"
+      "#{RbConfig.ruby} steg.rb --verbose=1 --log=info --interface=scheduler --enviroment=#{@env} forecast --dt #{(Date.today).strftime("%d/%m/%Y")} -H #{(Time.now).strftime("%H")}"
     end
 
     stdout, stderr, wait_thr = Open3.capture3(cmd)
@@ -102,7 +102,7 @@ class Handler
   end
 end
 
-scheduler = Rufus::Scheduler.new(frequency: "5s")
+scheduler = Rufus::Scheduler.new(frequency: "30s")
 
 def scheduler.on_error(job, error)
   pp ["error in scheduled job", job.class, job.original, error.message]
@@ -111,10 +111,10 @@ rescue
 end
 
 consuntivo = Handler.new(actions: ["consuntivi", "report_consuntivo"])
-scheduler.cron("49 8 * * *", consuntivo, first_in: "2m", timeout: "5m", tag: "consuntivo")
-
+scheduler.cron("20 9 * * *", consuntivo, first_in: "1m", timeout: "5m", tag: "consuntivo")
 forecast = Handler.new(actions: ["consuntivi", "forecast", "report_forecast"])
-scheduler.cron("18 9,10,11,12,13,14,15,16,17,18,19,20,21,22 * * *", forecast, timeout: "5m", tag: "forecast")
+# Quando ce il cambio ora devo spostare avanti o indietro di una ora la riga seguente
+scheduler.cron("16 10,11,12,13,14,15,16,17,18,19,20,21,22,23 * * *", forecast, first_in: "5m", timeout: "8m", tag: "forecast")
 
 puts "Start Scheduler"
 
