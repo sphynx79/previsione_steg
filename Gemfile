@@ -25,19 +25,19 @@ group :development, :test do
   gem "ffi", "~>1.15.0"
   gem "github-markup", require: false
   gem "hirb", "~>0.7.3"
-  gem "looksee", "~>4.4.0"
-  gem "pry", "~>0.14.1"
+  gem "looksee", "~>5.0.0"
+  gem "pry", "~>0.14.2"
   gem "pry-bond", "~>0.0.1"
   gem "pry-byebug", git: "https://github.com/deivid-rodriguez/pry-byebug"
   # gem "pry-doc", "~>1.1.0"
   # gem "pry-clipboard", "~>0.1.1"
   # gem "pry-state", "~>0.1.10"
   gem "redcarpet", "~>3.5.1", require: false
-  gem "rubocop", "~>1.27.0", require: false
+  gem "rubocop", "~>1.29.0", require: false
   # gem "rubocop-config-prettier", "~>0.1.12"
   gem "rubocop-performance", "~>1.13.3", require: false
   gem "rufo", "~>0.13.0", require: false
-  gem "solargraph", "~>0.44.3", require: false
+  gem "solargraph", "~>0.48.0", require: false
   gem "nokogiri", "1.13.4", require: false
-  gem "standard", "~> 1.10.0", require: false
+  gem "standard", "~> 1.12.0", require: false
 end

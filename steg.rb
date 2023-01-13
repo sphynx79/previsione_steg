@@ -24,15 +24,11 @@ module PrevisioneSteg
   include GLI::App
   extend self
 
-  program_desc "Programma per fare la previsione del consumo gas di Steg"
   version APP_VERSION
   subcommand_option_handling :normal
   arguments :strict
   sort_help :manually
   wrap_help_text :verbatim
-
-  desc "Setto il livello di verbose [0, 1, 2] 0 è disabilitato 2 è il massimo"
-  default_value "0"
   flag %i[v verbose], required: false, must_match: %w[0 1 2]
 
   desc "Log level [debug, info, warn, error, fatal]"
@@ -84,10 +80,8 @@ module PrevisioneSteg
     # @TODO: vedere se devo fare un check sulla ora come faccio per la data
     c.flag %i[H hour], required: true, type: String
 
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/2021 -H 08", \
-      desc: "Creo il Report PDF per il forecast"
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/2021 -H 08", \
-      desc: "Creo il Report PDF per il consuntivo"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=forecast --dt 10/04/2021 -H 08", desc: "Creo il Report PDF per il forecast"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production report --type=consuntivo --dt 10/04/2021 -H 08", desc: "Creo il Report PDF per il consuntivo"
 
     c.action do
       # prima = Time.now
@@ -99,8 +93,7 @@ module PrevisioneSteg
   desc "Leggi Consuntivo"
   long_desc "Avvio lo scaricamento e lettura dal FTP di Scada dei consuntivi"
   command :consuntivi do |c|
-    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production consuntivi", \
-      desc: "Avvio lo scaricamento FTP dei consuntivi e inserimento a DB"
+    c.example "ruby steg.rb --log=info --interface=cli --enviroment=production consuntivi", desc: "Avvio lo scaricamento FTP dei consuntivi e inserimento a DB"
 
     c.action do
       # prima = Time.now
@@ -156,7 +149,7 @@ module PrevisioneSteg
       controller: controller,
       action: action,
       command_options: options,
-      global_options: global
+      global_options: global,
     }
   end
 
@@ -173,10 +166,10 @@ module PrevisioneSteg
     pastel = Pastel.new
     Ikigai::Log.formatter = proc do |severity, datetime, _progname, msg|
       string = if severity != "FATAL"
-        "#{datetime.strftime("%d-%m-%Y %X")} --[#{severity}]-- : #{msg}\n"
-      else
-        "#{msg}\n"
-      end
+          "#{datetime.strftime("%d-%m-%Y %X")} --[#{severity}]-- : #{msg}\n"
+        else
+          "#{msg}\n"
+        end
 
       case severity
       when "DEBUG"
@@ -240,6 +233,7 @@ module PrevisioneSteg
       exit!
     end
   end
+
   # Controllo se lo sto lanciandi come programma
   # oppure il file e" stato usato come require
   exit run(ARGV) if $PROGRAM_NAME == __FILE__

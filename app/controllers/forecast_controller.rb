@@ -161,7 +161,6 @@ class ForecastController < Ikigai::BaseController
   def self.steps
     # rubocop:disable Layout/ExtraSpacing
     [
-      ConnectExcel,         # E:[]                                                                                   P:[excel, workbook]
       SetExcelDay,          # E:[]                                                                                   P:[data]
       GetExcelParams,       # E:[],                                                                                  P:[params]
       RefreshLinks,         # E:[excel]                                                                              P:[]
@@ -174,7 +173,7 @@ class ForecastController < Ikigai::BaseController
       Dispersione,          # E:[filtered_data_group_by_hour, previsione, previsione_down, data]                     P:[dispersione]
       DailyEvolution,       # E:[workbook]                                                                           P:[daily_evolution]
       CompilaForecastExcel, # E:[previsione, previsione_up, previsione_down, dispersione, daily_evolution, workbook] P:[]
-      SaveHistory           # E:[daily_evolution] P:[]
+      SaveHistory           # E:[daily_evolution]                                                                    P:[]
     ]
     # rubocop:enable Layout/ExtraSpacing
   end

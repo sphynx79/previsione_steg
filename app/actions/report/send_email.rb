@@ -19,7 +19,8 @@ module ReportActions
     #   extend FunctionalLightService::Action
     extend FunctionalLightService::Action
 
-    expects :path_pdf_report, :path_pdf_old_report, :path_printscreen_scada, :html
+    # expects :path_pdf_report, :path_pdf_old_report, :path_printscreen_scada, :html
+    expects :path_pdf_report, :html
 
     # @!method SendEmail(ctx)
     #
@@ -43,8 +44,8 @@ module ReportActions
         message.To = Ikigai::Config.mail.to
         message.CC = Ikigai::Config.mail.cc
         message.Attachments.Add(ctx.path_pdf_report, 1)
-        message.Attachments.Add(ctx.path_pdf_old_report, 1) unless ctx.path_pdf_old_report.nil?
-        message.Attachments.Add(ctx.path_printscreen_scada, 1)
+        # message.Attachments.Add(ctx.path_pdf_old_report, 1) unless ctx.path_pdf_old_report.nil?
+        # message.Attachments.Add(ctx.path_printscreen_scada, 1)
         message.Send
       end.map_err do |err|
         ctx.fail_and_return!(
